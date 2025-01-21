@@ -141,6 +141,7 @@ class AdventureGameSimulation:
         # Hint: current_location.available_commands[command] will return the next location ID
         # which executing <command> while in <current_location_id> leads to
 
+
     def get_id_log(self) -> list[int]:
         """
         Get back a list of all location IDs in the order that they are visited within a game simulation
