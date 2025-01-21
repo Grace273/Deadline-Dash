@@ -69,7 +69,7 @@ class EventList:
     """
     first: Optional[Event]
     last: Optional[Event]
-
+#hi
     def __init__(self) -> None:
         """Initialize a new empty event list."""
 
