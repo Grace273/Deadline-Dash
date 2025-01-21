@@ -23,7 +23,7 @@ please consult our Course Syllabus.
 
 This file is Copyright (c) 2025 CSC111 Teaching Team
 """
-#Hello I'm Phoebe I'm doing this project right now
+
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
@@ -50,6 +50,11 @@ class Event:
     # Exercise 1 and will be auto-graded.
 
     # TODO: Add attributes below based on the provided descriptions above. Use the specified datatypes.
+    id_num: int
+    description: str
+    next_command: str
+    next: Optional[Event] = None
+    prev: Optional[Event] = None
 
 
 class EventList:
