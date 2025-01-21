@@ -55,16 +55,17 @@ class Event:
     next: Optional[Event] = None
     prev: Optional[Event] = None
 
-#HELP
+
 class EventList:
     """
     A linked list of game events.
 
     Instance Attributes:
-        - # TODO add descriptions of instance attributes here
+        - first: first event node of the EventList, None if EventList is empty
+        - last: last event node of the EventList, None if EventList is empty
 
     Representation Invariants:
-        - # TODO add any appropriate representation invariants, if needed
+        -
     """
     first: Optional[Event]
     last: Optional[Event]
@@ -128,12 +129,11 @@ class EventList:
 
 
 if __name__ == "__main__":
-    pass
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'max-line-length': 120,
-    #     'disable': ['R1705', 'E9998', 'E9999']
-    # })
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'disable': ['R1705', 'E9998', 'E9999']
+    })
