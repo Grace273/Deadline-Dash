@@ -69,7 +69,7 @@ class EventList:
     """
     first: Optional[Event]
     last: Optional[Event]
-#hi
+
     def __init__(self) -> None:
         """Initialize a new empty event list."""
 
@@ -95,9 +95,13 @@ class EventList:
         """
         # Hint: You should update the previous node's <next_command> as needed
 
-        self.last.next_command = command
-        self.last.next = event
-        self.last = event
+        if self.first is None:
+            self.first = event
+            self.last = event
+        else:
+            self.last.next_command = command
+            self.last.next = event
+            self.last = event
 
     def remove_last_event(self) -> None:
         """Remove the last event from this event list.
