@@ -97,6 +97,10 @@ class SimpleAdventureGame:
         """
 
         # TODO: Complete this method as specified. Do not modify any of this function's specifications.
+        if loc_id is not None:
+            return self._locations[loc_id]
+        else:
+            return self._locations[self.current_location_id]
 
 
 class AdventureGameSimulation:
