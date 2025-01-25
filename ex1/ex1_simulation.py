@@ -125,8 +125,19 @@ class AdventureGameSimulation:
         # TODO: Add first event (initial location, no previous command)
         # Hint: self._game.get_location() gives you back the current location
 
+        initial_location = self._game.get_location()
+        initial_location_id_desc = initial_location.description
+        first_event = Event(id_num=initial_location_id,
+                            description=initial_location_id_desc)
+
+        # Call EventList object's add_event() method to avoid accessing private variable _first.
+        # Pass command=None since this is the first event, i.e, no command was used to reach this event.
+        self._events.add_event(event=first_event, command=None)
+
         # TODO: Generate the remaining events based on the commands and initial location
         # Hint: Call self.generate_events with the appropriate arguments
+
+        self.generate_events(commands=commands, current_location=initial_location)
 
     def generate_events(self, commands: list[str], current_location: Location) -> None:
         """Generate all events in this simulation.
@@ -140,6 +151,15 @@ class AdventureGameSimulation:
         #  it to self._events.
         # Hint: current_location.available_commands[command] will return the next location ID
         # which executing <command> while in <current_location_id> leads to
+
+        for command in commands:
+            next_location_id = current_location.available_commands[command]
+            next_location_id_desc = self._game.get_location(next_location_id).description
+
+            next_event = Event(id_num=next_location_id,
+                               description=next_location_id_desc)
+
+            self._events.add_event(event=next_event, command=command)
 
     def get_id_log(self) -> list[int]:
         """
@@ -176,12 +196,12 @@ class AdventureGameSimulation:
 
 
 if __name__ == "__main__":
-    pass
+    # pass
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'max-line-length': 120,
-    #     'disable': ['R1705', 'E9998', 'E9999']
-    # })
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'disable': ['R1705', 'E9998', 'E9999']
+    })
