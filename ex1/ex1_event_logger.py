@@ -101,6 +101,7 @@ class EventList:
         else:
             self.last.next_command = command
             self.last.next = event
+            event.prev = self.last
             self.last = event
 
     def remove_last_event(self) -> None:
@@ -117,6 +118,7 @@ class EventList:
         else:
             self.last = self.last.prev
             self.last.next = None
+            self.last.next_command = None
 
     def get_id_log(self) -> list[int]:
         """Return a list of all location IDs visited for each event in this list, in sequence."""

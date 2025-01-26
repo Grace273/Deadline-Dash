@@ -158,8 +158,9 @@ class AdventureGameSimulation:
 
             next_event = Event(id_num=next_location_id,
                                description=next_location_id_desc)
-
             self._events.add_event(event=next_event, command=command)
+
+            current_location = self._game.get_location(next_location_id)
 
     def get_id_log(self) -> list[int]:
         """
