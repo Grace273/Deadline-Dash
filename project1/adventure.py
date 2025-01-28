@@ -34,7 +34,7 @@ class AdventureGame:
     """A text adventure game class storing all location, item and map data.
 
     Instance Attributes:
-        - # TODO add descriptions of public instance attributes as needed
+        - current_location_id: the ID of the location the game is currently in
 
     Representation Invariants:
         - # TODO add any appropriate representation invariants as needed
@@ -48,6 +48,8 @@ class AdventureGame:
     _locations: dict[int, Location]
     _items: list[Item]
     current_location_id: int  # Suggested attribute, can be removed
+
+    #TODO: determine if we will use ongoing variable
     ongoing: bool  # Suggested attribute, can be removed
 
     def __init__(self, game_data_file: str, initial_location_id: int) -> None:
@@ -67,11 +69,10 @@ class AdventureGame:
         # 1. Make sure the Location class is used to represent each location.
         # 2. Make sure the Item class is used to represent each item.
 
-        # Suggested helper method (you can remove and load these differently if you wish to do so):
         self._locations, self._items = self._load_game_data(game_data_file)
+        self.current_location_id = initial_location_id
 
-        # Suggested attributes (you can remove and track these differently if you wish to do so):
-        self.current_location_id = initial_location_id  # game begins at this location
+        #TODO: Determine if we are using ongoing variable
         self.ongoing = True  # whether the game is ongoing
 
     @staticmethod
@@ -91,7 +92,10 @@ class AdventureGame:
 
         items = []
         # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above
-        # YOUR CODE BELOW
+        for item_data in data['items']:  # Go through each element associated with the 'locations' key in the file
+            item = Item(item_data['name'], item_data['start_position'], item_data['target_position'],
+                        item_data['target_points'])
+            items.append(item)
 
         return locations, items
 
@@ -101,7 +105,10 @@ class AdventureGame:
         """
 
         # TODO: Complete this method as specified
-        # YOUR CODE BELOW
+        if loc_id is not None:
+            return self._locations[loc_id]
+        else:
+            return self._locations[self.current_location_id]
 
 
 if __name__ == "__main__":
@@ -117,7 +124,7 @@ if __name__ == "__main__":
 
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
     game = AdventureGame('game_data.json', 1)  # load data, setting initial location ID to 1
-    menu = ["look", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
+    menu = ["look", "hold", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
     choice = None
 
     # Note: You may modify the code below as needed; the following starter code is just a suggestion
