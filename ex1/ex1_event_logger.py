@@ -65,7 +65,7 @@ class EventList:
         - last: last event node of the EventList, None if EventList is empty
 
     Representation Invariants:
-        -
+        - first is None == last is None
     """
     first: Optional[Event]
     last: Optional[Event]
