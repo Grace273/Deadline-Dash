@@ -58,7 +58,10 @@ class Item:
     """An item in our text adventure game world.
 
     Instance Attributes:
-        - # TODO Describe each instance attribute here
+        - name: name of the item
+        - position: current position of the item
+        - enabled: whether the item is still useful
+
 
     Representation Invariants:
         - # TODO Describe any necessary representation invariants
@@ -73,9 +76,8 @@ class Item:
     # All item objects in your game MUST be represented as an instance of this class.
 
     name: str
-    start_position: int
-    target_position: int
-    target_points: int
+    position: int
+    enabled: bool
 
 
 # Note: Other entities you may want to add, depending on your game plan:
