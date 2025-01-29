@@ -124,7 +124,6 @@ class AdventureGameSimulation:
 
         # TODO: Add first event (initial location, no previous command)
         # Hint: self._game.get_location() gives you back the current location
-        #come back to this
         initial_location = self._game.get_location()
         initial_location_id_desc = initial_location.description
         first_event = Event(id_num=initial_location_id,

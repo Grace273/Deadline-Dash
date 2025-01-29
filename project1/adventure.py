@@ -48,8 +48,6 @@ class AdventureGame:
     _locations: dict[int, Location]
     _items: list[Item]
     current_location_id: int  # Suggested attribute, can be removed
-
-    #TODO: determine if we will use ongoing variable
     ongoing: bool  # Suggested attribute, can be removed
 
     def __init__(self, game_data_file: str, initial_location_id: int) -> None:
@@ -71,8 +69,6 @@ class AdventureGame:
 
         self._locations, self._items = self._load_game_data(game_data_file)
         self.current_location_id = initial_location_id
-
-        #TODO: Determine if we are using ongoing variable
         self.ongoing = True  # whether the game is ongoing
 
     @staticmethod
@@ -143,7 +139,7 @@ if __name__ == "__main__":
         # YOUR CODE HERE
 
         # Display possible actions at this location
-        print("What to do? Choose from: look, inventory, score, undo, log, quit")
+        print("What to do? Choose from: look, hold, inventory, score, undo, log, quit")
         print("At this location, you can also:")
         for action in location.available_commands:
             print("-", action)
