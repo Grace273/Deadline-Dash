@@ -22,38 +22,6 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Location:
-    """A location in our text adventure game world.
-
-    Instance Attributes:
-        - # TODO Describe each instance attribute here
-
-    Representation Invariants:
-        - # TODO Describe any necessary representation invariants
-    """
-
-    # This is just a suggested starter class for Location.
-    # You may change/add parameters and the data available for each Location object as you see fit.
-    #
-    # The only thing you must NOT change is the name of this class: Location.
-    # All locations in your game MUST be represented as an instance of this class.
-
-    def __init__(self, location_id, brief_description, long_description, available_commands, items,
-                 visited=False) -> None:
-        """Initialize a new location.
-
-        # TODO Add more details here about the initialization if needed
-        """
-
-        self.id_num = location_id
-        self.brief_description = brief_description
-        self.long_description = long_description
-        self.available_commands = available_commands
-        self.items = items
-        self.visited = visited
-
-
-@dataclass
 class Item:
     """An item in our text adventure game world.
 
@@ -77,13 +45,95 @@ class Item:
 
     name: str
     position: int
-    enabled: bool
+
+    def __init__(self, name, position) -> None:
+        """Initialize a new item.
+
+        # TODO Add more details here about the initialization if needed
+        """
+
+        self.name = name
+        self.position = position
+
+
+@dataclass
+class Location:
+    """A location in our text adventure game world.
+
+    Instance Attributes:
+        - id_num: integer id for this location
+        - brief_description: brief description of this location
+        - long_description: full description of this location
+        - available_commands: a mapping of available commands at this location to
+                              the location executing that command would lead to
+        - items: a list of available items at this location
+        - visited: whether the player have visited this location (for displaying decription)
+
+    Representation Invariants:
+        - # TODO Describe any necessary representation invariants
+    """
+
+    id_num: int
+    brief_description: str
+    long_description: str
+    available_commands: dict[str, int]
+    items: list[Item]
+    visited: bool
+
+    # This is just a suggested starter class for Location.
+    # You may change/add parameters and the data available for each Location object as you see fit.
+    #
+    # The only thing you must NOT change is the name of this class: Location.
+    # All locations in your game MUST be represented as an instance of this class.
+
+    def __init__(self, location_id, brief_description, long_description, available_commands, items,
+                 visited=False) -> None:
+        """Initialize a new location.
+
+        # TODO Add more details here about the initialization if needed
+        """
+
+        self.id_num = location_id
+        self.brief_description = brief_description
+        self.long_description = long_description
+        self.available_commands = available_commands
+        self.items = items
+        self.visited = visited
 
 
 # Note: Other entities you may want to add, depending on your game plan:
 # - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)
 # - Player class
 # etc.
+
+@dataclass
+class Player:
+    """A player in the text adventure game world.
+
+    Instance Attributes:
+        - name: name of the item
+        - position: current position of the item
+        - enabled: whether the item is still useful
+
+
+    Representation Invariants:
+        - # TODO Describe any necessary representation invariants
+    """
+
+    name: str
+    inventory: list[Item]
+    score: int
+
+    def __init__(self, name) -> None:
+        """Initialize a new player.
+
+        # TODO Add more details here about the initialization if needed
+        """
+
+        self.name = name
+        self.inventory = []
+        self.score = 0
+
 
 if __name__ == "__main__":
     pass
