@@ -2,47 +2,50 @@
   "locations": [
     {
       "id": 1,
-      "name": "Trinity College Res 1F",
-      "brief_description": "You are on the first floor of the Trinity College Res. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "name": "New College (your room)",
+      "brief_description": "You are in New College, where your dorm locates. Sidney Smith Hall is on the east side of this building.",
+      "long_description": "You are finally back in your dorm building. The familiar coziness reminds you of home...wait, isn't something missing? Why are you back here!",
       "available_commands": {
-        "go south": 4,
         "go east": 2
       },
-      "items": ["toonie"]
+      "items": []
     },
     {
       "id": 2,
-      "name": "Trinity 3F",
-      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "name": "Sidney Smith Hall",
+      "brief_description": "You are on the first floor of Sidney Smith Hall. Proceed south to Bahen Center, west to New College, and east to St. George Street.",
+      "long_description": "It's the busiest time of the day at Sidney Smith as hundreds of students hurry for their next class. Hmmmm... one of your best buddies is having class upstairs, maybe you can take a look?",
       "available_commands": {
-        "go south": 4,
-        "go east": 2
+        "go south": 3,
+        "go west": 1,
+        "go east": 4
       },
-      "items": ["toonie"]
+      "items": []
     },
     {
-      "id": 1,
-      "name": "UC 2F",
-      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "id": 3,
+      "name": "Bahen Center",
+      "brief_description": "You are on the first floor of the Bahen Center. Proceed north to Sidney Smith Hall, or east to the gate.",
+      "long_description": "You are on the first floor of the Bahen Center. There are students eating and studying at the table near the windows. Your professor's office is in this building, but you can't just break in, right?",
       "available_commands": {
-        "go south": 4,
-        "go east": 2
+        "go north": 2,
+        "go east": 5,
+        //(conditional) "go to Sadia's Office"
       },
-      "items": ["toonie"]
+      "items": []
     },
     {
-      "id": 1,
-      "name": "UC 1F",
-      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "id": 4,
+      "name": "St. George Street",
+      "brief_description": "You are on St. George Street. Proceed south to the gate, west to Sidney Smith Hall, or east to Front Campus",
+      "long_description": "You are on St. George Street, the street which you walk along and across numerous times everyday for your courses. And, of course, there's the UofT-student-favorite hotdog station...what? Free hotdogs for today?",
       "available_commands": {
-        "go south": 4,
-        "go east": 2
+        "go south": 5,
+        "go west": 2,
+        "go east": 8,
+        "buy hotdog": 4
       },
-      "items": ["toonie"]
+      "items": []
     },
     {
       "id": 1,
