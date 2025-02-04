@@ -37,7 +37,7 @@
     {
       "id": 4,
       "name": "St. George Street",
-      "brief_description": "You are on St. George Street. Proceed south to the gate, west to Sidney Smith Hall, or east to Front Campus",
+      "brief_description": "You are on St. George Street. Proceed south to the Main Gate, west to Sidney Smith Hall, or east to Front Campus",
       "long_description": "You are on St. George Street, the street which you walk along and across numerous times everyday for your courses. And, of course, there's the UofT-student-favorite hotdog station...what? Free hotdogs for today?",
       "available_commands": {
         "go south": 5,
@@ -48,8 +48,33 @@
       "items": []
     },
     {
+      "id": 5,
+      "name": "UTSG Main Gate",
+      "brief_description":"You are at UTSG's main gate. Proceed north to St. George Street, east to Myhal, south to College Street, west to Bahen.",
+      "long_description": "There it is, the main gate to The University of Toronto's St. George campus. Flashback to when you first visited UofT with your parents during the early fall of 12th grade. And how when leaving, under this very gate, you told them you wanted to spend the next 4 years here. You feel determined to finish this assignment and make them proud!",
+      "available_commands": {
+        "go north": 4,
+        "go south": 6,
+        "go west": 3,
+        "go east": 9
+      },
+      "items": []
+    },
+    {
+      "id": 6,
+      "name": "College Street",
+      "brief_description": "You are on College Street. Proceed north to the Main Gate. But wait, the bus is coming and there's a stray PRESTO card on the ground!"
+      "long_description": "You are on College Street. You never like this street much. It's too busy and reminds you of your semesterly treks to the EX, which your friends like to refer to as the Execution Centre. You can go back north to the Main Gate. But wait, there's a stray PRESTO card lying on the ground. Everyone around you is so caught up in their day-to-day routine that no one would notice if you take the card... Quick! The bus that could take you to T&T is coming!",
+      "available_commands": {
+        "go north": 5,
+        "get on the bus": 11, //REQUIRES presto card
+        "pick up PRESTO card": 6
+      },
+      "items": ["Presto"]
+    },
+    {
       "id": 1,
-      "name": "Front Campus",
+      "name": "Myhal Hall",
       "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
       "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
       "available_commands": {
@@ -60,7 +85,40 @@
     },
     {
       "id": 1,
-      "name": "Convocation Hall",
+      "name": "Trinity College",
+      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
+      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "available_commands": {
+        "go south": 4,
+        "go east": 2
+      },
+      "items": ["toonie"]
+    },
+    {
+      "id": 1,
+      "name": "Myhal Hall",
+      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
+      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "available_commands": {
+        "go south": 4,
+        "go east": 2
+      },
+      "items": ["toonie"]
+    },
+    {
+      "id": 1,
+      "name": "Queen's Park",
+      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
+      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "available_commands": {
+        "go south": 4,
+        "go east": 2
+      },
+      "items": ["toonie"]
+    },
+    {
+      "id": 1,
+      "name": "T&T",
       "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
       "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
       "available_commands": {
