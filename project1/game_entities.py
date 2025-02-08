@@ -30,7 +30,8 @@ class Item:
         - position: current position of the item
         - enabled: whether the item is still useful
         - start_position: the starting position/location of the item
-        - target: mapping of target position to points earned when depositing item at target
+        - target_position: the target position/location of the item
+        - target_points: the points earned when depositing item at target position
 
     Representation Invariants:
         - # TODO Describe any necessary representation invariants
@@ -48,18 +49,20 @@ class Item:
     position: int
     enabled: bool
     start_position: int
-    target: dict[int, int]
+    target_position: int
+    target_points: int
 
-    def __init__(self, name: str, position: int, start_position: int, target: dict[int, int]) -> None:
+    def __init__(self, name: str, start_position: int, target_position: int, target_points: int) -> None:
         """Initialize a new item.
 
         # TODO Add more details here about the initialization if needed
         """
 
         self.name = name
-        self.position = position
+        self.position = start_position
         self.start_position = start_position
-        self.target = target
+        self.target_position = target_position
+        self.target_points = target_points
         self.enabled = True
 
 
@@ -125,17 +128,15 @@ class Player:
         - # TODO Describe any necessary representation invariants
     """
 
-    name: str
     inventory: list[Item]
     score: int
 
-    def __init__(self, name: str) -> None:
+    def __init__(self) -> None:
         """Initialize a new player.
 
         # TODO Add more details here about the initialization if needed
         """
 
-        self.name = name
         self.inventory = []
         self.score = 0
 

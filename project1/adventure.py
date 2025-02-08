@@ -119,6 +119,7 @@ if __name__ == "__main__":
     #     'disable': ['R1705', 'E9998', 'E9999']
     # })
 
+    player_name = input("Enter your name: ")
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
     game = AdventureGame('game_data.json', 1)  # load data, setting initial location ID to 1
     menu = ["look", "hold", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
@@ -133,7 +134,10 @@ if __name__ == "__main__":
 
         # TODO: Add new Event to game log to represent current game location
         #  Note that the <choice> variable should be the command which led to this event
-        # YOUR CODE HERE
+        #  Add completing a task as an event
+        curr_location = game.get_location(game.current_location_id)
+        new_event = Event(id_num=game.current_location_id, description=curr_location.descriptions[1])
+        game_log.add_event(new_event)
 
         # TODO: Depending on whether or not it's been visited before,
         #  print either full description (first time visit) or brief description (every subsequent visit) of location

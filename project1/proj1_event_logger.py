@@ -48,7 +48,6 @@ class Event:
     # If you want to create a special type of Event for your game that requires a different
     # set of attributes, you can create new classes using inheritance, as well.
 
-    # TODO: SPECIAL DOUG FORD EVENT AT QUEENS PARK
     id_num: int
     description: str
     next_command: Optional[str] = None
