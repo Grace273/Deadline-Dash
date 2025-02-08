@@ -101,34 +101,33 @@
       "id": 9,
       "name": "Myhal Center",
       "brief_description": "You are on the first floor of the Myhal Center. Proceed north to Front Campus and west to the gate.",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "long_description": "You are on the first floor of the Myhal Center. Hundreds of students are rushing out from a engineering class in MY150. You see something familiar - your lucky UofT mug is on a table! But just as you hurried there, an engineering student ran by. You heard a loud sound and your mug got smashed to the floor by his backpack...",
       "available_commands": {
-        "go south": 4,
-        "go east": 2
+        "go north": 8,
+        "go west": 5
       },
-      "items": ["toonie"]
+      "items": ["mug"]
     },
     {
-      "id": 1,
+      "id": 10,
       "name": "Queen's Park",
-      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "brief_description": "You found yourself in Queen's Park. You see a crowd gathering.",
+      "long_description": "You found yourself in Queen's Park. There is a crowd gathering and somebody speaking. It turns out to be the Ontario Premier Doug Ford and his supporter, running a campaign for the early election! Premier Ford offers you a hand - you can choose to be teleported to any location on campus.",
       "available_commands": {
-        "go south": 4,
-        "go east": 2
+        "teleport": 10 //this option needs more coding
       },
-      "items": ["toonie"]
+      "items": []
     },
     {
-      "id": 1,
+      "id": 11,
       "name": "T&T",
-      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "brief_description": "You arrived at the T&T supermarket. You can go back to campus by streetcar.",
+      "long_description": "You arrived at the T&T supermarket, where a lot of magical stuffs are sold. You saw something that might be useful - a repairing potion that can fix broken objects.",
       "available_commands": {
-        "go south": 4,
-        "go east": 2
+        "buy potion": 11,
+        "go back to campus": 6
       },
-      "items": ["toonie"]
+      "items": ["potion"]
     }
   ],
   "items": [
