@@ -140,6 +140,18 @@ class Player:
         self.inventory = []
         self.score = 0
 
+    def inventory_to_string(self) -> str:
+        """List all items in inventory in a readable format"""
+
+        str_inventory = "Your inventory: "
+        if not self.inventory:
+            str_inventory = "No items"
+        else:
+            for item in self.inventory:
+                str_inventory += item.name + ", "
+
+        return str_inventory
+
 
 if __name__ == "__main__":
     # pass
