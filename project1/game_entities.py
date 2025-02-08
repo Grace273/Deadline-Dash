@@ -119,9 +119,9 @@ class Player:
     """A player in the text adventure game world.
 
     Instance Attributes:
-        - name: name of the player
-        - position: current position of the player
+        - inventory: the player's inventory
         - score: score of the player
+        - moves_left: number of moves the player has left
 
 
     Representation Invariants:
@@ -130,15 +130,16 @@ class Player:
 
     inventory: list[Item]
     score: int
+    moves_left: int
 
     def __init__(self) -> None:
-        """Initialize a new player.
-
-        # TODO Add more details here about the initialization if needed
-        """
+        """Initialize a new player. The player starts with an empty inventory, score and 100 moves. """
 
         self.inventory = []
         self.score = 0
+
+        # TODO: decide the number of moves
+        self.moves_left = 100
 
     def inventory_to_string(self) -> str:
         """List all items in inventory in a readable format"""
