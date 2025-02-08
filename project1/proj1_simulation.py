@@ -1,3 +1,4 @@
+
 """CSC111 Project 1: Text Adventure Game - Simulator
 
 Instructions (READ THIS FIRST!)
