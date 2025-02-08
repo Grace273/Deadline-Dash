@@ -29,7 +29,7 @@
       "long_description": "You are on the first floor of the Bahen Center. There are students eating and studying at the table near the windows. Your professor's office is in this building, but you can't just break in, right?",
       "available_commands": {
         "go north": 2,
-        "go east": 5,
+        "go east": 5
         //(conditional) "go to Sadia's Office"
       },
       "items": []
@@ -50,7 +50,7 @@
     {
       "id": 5,
       "name": "UTSG Main Gate",
-      "brief_description":"You are at UTSG's main gate. Proceed north to St. George Street, east to Myhal, south to College Street, west to Bahen.",
+      "brief_description":"You are at UTSG's main gate. Proceed north to St. George Street, south to College Street, west to Bahen, east to Myhal.",
       "long_description": "There it is, the main gate to The University of Toronto's St. George campus. Flashback to when you first visited UofT with your parents during the early fall of 12th grade. And how when leaving, under this very gate, you told them you wanted to spend the next 4 years here. You feel determined to finish this assignment and make them proud!",
       "available_commands": {
         "go north": 4,
@@ -63,7 +63,7 @@
     {
       "id": 6,
       "name": "College Street",
-      "brief_description": "You are on College Street. Proceed north to the Main Gate. But wait, the bus is coming and there's a stray PRESTO card on the ground!"
+      "brief_description": "You are on College Street. Proceed north to the Main Gate. But wait, the bus is coming and there's a stray PRESTO card on the ground!",
       "long_description": "You are on College Street. You never like this street much. It's too busy and reminds you of your semesterly treks to the EX, which your friends like to refer to as the Execution Centre. You can go back north to the Main Gate. But wait, there's a stray PRESTO card lying on the ground. Everyone around you is so caught up in their day-to-day routine that no one would notice if you take the card... Quick! The bus that could take you to T&T is coming!",
       "available_commands": {
         "go north": 5,
@@ -73,31 +73,34 @@
       "items": ["Presto"]
     },
     {
-      "id": 1,
-      "name": "Myhal Hall",
-      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
-      "available_commands": {
-        "go south": 4,
-        "go east": 2
-      },
-      "items": ["toonie"]
-    },
-    {
-      "id": 1,
+      "id": 7,
       "name": "Trinity College",
-      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "brief_description": "You are in the Trinity College quad. Proceed south to Front Campus. Your best buddy's dorm is located here.",
+      "long_description": "You are standing in the middle of the Trinity College quad. The walls were corrupted under the brush of time, and the air amidst the ancient building feels thick with history. 'The dorm facilities are old and rusted too!', your friend once complained to you.",
       "available_commands": {
-        "go south": 4,
-        "go east": 2
+        "go south": 8,
+        "go to your friend's dorm": 7 //NEEDS key
       },
-      "items": ["toonie"]
+      "items": []
     },
     {
-      "id": 1,
-      "name": "Myhal Hall",
-      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
+      "id": 8,
+      "name": "Front Campus",
+      "brief_description": "You are on the Front Campus. Proceed north to Trinity College, south to Myhal, and west to St. George Street. There is a path below a bridge that leads to somewhere outside the campus...",
+      "long_description": "You are on the Front Campus. Today is a nice day and a lot of people are enjoying the sunshine on the grass. You saw somebody familiar...hey that's Sadia, playing with her dogs - the stars of CSC110 - Bumbly and Mia!",
+      "available_commands": {
+        "go north": 7,
+        "go south": 9,
+        "go west": 4,
+        "go under the bridge": 10,
+        "talk with Sadia": 8
+      },
+      "items": []
+    },
+    {
+      "id": 9,
+      "name": "Myhal Center",
+      "brief_description": "You are on the first floor of the Myhal Center. Proceed north to Front Campus and west to the gate.",
       "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
       "available_commands": {
         "go south": 4,
