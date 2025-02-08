@@ -35,6 +35,7 @@ class AdventureGame:
 
     Instance Attributes:
         - current_location_id: the ID of the location the game is currently in
+        - ongoing: whether the game is still ongoing
 
     Representation Invariants:
         - # TODO add any appropriate representation invariants as needed
@@ -82,7 +83,7 @@ class AdventureGame:
 
         locations = {}
         for loc_data in data['locations']:  # Go through each element associated with the 'locations' key in the file
-            location_obj = Location(loc_data['id'], loc_data['brief_description'], loc_data['long_description'],
+            location_obj = Location(loc_data['id'], (loc_data['brief_description'], loc_data['long_description']),
                                     loc_data['available_commands'], loc_data['items'])
             locations[loc_data['id']] = location_obj
 

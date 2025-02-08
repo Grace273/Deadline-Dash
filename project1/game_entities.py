@@ -29,7 +29,8 @@ class Item:
         - name: name of the item
         - position: current position of the item
         - enabled: whether the item is still useful
-
+        - start_position: the starting position/location of the item
+        - target: mapping of target position to points earned when depositing item at target
 
     Representation Invariants:
         - # TODO Describe any necessary representation invariants
@@ -46,8 +47,10 @@ class Item:
     name: str
     position: int
     enabled: bool
+    start_position: int
+    target: dict[int, int]
 
-    def __init__(self, name: str, position: int) -> None:
+    def __init__(self, name: str, position: int, start_position: int, target: dict[int, int]) -> None:
         """Initialize a new item.
 
         # TODO Add more details here about the initialization if needed
@@ -55,6 +58,8 @@ class Item:
 
         self.name = name
         self.position = position
+        self.start_position = start_position
+        self.target = target
         self.enabled = True
 
 
