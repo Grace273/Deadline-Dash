@@ -21,7 +21,7 @@ from __future__ import annotations
 import json
 from typing import Optional
 
-from game_entities import Location, Item
+from game_entities import Location, Item, Player
 from proj1_event_logger import Event, EventList
 
 
@@ -119,10 +119,16 @@ if __name__ == "__main__":
     #     'disable': ['R1705', 'E9998', 'E9999']
     # })
 
-    player_name = input("Enter your name: ")
+    def undo(log: EventList):
+        """Remove the last command """
+        # TODO: if command was to do with an item
+
+        log.remove_last_event()
+
+    player = Player()
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
     game = AdventureGame('game_data.json', 1)  # load data, setting initial location ID to 1
-    menu = ["look", "hold", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
+    menu = ["look", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
     choice = None
 
     # Note: You may modify the code below as needed; the following starter code is just a suggestion
@@ -132,16 +138,18 @@ if __name__ == "__main__":
 
         location = game.get_location()
 
-        # TODO: Add new Event to game log to represent current game location
-        #  Note that the <choice> variable should be the command which led to this event
-        #  Add completing a task as an event
+        # TODO: Add completing picking up / depositing an item as an event
         curr_location = game.get_location(game.current_location_id)
         new_event = Event(id_num=game.current_location_id, description=curr_location.descriptions[1])
         game_log.add_event(new_event)
 
         # TODO: Depending on whether or not it's been visited before,
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
-        # YOUR CODE HERE
+        if curr_location.visited:
+            print(curr_location.descriptions[0])
+        else:
+            print(curr_location.descriptions[1])
+            curr_location.visited = True
 
         # Display possible actions at this location
         print("What to do? Choose from: look, hold, inventory, score, undo, log, quit")
@@ -164,11 +172,23 @@ if __name__ == "__main__":
             if choice == "log":
                 game_log.display_events()
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
-
+            elif choice == "inventory":
+                print(player.inventory_to_string())
+            elif choice == "score":
+                print(player.score)
+            elif choice == "undo":
+                undo(game_log)
+            else:  # player choice is "quit"
+                # TODO: ask if want to save game, if so, call helper function, else:
+                print("Thanks for playing!")
         else:
             # Handle non-menu actions
+            # TODO: add target points if item is used at target position
             result = location.available_commands[choice]
             game.current_location_id = result
 
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
             # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
+
+        # minus the player's moves left by 1
+        player.moves_left -= 1
