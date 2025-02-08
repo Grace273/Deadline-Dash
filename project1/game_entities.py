@@ -45,8 +45,9 @@ class Item:
 
     name: str
     position: int
+    enabled: bool
 
-    def __init__(self, name, position) -> None:
+    def __init__(self, name: str, position: int) -> None:
         """Initialize a new item.
 
         # TODO Add more details here about the initialization if needed
@@ -54,6 +55,7 @@ class Item:
 
         self.name = name
         self.position = position
+        self.enabled = True
 
 
 @dataclass
@@ -62,20 +64,19 @@ class Location:
 
     Instance Attributes:
         - id_num: integer id for this location
-        - brief_description: brief description of this location
-        - long_description: full description of this location
+        - descriptions: tuple for location descriptions of this location
+                        first value is a brief description and whose second value is a long description
         - available_commands: a mapping of available commands at this location to
                               the location executing that command would lead to
         - items: a list of available items at this location
-        - visited: whether the player have visited this location (for displaying decription)
+        - visited: whether the player has visited this location (for displaying decription)
 
     Representation Invariants:
         - # TODO Describe any necessary representation invariants
     """
 
     id_num: int
-    brief_description: str
-    long_description: str
+    descriptions: tuple[str, str]
     available_commands: dict[str, int]
     items: list[Item]
     visited: bool
@@ -86,19 +87,18 @@ class Location:
     # The only thing you must NOT change is the name of this class: Location.
     # All locations in your game MUST be represented as an instance of this class.
 
-    def __init__(self, location_id, brief_description, long_description, available_commands, items,
-                 visited=False) -> None:
+    def __init__(self, location_id: int, descriptions: tuple[str, str],
+                 available_commands: dict[str, int], items: list[Item]) -> None:
         """Initialize a new location.
 
         # TODO Add more details here about the initialization if needed
         """
 
         self.id_num = location_id
-        self.brief_description = brief_description
-        self.long_description = long_description
+        self.descriptions = descriptions
         self.available_commands = available_commands
         self.items = items
-        self.visited = visited
+        self.visited = False
 
 
 # Note: Other entities you may want to add, depending on your game plan:
@@ -111,9 +111,9 @@ class Player:
     """A player in the text adventure game world.
 
     Instance Attributes:
-        - name: name of the item
-        - position: current position of the item
-        - enabled: whether the item is still useful
+        - name: name of the player
+        - position: current position of the player
+        - score: score of the player
 
 
     Representation Invariants:
@@ -124,7 +124,7 @@ class Player:
     inventory: list[Item]
     score: int
 
-    def __init__(self, name) -> None:
+    def __init__(self, name: str) -> None:
         """Initialize a new player.
 
         # TODO Add more details here about the initialization if needed
@@ -136,12 +136,12 @@ class Player:
 
 
 if __name__ == "__main__":
-    pass
+    # pass
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'max-line-length': 120,
-    #     'disable': ['R1705', 'E9998', 'E9999']
-    # })
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'disable': ['R1705', 'E9998', 'E9999']
+    })
