@@ -56,6 +56,7 @@ class AdventureGameSimulation:
 
         # TODO: Generate the remaining events based on the commands and initial location
         # Hint: Call self.generate_events with the appropriate arguments
+        self._events.add_event(event=first_event, command=None)
 
         self.generate_events(commands=commands, current_location=initial_location)
 
@@ -126,7 +127,6 @@ if __name__ == "__main__":
     #     'disable': ['R1705', 'E9998', 'E9999']
     # })
 
-    # TODO: Modify the code below to provide a walkthrough of commands needed to win and lose the game
     # A list of all the commands needed to walk through our game to win it
     win_walkthrough = ["go east", "go upstairs", "sneak in and out", "go downstairs", "go east", "go east",
                        "talk with Sadia", "go north", "go to your friend's dorm", "go downstairs", "go south",
@@ -139,26 +139,67 @@ if __name__ == "__main__":
     # Uncomment the line below to test your walkthrough
     assert expected_log == AdventureGameSimulation('game_data.json', 1, win_walkthrough, 10)
 
-    # Create a list of all the commands needed to walk through your game to reach a 'game over' state
-    lose_demo = []
-    expected_log = []  # Update this log list to include the IDs of all locations that would be visited
+    # A list of all the commands needed to walk through our game to reach a 'game over' state
+    lose_demo = ["go east", "go east", "go east", "go north", "go south", "go west", "go west", "go west",
+                 "go east", "go east" "go east", "go north", "go south", "go west", "go west", "go west",
+                 "go east", "go east" "go east", "go north", "go south", "go west", "go west", "go west",
+                 "go east", "go east" "go east", "go north", "go south", "go west", "go west", "go west",
+                 "go east", "go east" "go east", "go north", "go south", "go west", "go west", "go west",
+                 "go east", "go east" "go east", "go north", "go south", "go west", "go west", "go west",
+                 "go east", "go east"]
+
+    # Log list of IDs of all locations that would be visited
+    expected_log = [2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4]
+
     # Uncomment the line below to test your demo
-    assert expected_log == AdventureGameSimulation('game_data.json', 1, lose_demo)
+    assert expected_log == AdventureGameSimulation('game_data.json', 1, lose_demo, 10)
 
     # TODO: Add code below to provide walkthroughs that show off certain features of the game
     # TODO: Create a list of commands involving visiting locations, picking up items, and then
     #   checking the inventory, your list must include the "inventory" command at least once
-    # inventory_demo = [..., "inventory", ...]
-    # expected_log = []
-    # assert expected_log == AdventureGameSimulation(...)
 
-    # scores_demo = [..., "score", ...]
-    # expected_log = []
-    # assert expected_log == AdventureGameSimulation(...)
+    inventory_demo = ["go east", "go upstairs", "sneak in and out", "go downstairs", "go east", "go east",
+                      "talk with Sadia", "go north", "go to your friend's dorm", "go downstairs", "go south",
+                      "go south", "pick up broken mug pieces (Ouch!)", "go west", "go west", "go to Sadia's office",
+                      "take charger", "go downstairs", "go north", "go west", "inventory", "quit"]
 
-    # Add more enhancement_demos if you have more enhancements
-    # enhancement1_demo = [...]
-    # expected_log = []
-    # assert expected_log == AdventureGameSimulation(...)
+    expected_log = [2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2]
+
+    assert expected_log == AdventureGameSimulation('game_data.json', 1, inventory_demo, 10)
+
+    scores_demo = ["go east", "go upstairs", "sneak in and out", "go downstairs", "go east", "go east",
+                   "talk with Sadia", "go north", "go to your friend's dorm", "go downstairs", "go south",
+                   "go south", "pick up broken mug pieces (Ouch!)", "go west", "go west", "go to Sadia's office",
+                   "take charger", "go downstairs", "go north", "go west", "score", "quit"]
+
+    expected_log = [2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2, 4, 8, 7, 8, 4, 2, 1,
+                    2]
+
+    assert expected_log == AdventureGameSimulation('game_data.json', 1, scores_demo, 10)
+
+    teleportation_demo = ["go east", "go east", "go east", "go under the bridge", "Ford, Ford, Teleport", "Quit"]
+
+    # TODO: Make it so the demo teleports to NC
+
+    expected_log = [2, 4, 8, 10, 1]
+
+    assert expected_log == AdventureGameSimulation('game_data.json', 1, teleportation_demo, 10)
 
     # Note: You can add more code below for your own testing purposes
