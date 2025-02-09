@@ -88,7 +88,7 @@ class AdventureGame:
 
         locations = {}
         for loc_data in data['locations']:  # Go through each element associated with the 'locations' key in the file
-            location_obj = Location(loc_data['id'], (loc_data['brief_description'], loc_data['long_description']),
+            location_obj = Location(loc_data['id'], loc_data['name'], (loc_data['brief_description'], loc_data['long_description']),
                                     loc_data['available_commands'], loc_data['items'])
             locations[loc_data['id']] = location_obj
 
@@ -169,15 +169,14 @@ if __name__ == "__main__":
         # Note: If the loop body is getting too long, you should split the body up into helper functions
         # for better organization. Part of your marks will be based on how well-organized your code is.
 
-        location = game.get_location()
-
         # TODO: Add completing picking up / depositing an item as an event
-        curr_location = game.get_location(game.current_location_id)
-        new_event = Event(id_num=game.current_location_id, description=curr_location.descriptions[1])
+        curr_location = game.get_location()
+        new_event = Event(id_num=curr_location.id_num, description=curr_location.descriptions[1])
         game_log.add_event(new_event)
 
         # TODO: Depending on whether or not it's been visited before,
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
+        print(f"Location {curr_location.id_num}: {curr_location.name}")
         if curr_location.visited:
             print(curr_location.descriptions[0])
         else:
@@ -188,12 +187,12 @@ if __name__ == "__main__":
         # Display possible actions at this location
         print("What to do? Choose from: look, hold, inventory, score, undo, log, quit")
         print("At this location, you can also:")
-        for action in location.available_commands:
+        for action in curr_location.available_commands:
             print("-", action)
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        while choice not in location.available_commands and choice not in menu:
+        while choice not in curr_location.available_commands and choice not in menu:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
 
@@ -206,19 +205,22 @@ if __name__ == "__main__":
             if choice == "log":
                 game_log.display_events()
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
+            elif choice == "look":
+                print(curr_location.descriptions[1])
             elif choice == "inventory":
                 print(player.inventory_to_string())
             elif choice == "score":
                 print(player.score)
             elif choice == "undo":
                 undo(game_log)
+                curr_location = game
             else:  # player choice is "quit"
                 # TODO: ask if want to save game, if so, call helper function, else:
                 print("Thanks for playing!")
         else:
             # Handle non-menu actions
             # TODO: add target points if item is used at target position
-            result = location.available_commands[choice]
+            result = curr_location.available_commands[choice]
             game.current_location_id = result
 
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)

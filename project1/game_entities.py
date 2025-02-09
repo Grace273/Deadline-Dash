@@ -85,6 +85,7 @@ class Location:
     """
 
     id_num: int
+    name: str
     descriptions: tuple[str, str]
     available_commands: dict[str, int]
     items: list[Item]
@@ -96,7 +97,7 @@ class Location:
     # The only thing you must NOT change is the name of this class: Location.
     # All locations in your game MUST be represented as an instance of this class.
 
-    def __init__(self, location_id: int, descriptions: tuple[str, str],
+    def __init__(self, location_id: int, name: str, descriptions: tuple[str, str],
                  available_commands: dict[str, int], items: list[Item]) -> None:
         """Initialize a new location.
 
@@ -104,6 +105,7 @@ class Location:
         """
 
         self.id_num = location_id
+        self.name = name
         self.descriptions = descriptions
         self.available_commands = available_commands
         self.items = items
