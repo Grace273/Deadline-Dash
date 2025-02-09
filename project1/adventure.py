@@ -112,7 +112,7 @@ class AdventureGame:
     def play_word_scramble(self) -> None:
         """A word scramble puzzle."""
 
-        f = open("common-7-letter-words.txt", "r")
+        f = open("../ex1/common-7-letter-words.txt", "r")
         words = f.read().splitlines()
         word = random.choice(words)
         word_scrambled = "".join(random.sample(word, len(word)))
