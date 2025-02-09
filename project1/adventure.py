@@ -21,6 +21,8 @@ from __future__ import annotations
 import json
 from typing import Optional
 
+from urllib3.util.proxy import connection_requires_http_tunnel
+
 from game_entities import Location, Item, Player
 from proj1_event_logger import Event, EventList
 
@@ -150,6 +152,11 @@ if __name__ == "__main__":
     #     'max-line-length': 120,
     #     'disable': ['R1705', 'E9998', 'E9999']
     # })
+    def first_event_initializer() -> Event:
+        """Initialize the first event."""
+        intro = "put introduction here" #TODO: put game background intro and command intro
+        first_event = Event(id_num=1, description=intro)
+        return first_event
 
     def undo(log: EventList):
         """Remove the last command """
@@ -163,6 +170,10 @@ if __name__ == "__main__":
     # initial location ID to 1 and unlock_location_points to 10.
     menu = ["look", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
     choice = None
+    changed_location = True
+
+    #beginning of the game
+    game_log.add_event(first_event_initializer())
 
     # Note: You may modify the code below as needed; the following starter code is just a suggestion
     while game.ongoing:
@@ -170,29 +181,28 @@ if __name__ == "__main__":
         # for better organization. Part of your marks will be based on how well-organized your code is.
 
         # TODO: Add completing picking up / depositing an item as an event
+
         curr_location = game.get_location()
-        new_event = Event(id_num=curr_location.id_num, description=curr_location.descriptions[1])
-        game_log.add_event(new_event)
 
         # TODO: Depending on whether or not it's been visited before,
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
         print(f"Location {curr_location.id_num}: {curr_location.name}")
-        if curr_location.visited:
-            print(curr_location.descriptions[0])
-        else:
-            print(curr_location.descriptions[1])
-            curr_location.visited = True
-            player.score += game.unlock_location_points
+        print(game_log.last.description)
 
         # Display possible actions at this location
         print("What to do? Choose from: look, hold, inventory, score, undo, log, quit")
         print("At this location, you can also:")
         for action in curr_location.available_commands:
             print("-", action)
+        if curr_location.items:
+            for item in curr_location.items:
+                print(f"- pick up: {item}")
+        for item in player.inventory:
+            print(f"- drop: {item}")
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        while choice not in curr_location.available_commands and choice not in menu:
+        while choice not in curr_location.available_commands and choice not in menu and "pick up" not in choice and "drop" not in choice:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
 
@@ -214,15 +224,25 @@ if __name__ == "__main__":
             elif choice == "undo":
                 undo(game_log)
                 game.current_location_id = game_log.last.id_num
+                continue
             else:  # player choice is "quit"
                 # TODO: ask if want to save game, if so, call helper function, else:
                 print("Thanks for playing!")
         else:
             # Handle non-menu actions
-            # TODO: add target points if item is used at target position
-            result = curr_location.available_commands[choice]
-            game.current_location_id = result
+            if "pick up" in choice:
+                item_name = choice[choice.find(": ") + 2:]
+                for i in range(len(curr_location.items)):
+                    if curr_location.items[i] == item_name:
+                        player.inventory.append(curr_location.items.pop(i))
+                        break
+            # TODO: add codes for "drop"
+            # TODO: add input verifications for pick up and drop
+            else:
+                result = curr_location.available_commands[choice]
+                game.current_location_id = result
 
+            # TODO: add target points if item is used at target position
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
             # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
 
@@ -230,3 +250,20 @@ if __name__ == "__main__":
 
         # minus the player's moves left by 1
         player.moves_left -= 1
+
+        # create the next event
+        next_location = game.get_location()
+        event_description = ''
+
+        if next_location != curr_location: # if location changed
+            if next_location.visited:
+                event_description = next_location.descriptions[0]
+            else:
+                event_description = next_location.descriptions[1]
+                next_location.visited = True
+                player.score += game.unlock_location_points
+        else:
+            event_description = "picked up item or solved puzzle"  #TODO add description for puzzles and items
+
+        new_event = Event(id_num=next_location.id_num, description=event_description)
+        game_log.add_event(new_event)

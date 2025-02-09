@@ -117,6 +117,7 @@ class EventList:
             self.last = None
         else:
             self.last = self.last.prev
+            print(self.last)
             self.last.next = None
             self.last.next_command = None
 

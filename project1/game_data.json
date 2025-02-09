@@ -53,8 +53,7 @@
       "brief_description": "You are on the second floor of the Bahen Center, by the door of Sadia's office. You may go downstairs to the ground floor.",
       "long_description": "You pushed the door of Sadia's office. It opened and you saw a table full of documents and cute pictures of Sadia's pets. You can see your laptop charger on the table. Thanks, Sadia, for keeping it!",
       "available_commands": {
-        "go downstairs": 3,
-        "take charger": 30
+        "go downstairs": 3
       },
       "items": ["laptop charger"]
     },
@@ -91,8 +90,7 @@
       "long_description": "You are on College Street. You never like this street much. It's too busy and reminds you of your semesterly treks to the EX, which your friends like to refer to as the Execution Centre. You can go back north to the Main Gate. But wait, there's a stray PRESTO card lying on the ground. Everyone around you is so caught up in their day-to-day routine that no one would notice if you take the card... Quick! The bus that could take you to T&T is coming!",
       "available_commands": {
         "go north": 5,
-        "get on the bus": 11,
-        "pick up PRESTO card": 6
+        "get on the bus": 11
       },
       "items": ["PRESTO Card"]
     },
