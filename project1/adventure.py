@@ -27,6 +27,8 @@ from proj1_event_logger import Event, EventList
 
 # Note: You may add in other import statements here as needed
 
+import random
+
 # Note: You may add helper functions, classes, etc. below as needed
 
 
@@ -107,6 +109,33 @@ class AdventureGame:
         else:
             return self._locations[self.current_location_id]
 
+    def play_word_scramble(self) -> None:
+        """A word scramble puzzle."""
+
+        f = open("common-7-letter-words.txt", "r")
+        words = f.read().splitlines()
+        word = random.choice(words)
+        word_scrambled = "".join(random.sample(word, len(word)))
+        player_guess = ""
+        hint = 0
+
+        print("Unscramble the word: " + word_scrambled)
+        player_guess = input("Enter guess (enter 1 for hint, 0 to give up): ")
+
+        while player_guess != word and player_guess != "0" and hint != len(word):
+
+            if player_guess == "1":
+                print("The next letter is: " + word[hint])
+                hint += 1
+            else:
+                print("Try again.")
+
+            player_guess = input("Enter guess (enter 1 for hint, 0 to give up): ")
+
+        if player_guess == "0" or hint == len(word):
+            print("Challenge failed... The word was: " + word)
+        else:
+            print("You Win!")
 
 if __name__ == "__main__":
 
