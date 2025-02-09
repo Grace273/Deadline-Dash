@@ -19,6 +19,7 @@ please consult our Course Syllabus.
 This file is Copyright (c) 2025 CSC111 Teaching Team
 """
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
@@ -49,10 +50,10 @@ class Item:
     position: int
     enabled: bool
     start_position: int
-    target_position: int
+    target_position: Optional[int]
     target_points: int
 
-    def __init__(self, name: str, start_position: int, target_position: int, target_points: int) -> None:
+    def __init__(self, name: str, start_position: int, target_position: Optional[int], target_points: int) -> None:
         """Initialize a new item.
 
         # TODO Add more details here about the initialization if needed
