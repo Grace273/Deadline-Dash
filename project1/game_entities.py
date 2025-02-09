@@ -111,6 +111,10 @@ class Location:
         self.items = items
         self.visited = False
 
+    def add_item(self, item: Item) -> None:
+        """Add a new item to self.items"""
+
+        self.items.append(item)
 
 # Note: Other entities you may want to add, depending on your game plan:
 # - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)
@@ -152,7 +156,7 @@ class Player:
             str_inventory = "No items"
         else:
             for item in self.inventory:
-                str_inventory += item.name + ", "
+                str_inventory += item + ", "
 
         return str_inventory
 

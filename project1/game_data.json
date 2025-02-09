@@ -43,7 +43,7 @@
       "available_commands": {
         "go north": 2,
         "go east": 5,
-        "go to Sadia's office": 30
+        "go to upstairs": 30
       },
       "items": []
     },
@@ -92,7 +92,7 @@
         "go north": 5,
         "get on the bus": 11
       },
-      "items": ["PRESTO Card"]
+      "items": ["PRESTO card"]
     },
     {
       "id": 7,
@@ -101,7 +101,7 @@
       "long_description": "You are standing in the middle of the Trinity College quad. The walls were corrupted under the brush of time, and the air amidst the ancient building feels thick with history. 'The dorm facilities are old and rusted too!', your friend once complained to you.",
       "available_commands": {
         "go south": 8,
-        "go to your friend's dorm": 70
+        "go to dorm": 70
       },
       "items": []
     },

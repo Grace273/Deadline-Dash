@@ -88,18 +88,23 @@ class AdventureGame:
         with open(filename, 'r') as f:
             data = json.load(f)  # This loads all the data from the JSON file
 
-        locations = {}
-        for loc_data in data['locations']:  # Go through each element associated with the 'locations' key in the file
-            location_obj = Location(loc_data['id'], loc_data['name'], (loc_data['brief_description'], loc_data['long_description']),
-                                    loc_data['available_commands'], loc_data['items'])
-            locations[loc_data['id']] = location_obj
-
         items = []
         # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above
         for item_data in data['items']:  # Go through each element associated with the 'locations' key in the file
-            item = Item(item_data['name'], item_data['start_position'], item_data['target_position'],
+            my_item = Item(item_data['name'], item_data['start_position'], item_data['target_position'],
                         item_data['target_points'])
-            items.append(item)
+            items.append(my_item)
+        item_name_lst = [itm.name for itm in items] #in convenience for initializing items in each location
+        print(item_name_lst)
+
+        locations = {}
+        for loc_data in data['locations']:  # Go through each element associated with the 'locations' key in the file
+            location_obj = Location(loc_data['id'], loc_data['name'], (loc_data['brief_description'], loc_data['long_description']),
+                                    loc_data['available_commands'], [])
+            for item_str in loc_data["items"]: # convert strings of item name into the actual item
+                item_index = item_name_lst.index(item_str)
+                location_obj.add_item(items[item_index])
+            locations[loc_data['id']] = location_obj
 
         return locations, items
 
@@ -163,6 +168,9 @@ if __name__ == "__main__":
         # TODO: if command was to do with an item
 
         log.remove_last_event()
+        print(f"Location {log.last.id_num}: {game.get_location(log.last.id_num).name}")
+        print(log.last.description)
+        print(f"Your inventory: {', '.join([p_item.name for p_item in player.inventory])}")
 
     player = Player()
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
@@ -174,6 +182,8 @@ if __name__ == "__main__":
 
     #beginning of the game
     game_log.add_event(first_event_initializer())
+    print(f"Game Start! \nLocation 1: New College")
+    print(game_log.last.description)
 
     # Note: You may modify the code below as needed; the following starter code is just a suggestion
     while game.ongoing:
@@ -184,30 +194,30 @@ if __name__ == "__main__":
 
         curr_location = game.get_location()
 
-        # TODO: Depending on whether or not it's been visited before,
-        #  print either full description (first time visit) or brief description (every subsequent visit) of location
-        print(f"Location {curr_location.id_num}: {curr_location.name}")
-        print(game_log.last.description)
-
         # Display possible actions at this location
         print("What to do? Choose from: look, hold, inventory, score, undo, log, quit")
         print("At this location, you can also:")
         for action in curr_location.available_commands:
             print("-", action)
-        if curr_location.items:
-            for item in curr_location.items:
-                print(f"- pick up: {item}")
+        # Display items available for picking up and dropping
+        pick_or_drop = []
+        for item in curr_location.items:
+            choice_name = f"pick up: {item.name}"
+            pick_or_drop.append(choice_name)
+            print("-", choice_name)
         for item in player.inventory:
-            print(f"- drop: {item}")
+            choice_name = f"drop: {item.name}"
+            pick_or_drop.append(choice_name)
+            print("-", choice_name)
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        while choice not in curr_location.available_commands and choice not in menu and "pick up" not in choice and "drop" not in choice:
+        while choice not in curr_location.available_commands and choice not in menu and choice not in pick_or_drop:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
 
-        print("========")
         print("You decided to:", choice)
+        print("========")
 
         if choice in menu:
             # TODO: Handle each menu command as appropriate
@@ -224,20 +234,24 @@ if __name__ == "__main__":
             elif choice == "undo":
                 undo(game_log)
                 game.current_location_id = game_log.last.id_num
-                continue
+                # TODO: handle error for using undo on the first event
             else:  # player choice is "quit"
                 # TODO: ask if want to save game, if so, call helper function, else:
                 print("Thanks for playing!")
+            continue
         else:
             # Handle non-menu actions
             if "pick up" in choice:
                 item_name = choice[choice.find(": ") + 2:]
                 for i in range(len(curr_location.items)):
-                    if curr_location.items[i] == item_name:
+                    if curr_location.items[i].name == item_name:
                         player.inventory.append(curr_location.items.pop(i))
                         break
-            # TODO: add codes for "drop"
-            # TODO: add input verifications for pick up and drop
+            elif "drop" in choice:
+                item_name = choice[choice.find(": ") + 2:]
+                for i in range(len(player.inventory)):
+                    if player.inventory[i].name == item_name:
+                        curr_location.items.append(player.inventory.pop(i))
             else:
                 result = curr_location.available_commands[choice]
                 game.current_location_id = result
@@ -267,3 +281,8 @@ if __name__ == "__main__":
 
         new_event = Event(id_num=next_location.id_num, description=event_description)
         game_log.add_event(new_event)
+
+        # TODO: Depending on whether or not it's been visited before,
+        #  print either full description (first time visit) or brief description (every subsequent visit) of location
+        print(f"Location {next_location.id_num}: {next_location.name}")
+        print(game_log.last.description)
