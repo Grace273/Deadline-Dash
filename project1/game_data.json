@@ -18,9 +18,20 @@
       "available_commands": {
         "go south": 3,
         "go west": 1,
-        "go east": 4
+        "go east": 4,
+        "go upstairs": 20
       },
       "items": []
+    },
+    {
+      "id": 20,
+      "name": "Sidney Smith Hall 2F",
+      "brief_description": "You are in a classroom on the second floor of Sidney Smith Hall. There are stairs to go down to the ground floor.",
+      "long_description": "You are in your friend's classroom on the second floor of Sidney Smith Hall. Your friend looked concerned, 'Oh no, I might accidentally took something of yours from the table when we were working in the library! You can search my room at Trinity College if you want. Take my key!'",
+      "available_commands": {
+        "go downstairs": 2
+      },
+      "items": ["key"]
     },
     {
       "id": 3,
@@ -29,10 +40,20 @@
       "long_description": "You are on the first floor of the Bahen Center. There are students eating and studying at the table near the windows. Your professor's office is in this building, but you can't just break in, right?",
       "available_commands": {
         "go north": 2,
-        "go east": 5
-        //(conditional) "go to Sadia's Office"
+        "go east": 5,
+        "go to Sadia's office": 30
       },
       "items": []
+    },
+    {
+      "id": 30,
+      "name": "Bahen Center 2F",
+      "brief_description": "You are on the second floor of the Bahen Center, by the door of Sadia's office. You may go downstairs to the ground floor.",
+      "long_description": "You pushed the door of Sadia's office. It opened and you saw a table full of documents and cute pictures of Sadia's pets. You can see your laptop charger on the table. Thanks, Sadia, for keeping it!",
+      "available_commands": {
+        "go downstairs": 3
+      },
+      "items": ["laptop charger"]
     },
     {
       "id": 4,
@@ -45,7 +66,7 @@
         "go east": 8,
         "buy hotdog": 4
       },
-      "items": []
+      "items": ["hotdog"]
     },
     {
       "id": 5,
@@ -67,10 +88,10 @@
       "long_description": "You are on College Street. You never like this street much. It's too busy and reminds you of your semesterly treks to the EX, which your friends like to refer to as the Execution Centre. You can go back north to the Main Gate. But wait, there's a stray PRESTO card lying on the ground. Everyone around you is so caught up in their day-to-day routine that no one would notice if you take the card... Quick! The bus that could take you to T&T is coming!",
       "available_commands": {
         "go north": 5,
-        "get on the bus": 11, //REQUIRES presto card
+        "get on the bus": 11,
         "pick up PRESTO card": 6
       },
-      "items": ["Presto"]
+      "items": ["PRESTO Card"]
     },
     {
       "id": 7,
@@ -79,9 +100,19 @@
       "long_description": "You are standing in the middle of the Trinity College quad. The walls were corrupted under the brush of time, and the air amidst the ancient building feels thick with history. 'The dorm facilities are old and rusted too!', your friend once complained to you.",
       "available_commands": {
         "go south": 8,
-        "go to your friend's dorm": 7 //NEEDS key
+        "go to your friend's dorm": 70
       },
       "items": []
+    },
+    {
+      "id": 70,
+      "name": "Trinity College 2F",
+      "brief_description": "You are on the second floor of Trinity College, right outside your friend's dorm. You may go downstairs to the ground floor.",
+      "long_description": "You are standing by the door of your friend's dorm. You'll need the key to get in. Let's hope there is something useful inside...",
+      "available_commands": {
+        "go downstairs": 70
+      },
+      "items": ["USB drive"]
     },
     {
       "id": 8,
@@ -101,7 +132,7 @@
       "id": 9,
       "name": "Myhal Center",
       "brief_description": "You are on the first floor of the Myhal Center. Proceed north to Front Campus and west to the gate.",
-      "long_description": "You are on the first floor of the Myhal Center. Hundreds of students are rushing out from a engineering class in MY150. You see something familiar - your lucky UofT mug is on a table! But just as you hurried there, an engineering student ran by. You heard a loud sound and your mug got smashed to the floor by his backpack...",
+      "long_description": "You are on the first floor of the Myhal Center. Hundreds of students are rushing out from a engineering class in MY150. You see something familiar - your lucky UofT mug is on a table! But just as you hurried there, an engineering student ran by. You heard a loud sound and your mug got smashed to the floor by his backpack! What the hell! Now you need to fix it somewhere - maybe outside the campus?",
       "available_commands": {
         "go north": 8,
         "go west": 5
@@ -114,7 +145,7 @@
       "brief_description": "You found yourself in Queen's Park. You see a crowd gathering.",
       "long_description": "You found yourself in Queen's Park. There is a crowd gathering and somebody speaking. It turns out to be the Ontario Premier Doug Ford and his supporter, running a campaign for the early election! Premier Ford offers you a hand - you can choose to be teleported to any location on campus.",
       "available_commands": {
-        "teleport": 10 //this option needs more coding
+        "Ford, Ford, Teleport": 10
       },
       "items": []
     },
@@ -132,18 +163,40 @@
   ],
   "items": [
     {
-      "name": "toonie",
-      "description": "There is a toonie on the ground. Someone must have dropped it.",
-      "start_position": 1,
-      "target_position": 4,
-      "target_points": 5
+      "name": "mug",
+      "description": "Your UofT lucky mug that has been with you through every late-night study session, every major deadline, and every all-nighter.",
+      "start_position": 9
     },
     {
       "name": "USB drive",
-      "description": "There is a toonie on the ground. Someone must have dropped it.",
-      "start_position": 1,
-      "target_position": 4,
-      "target_points": 5
+      "description": "The only copy of your game is stored in this USB.",
+      "start_position": 70
+    },
+    {
+      "name": "laptop charger",
+      "description": "You need this to charge your laptop.",
+      "start_position": 30
+    },
+    {
+      "name": "potion",
+      "description": "You can use this to fix broken objects (with 'Reparo!')",
+      "start_position": 11
+    },
+    {
+      "name": "hotdog",
+      "description": "A food with delicious taste that makes you feel refresher than ever. Your moves in the game will be reduced.",
+      "start_position": 4
+    },
+    {
+      "name": "key",
+      "description": "The key to open your friend's dorm at Trinity College.",
+      "start_position": 2,
+      "target_position": 70
+    },
+    {
+      "name": "PRESTO card",
+      "description": "You can board streetcars with this card.",
+      "start_position": 6
     }
   ]
 }
