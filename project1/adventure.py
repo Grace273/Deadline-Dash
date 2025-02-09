@@ -213,7 +213,7 @@ if __name__ == "__main__":
                 print(player.score)
             elif choice == "undo":
                 undo(game_log)
-                curr_location = game
+                game.current_location_id = game_log.last.id_num
             else:  # player choice is "quit"
                 # TODO: ask if want to save game, if so, call helper function, else:
                 print("Thanks for playing!")
