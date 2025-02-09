@@ -134,13 +134,13 @@ class Player:
     moves_left: int
 
     def __init__(self) -> None:
-        """Initialize a new player. The player starts with an empty inventory, score and 100 moves. """
+        """Initialize a new player. The player starts with an empty inventory, score and 50 moves. """
 
         self.inventory = []
         self.score = 0
 
         # TODO: decide the number of moves
-        self.moves_left = 100
+        self.moves_left = 50
 
     def inventory_to_string(self) -> str:
         """List all items in inventory in a readable format"""
