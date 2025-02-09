@@ -37,7 +37,8 @@ class AdventureGameSimulation:
     _events: EventList
 
     # TODO: Copy/paste your code from ex1_simulation below, and make adjustments as needed
-    def __init__(self, game_data_file: str, initial_location_id: int, commands: list[str]) -> None:
+    def __init__(self, game_data_file: str, initial_location_id: int, commands: list[str],
+                 unlock_location_points: int) -> None:
         """Initialize a new game simulation based on the given game data, that runs through the given commands.
 
         Preconditions:
@@ -45,16 +46,18 @@ class AdventureGameSimulation:
         - all commands in the given list are valid commands at each associated location in the game
         """
         self._events = EventList()
-        self._game = AdventureGame(game_data_file, initial_location_id)
+        self._game = AdventureGame(game_data_file, initial_location_id, unlock_location_points)
 
         # TODO: Add first event (initial location, no previous command)
         initial_location = self._game.get_location()
-        initial_location_id_desc = initial_location.description
+        initial_location_id_desc = initial_location.descriptions[1]
         first_event = Event(id_num=initial_location_id,
                             description=initial_location_id_desc)
 
         # TODO: Generate the remaining events based on the commands and initial location
         # Hint: Call self.generate_events with the appropriate arguments
+
+        self.generate_events(commands=commands, current_location=initial_location)
 
     def generate_events(self, commands: list[str], current_location: Location) -> None:
         """Generate all events in this simulation.
@@ -68,6 +71,16 @@ class AdventureGameSimulation:
         #  it to self._events.
         # Hint: current_location.available_commands[command] will return the next location ID
         # which executing <command> while in <current_location_id> leads to
+
+        for command in commands:
+            next_location_id = current_location.available_commands[command]
+            next_location_id_desc = self._game.get_location(next_location_id).descriptions[1]
+
+            next_event = Event(id_num=next_location_id,
+                               description=next_location_id_desc)
+            self._events.add_event(event=next_event, command=command)
+
+            current_location = self._game.get_location(next_location_id)
 
     def get_id_log(self) -> list[int]:
         """

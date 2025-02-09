@@ -38,6 +38,7 @@ class AdventureGame:
     Instance Attributes:
         - current_location_id: the ID of the location the game is currently in
         - ongoing: whether the game is still ongoing
+        - unlock_location_points: number of points added to player's score when they go to a new location
 
     Representation Invariants:
         - # TODO add any appropriate representation invariants as needed
@@ -52,8 +53,9 @@ class AdventureGame:
     _items: list[Item]
     current_location_id: int  # Suggested attribute, can be removed
     ongoing: bool  # Suggested attribute, can be removed
+    unlock_location_points: int
 
-    def __init__(self, game_data_file: str, initial_location_id: int) -> None:
+    def __init__(self, game_data_file: str, initial_location_id: int, unlock_location_points: int) -> None:
         """
         Initialize a new text adventure game, based on the data in the given file, setting starting location of game
         at the given initial location ID.
@@ -72,6 +74,7 @@ class AdventureGame:
 
         self._locations, self._items = self._load_game_data(game_data_file)
         self.current_location_id = initial_location_id
+        self.unlock_location_points = unlock_location_points
         self.ongoing = True  # whether the game is ongoing
 
     @staticmethod
@@ -156,7 +159,8 @@ if __name__ == "__main__":
 
     player = Player()
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
-    game = AdventureGame('game_data.json', 1)  # load data, setting initial location ID to 1
+    game = AdventureGame('game_data.json', 1, 10)  # load data, setting
+    # initial location ID to 1 and unlock_location_points to 10.
     menu = ["look", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
     choice = None
 
@@ -179,6 +183,7 @@ if __name__ == "__main__":
         else:
             print(curr_location.descriptions[1])
             curr_location.visited = True
+            player.score += game.unlock_location_points
 
         # Display possible actions at this location
         print("What to do? Choose from: look, hold, inventory, score, undo, log, quit")
