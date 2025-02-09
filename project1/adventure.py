@@ -224,5 +224,7 @@ if __name__ == "__main__":
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
             # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
 
+        #TODO: implement pick up and drop item
+
         # minus the player's moves left by 1
         player.moves_left -= 1
