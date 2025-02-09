@@ -6,7 +6,8 @@
       "brief_description": "You are in New College, where your dorm locates. Sidney Smith Hall is on the east side of this building.",
       "long_description": "You are finally back in your dorm building. The familiar coziness reminds you of home...wait, isn't something missing? Why are you back here!",
       "available_commands": {
-        "go east": 2
+        "go east": 2,
+        "put down items to submit work": 1
       },
       "items": []
     },
@@ -27,9 +28,10 @@
       "id": 20,
       "name": "Sidney Smith Hall 2F",
       "brief_description": "You are in a classroom on the second floor of Sidney Smith Hall. There are stairs to go down to the ground floor.",
-      "long_description": "You are in your friend's classroom on the second floor of Sidney Smith Hall. Your friend looked concerned, 'Oh no, I might accidentally took something of yours from the table when we were working in the library! You can search my room at Trinity College if you want. Take my key!'",
+      "long_description": "You are in your friend's classroom on the second floor of Sidney Smith Hall who is taking a quiz. Your friend notices you and realizes what you already suspect: he accidentally took something of yours from the table when we were working in the library! He motions for you to come in and take his Trinity room key, but you need to be careful to not let the TA notice!",
       "available_commands": {
-        "go downstairs": 2
+        "go downstairs": 2,
+        "sneak in and out" : 20
       },
       "items": ["key"]
     },
@@ -51,7 +53,8 @@
       "brief_description": "You are on the second floor of the Bahen Center, by the door of Sadia's office. You may go downstairs to the ground floor.",
       "long_description": "You pushed the door of Sadia's office. It opened and you saw a table full of documents and cute pictures of Sadia's pets. You can see your laptop charger on the table. Thanks, Sadia, for keeping it!",
       "available_commands": {
-        "go downstairs": 3
+        "go downstairs": 3,
+        "take charger": 30
       },
       "items": ["laptop charger"]
     },
@@ -110,7 +113,7 @@
       "brief_description": "You are on the second floor of Trinity College, right outside your friend's dorm. You may go downstairs to the ground floor.",
       "long_description": "You are standing by the door of your friend's dorm. You'll need the key to get in. Let's hope there is something useful inside...",
       "available_commands": {
-        "go downstairs": 70
+        "go downstairs": 7
       },
       "items": ["USB drive"]
     },
@@ -135,7 +138,8 @@
       "long_description": "You are on the first floor of the Myhal Center. Hundreds of students are rushing out from a engineering class in MY150. You see something familiar - your lucky UofT mug is on a table! But just as you hurried there, an engineering student ran by. You heard a loud sound and your mug got smashed to the floor by his backpack! What the hell! Now you need to fix it somewhere - maybe outside the campus?",
       "available_commands": {
         "go north": 8,
-        "go west": 5
+        "go west": 5,
+        "pick up broken mug pieces (Ouch!)": 9
       },
       "items": ["mug"]
     },
