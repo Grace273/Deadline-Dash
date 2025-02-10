@@ -75,12 +75,16 @@ class EventList:
         self.first = None
         self.last = None
 
-    def display_events(self) -> None:
+    def display_events(self) -> list[tuple]:
         """Display all events in chronological order."""
+        event_lst = []
+
         curr = self.first
         while curr:
-            print(f"Location: {curr.id_num}, Command: {curr.next_command}")
+            event_lst.append((curr.id_num, curr.next_command))
             curr = curr.next
+
+        return event_lst
 
     # TODO: Complete the methods below, based on the given descriptions.
     def is_empty(self) -> bool:

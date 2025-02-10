@@ -194,7 +194,7 @@ if __name__ == "__main__":
         curr_location = game.get_location()
 
         # Display possible actions at this location
-        print("What to do? Choose from: look, hold, inventory, score, undo, log, quit")
+        print("\nWhat to do? Choose from: look, hold, inventory, score, undo, log, quit")
         print("At this location, you can also:")
         for action in curr_location.available_commands:
             print("-", action)
@@ -222,7 +222,11 @@ if __name__ == "__main__":
             # TODO: Handle each menu command as appropriate
             # Note: For the "undo" command, remember to manipulate the game_log event list to keep it up-to-date
             if choice == "log":
-                game_log.display_events()
+                event_lst = game_log.display_events()
+                for i in range(len(event_lst) - 1):
+                    loc_id = event_lst[i][0]
+                    print(f"Location: {game.get_location(loc_id).name} (id: {loc_id}), you chose to {event_lst[i][1]}")
+                print(f"You are currently at Location {event_lst[-1][0]}: {game.get_location(event_lst[-1][0]).name}")
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
             elif choice == "look":
                 print(curr_location.descriptions[1])
@@ -278,7 +282,7 @@ if __name__ == "__main__":
             event_description = "picked up item or solved puzzle"  #TODO add description for puzzles and items
 
         new_event = Event(id_num=next_location.id_num, description=event_description)
-        game_log.add_event(new_event)
+        game_log.add_event(new_event, choice)
 
         # TODO: Depending on whether or not it's been visited before,
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
