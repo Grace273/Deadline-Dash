@@ -113,8 +113,7 @@ class EventList:
         if self.first is None:
             return
         elif self.first.next is None:
-            self.first = None
-            self.last = None
+            print("You cannot undo the first event.")
         else:
             self.last = self.last.prev
             self.last.next = None

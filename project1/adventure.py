@@ -95,7 +95,6 @@ class AdventureGame:
                         item_data['target_points'])
             items.append(my_item)
         item_name_lst = [itm.name for itm in items] #in convenience for initializing items in each location
-        print(item_name_lst)
 
         locations = {}
         for loc_data in data['locations']:  # Go through each element associated with the 'locations' key in the file
@@ -234,7 +233,6 @@ if __name__ == "__main__":
             elif choice == "undo":
                 undo(game_log)
                 game.current_location_id = game_log.last.id_num
-                # TODO: handle error for using undo on the first event
             else:  # player choice is "quit"
                 # TODO: ask if want to save game, if so, call helper function, else:
                 print("Thanks for playing!")
