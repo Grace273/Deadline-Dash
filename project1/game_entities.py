@@ -35,7 +35,8 @@ class Item:
         - target_points: the points earned when depositing item at target position
 
     Representation Invariants:
-        - # TODO Describe any necessary representation invariants
+        - position, start_position and target_position are valid location ids.
+        - target_points > 0
     """
 
     # NOTES:
@@ -81,7 +82,9 @@ class Location:
         - visited: whether the player has visited this location (for displaying decription)
 
     Representation Invariants:
-        - # TODO Describe any necessary representation invariants
+        - descriptions != tuple()
+        - available_commands != {}
+        - values in available_commands are valid location ids.
     """
 
     id_num: int
@@ -132,7 +135,8 @@ class Player:
 
 
     Representation Invariants:
-        - # TODO Describe any necessary representation invariants
+        - score >= 0
+        - moves_left >= 0
     """
 
     inventory: list[Item]
