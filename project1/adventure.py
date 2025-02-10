@@ -146,6 +146,24 @@ class AdventureGame:
         else:
             print("You Win!")
 
+
+def first_event_initializer() -> Event:
+    """Initialize the first event."""
+    intro = "put introduction here"  #TODO: put game background intro and command intro
+    first_event = Event(id_num=1, description=intro)
+    return first_event
+
+
+def undo(log: EventList):
+    """Remove the last command """
+    # TODO: if command was to do with an item
+
+    log.remove_last_event()
+    print(f"Location {log.last.id_num}: {game.get_location(log.last.id_num).name}")
+    print(log.last.description)
+    print(player.inventory_to_string())
+
+
 if __name__ == "__main__":
 
     # When you are ready to check your work with python_ta, uncomment the following lines.
@@ -156,20 +174,6 @@ if __name__ == "__main__":
     #     'max-line-length': 120,
     #     'disable': ['R1705', 'E9998', 'E9999']
     # })
-    def first_event_initializer() -> Event:
-        """Initialize the first event."""
-        intro = "put introduction here" #TODO: put game background intro and command intro
-        first_event = Event(id_num=1, description=intro)
-        return first_event
-
-    def undo(log: EventList):
-        """Remove the last command """
-        # TODO: if command was to do with an item
-
-        log.remove_last_event()
-        print(f"Location {log.last.id_num}: {game.get_location(log.last.id_num).name}")
-        print(log.last.description)
-        print(f"Your inventory: {', '.join([p_item.name for p_item in player.inventory])}")
 
     player = Player()
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements

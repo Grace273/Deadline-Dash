@@ -157,10 +157,10 @@ class Player:
 
         str_inventory = "Your inventory: "
         if not self.inventory:
-            str_inventory = "No items"
+            str_inventory += "No items"
         else:
             for item in self.inventory:
-                str_inventory += item + ", "
+                str_inventory += item.name + ", "
 
         return str_inventory
 
