@@ -35,8 +35,8 @@ class Item:
         - target_points: the points earned when depositing item at target position
 
     Representation Invariants:
-        - position, start_position and target_position are valid location ids.
-        - target_points > 0
+        - self.position, self.start_position and self.target_position are valid location ids.
+        - self.target_points > 0
     """
 
     # NOTES:
@@ -79,12 +79,12 @@ class Location:
         - available_commands: a mapping of available commands at this location to
                               the location executing that command would lead to
         - items: a list of available items at this location
-        - visited: whether the player has visited this location (for displaying decription)
+        - visited: whether the player has visited this location (for displaying description)
 
     Representation Invariants:
-        - descriptions != tuple()
-        - available_commands != {}
-        - values in available_commands are valid location ids.
+        - self.descriptions != tuple()
+        - self.available_commands != {}
+        - values in self.available_commands are valid location ids.
     """
 
     id_num: int
@@ -135,19 +135,22 @@ class Player:
 
 
     Representation Invariants:
-        - score >= 0
-        - moves_left >= 0
+        - self.score >= 0
+        - self.moves_left >= 0
+        - self.item_on_hand in self.inventory
     """
 
     inventory: list[Item]
     score: int
     moves_left: int
+    item_on_hand: Optional[Item] = None
 
     def __init__(self) -> None:
         """Initialize a new player. The player starts with an empty inventory, score and 50 moves. """
 
         self.inventory = []
         self.score = 0
+        self.item_on_hand = None
 
         # TODO: decide the number of moves
         self.moves_left = 50
@@ -157,10 +160,9 @@ class Player:
 
         str_inventory = "Your inventory: "
         if not self.inventory:
-            str_inventory += "No items"
+            str_inventory += "empty"
         else:
-            for item in self.inventory:
-                str_inventory += item.name + ", "
+            str_inventory += ", ".join(item.name for item in self.inventory)
 
         return str_inventory
 

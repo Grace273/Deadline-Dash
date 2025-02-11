@@ -198,24 +198,30 @@ if __name__ == "__main__":
         curr_location = game.get_location()
 
         # Display possible actions at this location
-        print("\nWhat to do? Choose from: look, hold, inventory, score, undo, log, quit")
+        print("\nWhat to do? Choose from: look, inventory, score, undo, log, quit")
         print("At this location, you can also:")
         for action in curr_location.available_commands:
             print("-", action)
         # Display items available for picking up and dropping
-        pick_or_drop = []
+        pick_drop_hold = []
         for item in curr_location.items:
             choice_name = f"pick up: {item.name}"
-            pick_or_drop.append(choice_name)
+            pick_drop_hold.append(choice_name)
             print("-", choice_name)
-        for item in player.inventory:
-            choice_name = f"drop: {item.name}"
-            pick_or_drop.append(choice_name)
-            print("-", choice_name)
+        if player.inventory:
+            print(f"{player.inventory_to_string()}. You can drop or hold items in your inventory.")
+            for item in player.inventory:
+                choice_name1 = f"drop: {item.name}"
+                choice_name2 = f"hold: {item.name}"
+                pick_drop_hold.append(choice_name1)
+                pick_drop_hold.append(choice_name2)
+        else:
+            print(f"No drop or hold options available.")
+
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        while choice not in curr_location.available_commands and choice not in menu and choice not in pick_or_drop:
+        while choice not in curr_location.available_commands and choice not in menu and choice not in pick_drop_hold:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
 
@@ -236,6 +242,8 @@ if __name__ == "__main__":
                 print(curr_location.descriptions[1])
             elif choice == "inventory":
                 print(player.inventory_to_string())
+                if player.item_on_hand:
+                    print(f"Item on hand: {player.item_on_hand.name}")
             elif choice == "score":
                 print(player.score)
             elif choice == "undo":
@@ -258,6 +266,13 @@ if __name__ == "__main__":
                 for i in range(len(player.inventory)):
                     if player.inventory[i].name == item_name:
                         curr_location.items.append(player.inventory.pop(i))
+                        if player.item_on_hand.name == item_name:
+                            player.item_on_hand = None
+            elif "hold" in choice:
+                item_name = choice[choice.find(": ") + 2:]
+                for i in range(len(player.inventory)):
+                    if player.inventory[i].name == item_name:
+                        player.item_on_hand = player.inventory[i]
             else:
                 result = curr_location.available_commands[choice]
                 game.current_location_id = result

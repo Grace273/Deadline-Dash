@@ -43,7 +43,7 @@
       "available_commands": {
         "go north": 2,
         "go east": 5,
-        "go to upstairs": 30
+        "go upstairs": 30
       },
       "items": []
     },
