@@ -163,7 +163,7 @@ if __name__ == "__main__":
     # TODO: Add code below to provide walkthroughs that show off certain features of the game
     # TODO: Create a list of commands involving visiting locations, picking up items, and then
     #   checking the inventory, your list must include the "inventory" command at least once
-
+    #TODO: ADD SIMPLE PUZZLE WALKTHROUGH COMMANDS
     inventory_demo = ["go east", "go upstairs", "sneak in and out", "go downstairs", "go east", "go east",
                       "talk with Sadia", "go north", "go to your friend's dorm", "go downstairs", "go south",
                       "go south", "pick up broken mug pieces (Ouch!)", "go west", "go west", "go to Sadia's office",

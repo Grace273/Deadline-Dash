@@ -118,6 +118,11 @@ class AdventureGame:
         else:
             return self._locations[self.current_location_id]
 
+    def add_location_command(self, loc_id: int, command: str, command_id) -> None:
+        """Add an available command to the Location associated with loc_id of self's _locations attribute."""
+
+        self._locations[loc_id].available_commands[command] = command_id
+
     def play_word_scramble(self) -> None:
         """A word scramble puzzle."""
 
@@ -181,6 +186,14 @@ def undo() -> None:
         print(f"You are at Location {last_loc.id_num}: {last_loc.name}")
 
     print(player.inventory_to_string())
+
+
+def talk_with_sadia(game: AdventureGame, loc_id: int, command: str, command_id: int):
+    """Print message from Sadia."""
+    print("Sadia tells you that she had found a left-behind charger after the morning lecture and that she brought it"
+          "to her office! She tells you go to second floor Bahen to retrieve it.")
+
+    game.add_location_command(loc_id, command, command_id)
 
 
 if __name__ == "__main__":
@@ -296,6 +309,16 @@ if __name__ == "__main__":
                         player.item_on_hand = player.inventory[i]
                         item_involved = player.inventory[i]
                         break
+            #TODO: fix hardcoding
+            elif choice == "talk to sadia":
+                talk_with_sadia(game=game, loc_id=30, command="get laptop charger", command_id=30)
+            # elif choice == "get laptop charger" and "get laptop charger" in game.get_location(30).available_commands:
+            #     is_won = get_laptop_charger_game(player, game, "laptop charger")
+            #
+            #     if is_won:
+            #         for i in range(len(curr_location.items)):
+            #             if curr_location.items[i] == "laptop charger":
+            #                 curr_location.items.pop(i)
             else:
                 item_involved = None
                 result = curr_location.available_commands[choice]
@@ -339,4 +362,3 @@ if __name__ == "__main__":
         print("==========")
         print(f"Location {next_location.id_num}: {next_location.name}")
         print(game_log.last.description)
-
