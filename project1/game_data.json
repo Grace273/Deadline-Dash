@@ -53,7 +53,6 @@
       "brief_description": "You are on the second floor of the Bahen Center, in Sadia's office which has ytour laptop charger. You may go downstairs to the ground floor.",
       "long_description": "You pushed the door of Sadia's office. It opened and you saw a table full of documents and cute pictures of Sadia's pets. But which drawer is your charger in?",
       "available_commands": {
-        "get laptop charger": 30,
         "go downstairs": 3
       },
       "items": ["laptop charger"]
@@ -126,7 +125,7 @@
         "go south": 9,
         "go west": 4,
         "go under the bridge": 10,
-        "talk with Sadia": 8
+        "talk to sadia": 8
       },
       "items": []
     },
@@ -148,7 +147,7 @@
       "brief_description": "You found yourself in Queen's Park. You see a crowd gathering.",
       "long_description": "You found yourself in Queen's Park. There is a crowd gathering and somebody speaking. It turns out to be the Ontario Premier Doug Ford and his supporter, running a campaign for the early election! Premier Ford offers you a hand - you can choose to be teleported to any location on campus.",
       "available_commands": {
-        "Ford, Ford, Teleport": 10
+        "ford, ford, teleport": 10
       },
       "items": []
     },
