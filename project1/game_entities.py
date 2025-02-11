@@ -49,12 +49,13 @@ class Item:
 
     name: str
     position: int
+    description: str
     enabled: bool
     start_position: int
     target_position: Optional[int]
     target_points: int
 
-    def __init__(self, name: str, start_position: int, target_position: Optional[int], target_points: int) -> None:
+    def __init__(self, name: str, description: str, start_position: int, target_position: Optional[int], target_points: int) -> None:
         """Initialize a new item.
 
         # TODO Add more details here about the initialization if needed
@@ -62,6 +63,7 @@ class Item:
 
         self.name = name
         self.position = start_position
+        self.description = description
         self.start_position = start_position
         self.target_position = target_position
         self.target_points = target_points
