@@ -123,6 +123,17 @@ class AdventureGame:
 
         self._locations[loc_id].available_commands[command] = command_id
 
+    def all_location_ids(self) -> list:
+        return list(self._locations.keys())
+
+    def print_all_locations(self) -> None:
+        """Print all location ids and their corresponding location name"""
+        location_tuples = list(self._locations.items())
+        location_tuples.sort()
+        for tup in location_tuples:
+            print(f"Location {tup[0]}: {tup[1]}")
+
+
     def play_word_scramble(self) -> None:
         """A word scramble puzzle."""
 
@@ -187,6 +198,15 @@ def undo() -> None:
 
     print(player.inventory_to_string())
 
+def ford_ford_teleport(game: AdventureGame) -> int:
+    """Special function for Location 10: Queen's Park. Teleport the player to any location they asked for."""
+
+    game.print_all_locations()
+    answer = int(input("Hey Premier Ford! Teleport me to location... (Enter desired location id)"))
+    while answer not in game.all_location_ids():
+        answer = int(input("Invalid Location id. Try again:"))
+
+    return answer
 
 def talk_with_sadia(game: AdventureGame, loc_id: int, command: str, command_id: int):
     """Print message from Sadia."""
