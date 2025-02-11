@@ -50,9 +50,10 @@
     {
       "id": 30,
       "name": "Bahen Center 2F",
-      "brief_description": "You are on the second floor of the Bahen Center, by the door of Sadia's office. You may go downstairs to the ground floor.",
-      "long_description": "You pushed the door of Sadia's office. It opened and you saw a table full of documents and cute pictures of Sadia's pets. You can see your laptop charger on the table. Thanks, Sadia, for keeping it!",
+      "brief_description": "You are on the second floor of the Bahen Center, in Sadia's office which has ytour laptop charger. You may go downstairs to the ground floor.",
+      "long_description": "You pushed the door of Sadia's office. It opened and you saw a table full of documents and cute pictures of Sadia's pets. But which drawer is your charger in?",
       "available_commands": {
+        "get laptop charger": 30,
         "go downstairs": 3
       },
       "items": ["laptop charger"]
