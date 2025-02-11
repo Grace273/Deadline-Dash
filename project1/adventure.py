@@ -154,33 +154,32 @@ def first_event_initializer() -> Event:
     return first_event
 
 
-def undo(curr_game: AdventureGame, log: EventList, p: Player, item_changed: bool) -> None:
+def undo() -> None:
     """Remove the last command. If hold command is removed, player.item_on_hand will be None. """
     # TODO: explain the hold command undo rule in intro
-    # TODO: if command was to do with an item
-    if item_changed:
-        my_choice = log.last.description
+
+    last_loc = game.get_location(game_log.last.id_num)
+    if item_involved:
+        my_choice = game_log.last.description
         my_item_name = my_choice[my_choice.find(": ") + 2:]
-        last_loc = curr_game.get_location(log.last.id_num)
         if "pick up" in my_choice:
-            for j in range(len(p.inventory)):
-                if p.inventory[i].name == my_item_name:
-                    last_loc.items.append(p.inventory.pop(i))
-                    print(f"Dropped {my_item_name} at {last_loc.name}")
+            for j in range(len(player.inventory)):
+                if player.inventory[i].name == my_item_name:
+                    last_loc.items.append(player.inventory.pop(i))
+                    print(f"Dropped {my_item_name} at Location {last_loc.id_num}: {last_loc.name}")
                     break
         elif "drop" in my_choice:
             for j in range(len(last_loc.items)):
                 if last_loc.items[i].name == item_name:
-                    p.inventory.append(last_loc.items.pop(i))
-                    print(f"Picked up {my_item_name} at {last_loc.name}")
+                    player.inventory.append(last_loc.items.pop(i))
+                    print(f"Picked up {my_item_name} at Location {last_loc.id_num}: {last_loc.name}")
         elif "hold" in my_choice:
-            p.item_on_hand = None
+            player.item_on_hand = None
             print(f"Removed {my_item_name} from hand.")
     else:
-        log.remove_last_event()
+        game_log.remove_last_event()
+        print(f"You are at Location {last_loc.id_num}: {last_loc.name}")
 
-    print(f"Location {log.last.id_num}: {game.get_location(log.last.id_num).name}")
-    print(log.last.description)
     print(player.inventory_to_string())
 
 
@@ -266,7 +265,7 @@ if __name__ == "__main__":
             elif choice == "score":
                 print(player.score)
             elif choice == "undo":
-                undo(game, game_log, player, bool(item_involved))
+                undo()
                 game.current_location_id = game_log.last.id_num
             else:  # player choice is "quit"
                 # TODO: ask if want to save game, if so, call helper function, else:
