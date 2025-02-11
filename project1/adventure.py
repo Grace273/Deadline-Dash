@@ -154,13 +154,32 @@ def first_event_initializer() -> Event:
     return first_event
 
 
-def undo(log: EventList):
-    """Remove the last command """
-    # TODO: if command was to do with an item
+def undo() -> None:
+    """Remove the last command. If hold command is removed, player.item_on_hand will be None. """
+    # TODO: explain the hold command undo rule in intro
 
-    log.remove_last_event()
-    print(f"Location {log.last.id_num}: {game.get_location(log.last.id_num).name}")
-    print(log.last.description)
+    last_loc = game.get_location(game_log.last.id_num)
+    if item_involved:
+        my_choice = game_log.last.description
+        my_item_name = my_choice[my_choice.find(": ") + 2:]
+        if "pick up" in my_choice:
+            for j in range(len(player.inventory)):
+                if player.inventory[i].name == my_item_name:
+                    last_loc.items.append(player.inventory.pop(i))
+                    print(f"Dropped {my_item_name} at Location {last_loc.id_num}: {last_loc.name}")
+                    break
+        elif "drop" in my_choice:
+            for j in range(len(last_loc.items)):
+                if last_loc.items[i].name == item_name:
+                    player.inventory.append(last_loc.items.pop(i))
+                    print(f"Picked up {my_item_name} at Location {last_loc.id_num}: {last_loc.name}")
+        elif "hold" in my_choice:
+            player.item_on_hand = None
+            print(f"Removed {my_item_name} from hand.")
+    else:
+        game_log.remove_last_event()
+        print(f"You are at Location {last_loc.id_num}: {last_loc.name}")
+
     print(player.inventory_to_string())
 
 
@@ -181,7 +200,7 @@ if __name__ == "__main__":
     # initial location ID to 1 and unlock_location_points to 10.
     menu = ["look", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
     choice = None
-    changed_location = True
+    item_involved = None
 
     #beginning of the game
     game_log.add_event(first_event_initializer())
@@ -196,7 +215,6 @@ if __name__ == "__main__":
         # TODO: Add completing picking up / depositing an item as an event
 
         curr_location = game.get_location()
-        item_involved = None
 
         # Display possible actions at this location
         print("\nWhat to do? Choose from: look, inventory, score, undo, log, quit")
@@ -226,6 +244,8 @@ if __name__ == "__main__":
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
 
+        print("----------")
+
         if choice in menu:
             # TODO: Handle each menu command as appropriate
             # Note: For the "undo" command, remember to manipulate the game_log event list to keep it up-to-date
@@ -245,7 +265,7 @@ if __name__ == "__main__":
             elif choice == "score":
                 print(player.score)
             elif choice == "undo":
-                undo(game_log)
+                undo()
                 game.current_location_id = game_log.last.id_num
             else:  # player choice is "quit"
                 # TODO: ask if want to save game, if so, call helper function, else:
@@ -259,21 +279,25 @@ if __name__ == "__main__":
                     if curr_location.items[i].name == item_name:
                         item_involved = curr_location.items[i]
                         player.inventory.append(curr_location.items.pop(i))
+                        break
             elif "drop" in choice:
                 item_name = choice[choice.find(": ") + 2:]
                 for i in range(len(player.inventory)):
                     if player.inventory[i].name == item_name:
                         item_involved = player.inventory[i]
                         curr_location.items.append(player.inventory.pop(i))
-                        if player.item_on_hand.name == item_name:
+                        if player.item_on_hand and player.item_on_hand.name == item_name:
                             player.item_on_hand = None
+                        break
             elif "hold" in choice:
                 item_name = choice[choice.find(": ") + 2:]
                 for i in range(len(player.inventory)):
                     if player.inventory[i].name == item_name:
                         player.item_on_hand = player.inventory[i]
                         item_involved = player.inventory[i]
+                        break
             else:
+                item_involved = None
                 result = curr_location.available_commands[choice]
                 game.current_location_id = result
 
@@ -283,7 +307,6 @@ if __name__ == "__main__":
 
         #TODO: implement pick up and drop item
 
-        print("----------")
         print(f"You decided to: {choice}.")
         if item_involved:
             print(f"Item description: {item_involved.description}")
@@ -295,7 +318,7 @@ if __name__ == "__main__":
         next_location = game.get_location()
         event_description = ''
 
-        if next_location != curr_location: # if location changed
+        if not item_involved: # if location changed
             if next_location.visited:
                 event_description = next_location.descriptions[0]
             else:
