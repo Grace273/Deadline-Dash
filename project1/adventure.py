@@ -133,6 +133,15 @@ class AdventureGame:
         for tup in location_tuples:
             print(f"Location {tup[0]}: {tup[1]}")
 
+    def get_item(self, item_name: str) -> Item:
+        """Return Item object associated with the provided location ID.
+
+        Preconditions:
+        - item_name in [self._items[i].name for i in range(len(self._items))]"""
+
+        for _ in range(len(self._items)):
+            if self._items[_].name == item_name:
+                return self._items[_]
 
     def play_word_scramble(self) -> None:
         """A word scramble puzzle."""
@@ -208,12 +217,40 @@ def ford_ford_teleport(game: AdventureGame) -> int:
 
     return answer
 
-def talk_with_sadia(game: AdventureGame, loc_id: int, command: str, command_id: int):
+def talk_with_sadia(game: AdventureGame, loc_id: int, command: str, command_id: int) -> None:
     """Print message from Sadia."""
     print("Sadia tells you that she had found a left-behind charger after the morning lecture and that she brought it"
           "to her office! She tells you go to second floor Bahen to retrieve it.")
 
     game.add_location_command(loc_id, command, command_id)
+
+
+def get_laptop_charger_game(player: Player, game: AdventureGame) -> bool:
+    """Return whether the player has won the game."""
+
+    correct_guess = random.randint(1, 2)
+    max_guesses = 3
+    item = "laptop charger"
+
+    print("The laptop charger is in one of two drawers. You must guess which drawer. Reshuffling occurs after each "
+          "incorrect guess.")
+
+    while max_guesses > 0:
+        guess = input("Enter guess (1 or 2), enter 0 to quit: ")
+
+        if guess == correct_guess:
+            print("You Win! The laptop charger has been added to your inventory. +20 points")
+            player.score += 20
+            player.inventory.append(game.get_item(item))
+
+            return True
+
+        else:
+            print("Reshuffled")
+
+    player.inventory.append(game.get_item(item))
+    print("The drawers feel bad for you... the laptop charger reveal itself and is added to you inventory. +0 points")
+    return False
 
 
 if __name__ == "__main__":
@@ -332,13 +369,14 @@ if __name__ == "__main__":
             #TODO: fix hardcoding
             elif choice == "talk to sadia":
                 talk_with_sadia(game=game, loc_id=30, command="get laptop charger", command_id=30)
-            # elif choice == "get laptop charger" and "get laptop charger" in game.get_location(30).available_commands:
-            #     is_won = get_laptop_charger_game(player, game, "laptop charger")
-            #
-            #     if is_won:
-            #         for i in range(len(curr_location.items)):
-            #             if curr_location.items[i] == "laptop charger":
-            #                 curr_location.items.pop(i)
+
+            elif choice == "get laptop charger" and "get laptop charger" in game.get_location(30).available_commands:
+                is_won = get_laptop_charger_game(player, game)
+
+                if is_won:
+                    for i in range(len(curr_location.items)):
+                        if curr_location.items[i] == "laptop charger":
+                            curr_location.items.pop(i)
             else:
                 item_involved = None
                 result = curr_location.available_commands[choice]
