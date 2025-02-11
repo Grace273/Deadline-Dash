@@ -316,3 +316,4 @@ if __name__ == "__main__":
         print("==========")
         print(f"Location {next_location.id_num}: {next_location.name}")
         print(game_log.last.description)
+
