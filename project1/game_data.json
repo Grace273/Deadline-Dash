@@ -41,8 +41,7 @@
       "long_description": "You are on the first floor of the Bahen Center. There are students eating and studying at the table near the windows. Your professor's office is in this building, but you can't just break in, right?",
       "available_commands": {
         "go north": 2,
-        "go east": 5,
-        "go upstairs": 30
+        "go east": 5
       },
       "items": []
     },
@@ -52,9 +51,10 @@
       "brief_description": "You are on the second floor of the Bahen Center, in Sadia's office which has ytour laptop charger. You may go downstairs to the ground floor.",
       "long_description": "You pushed the door of Sadia's office. It opened and you saw a table full of documents and cute pictures of Sadia's pets. But which drawer is your charger in?",
       "available_commands": {
-        "go downstairs": 3
+        "go downstairs": 3,
+        "get laptop charger": 30
       },
-      "items": ["laptop charger"]
+      "items": []
     },
     {
       "id": 4,

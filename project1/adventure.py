@@ -118,20 +118,26 @@ class AdventureGame:
         else:
             return self._locations[self.current_location_id]
 
-    def add_location_command(self, loc_id: int, command: str, command_id) -> None:
+    def add_location_command(self, loc_id: int, command: str, command_id: int) -> None:
         """Add an available command to the Location associated with loc_id of self's _locations attribute."""
 
         self._locations[loc_id].available_commands[command] = command_id
 
+    def remove_location_command(self, loc_id: int, command: str) -> None:
+        """Remove a command from a desired location"""
+        #TODO: Add representation invariants
+
+        del self._locations[loc_id].available_commands[command]
+
     def all_location_ids(self) -> list:
         return list(self._locations.keys())
 
-    def print_all_locations(self) -> None:
-        """Print all location ids and their corresponding location name"""
+    def print_basic_locations(self) -> None:
+        """Print all location ids and their corresponding location name (exclude special locations)"""
         location_tuples = list(self._locations.items())
         location_tuples.sort()
-        for tup in location_tuples:
-            print(f"Location {tup[0]}: {tup[1]}")
+        for tup in location_tuples[:9]:
+            print(f"Location {tup[0]}: {tup[1].name}")
 
     def get_item(self, item_name: str) -> Item:
         """Return Item object associated with the provided location ID.
@@ -202,6 +208,7 @@ def first_event_initializer() -> Event:
 def undo() -> None:
     """Remove the last command. If hold command is removed, player.item_on_hand will be None. """
     # TODO: explain the hold command undo rule in intro
+    # TODO: handle undo for special event
 
     last_loc = game.get_location(game_log.last.id_num)
     if item_involved:
@@ -230,7 +237,7 @@ def undo() -> None:
 def ford_ford_teleport(game: AdventureGame) -> int:
     """Special function for Location 10: Queen's Park. Teleport the player to any location they asked for."""
 
-    game.print_all_locations()
+    game.print_basic_locations()
     answer = int(input("Hey Premier Ford! Teleport me to location... (Enter desired location id)"))
     while answer not in game.all_location_ids():
         answer = int(input("Invalid Location id. Try again:"))
@@ -245,33 +252,48 @@ def talk_with_sadia(game: AdventureGame, loc_id: int, command: str, command_id: 
     game.add_location_command(loc_id, command, command_id)
 
 
-def get_laptop_charger_game(player: Player, game: AdventureGame) -> bool:
-    """Return whether the player has won the game."""
-
-    correct_guess = random.randint(1, 2)
+def shuffling_drawers_game(player: Player, game: AdventureGame, item_name: str) -> None:
+    """A shuffling drawers puzzle for retrieving an item"""
     max_guesses = 3
-    item = "laptop charger"
 
-    print("The laptop charger is in one of two drawers. You must guess which drawer. Reshuffling occurs after each "
+    print(f"The {item_name} is in one of two drawers. You must guess which drawer. Reshuffling occurs after each "
           "incorrect guess.")
 
     while max_guesses > 0:
-        guess = input("Enter guess (1 or 2), enter 0 to quit: ")
+        correct_guess = random.randint(1, 2)
+        guess = int(input("Enter guess (1 or 2). You have three chances: "))
 
         if guess == correct_guess:
-            print("You Win! The laptop charger has been added to your inventory. +20 points")
+            print(f"You Win! The {item_name} has been added to your inventory. +20 points")
             player.score += 20
-            player.inventory.append(game.get_item(item))
-
-            return True
-
+            player.inventory.append(game.get_item(item_name))
+            return
         else:
             print("Reshuffled")
+            max_guesses -= 1
 
-    player.inventory.append(game.get_item(item))
-    print("The drawers feel bad for you... the laptop charger reveal itself and is added to you inventory. +0 points")
-    return False
+    player.inventory.append(game.get_item(item_name))
+    print(f"The drawers feel bad for you... the {item_name} reveal itself and is added to you inventory. +0 points")
 
+
+def lying_backpacks_game(player: Player, game: AdventureGame, item_name: str) -> None:
+    """A lying backpacks game for retrieving items"""
+
+    print(f"You entered the messy room and found three backpacks on the floor. The {item_name} is in one of the backpacks.")
+    print(f"Backpack 1 was labelled with 'The {item_name} is in me!'")
+    print(f"Backpack 2 was labelled with 'The {item_name} is in not in me!'")
+    print(f"Backpack 3 was labelled with 'The {item_name} is not in Backpack 1!'")
+    print("Only one of the backpacks is telling the truth. Where is the key?")
+
+    guess = input("Enter guess (1 or 2 or 3), you have only one chance")
+
+    if guess == 2:
+        print(f"You are so smart! The {item_name} has been added to your inventory. +20 points")
+        player.score += 20
+    else:
+        print(f"Haha, you're deceived by the backpacks! the {item_name} reveals itself and is added to you inventory. +0 points")
+
+    player.inventory.append(game.get_item(item_name))
 
 if __name__ == "__main__":
 
@@ -392,15 +414,24 @@ if __name__ == "__main__":
                         break
             #TODO: fix hardcoding
             elif choice == "talk to sadia":
-                talk_with_sadia(game=game, loc_id=30, command="get laptop charger", command_id=30)
+                talk_with_sadia(game=game, loc_id=3, command="go upstairs", command_id=30)
+                item_involved = None
+                game.remove_location_command(loc_id=8, command="talk to saida")
 
             elif choice == "get laptop charger" and "get laptop charger" in game.get_location(30).available_commands:
-                is_won = get_laptop_charger_game(player, game)
+                shuffling_drawers_game(player, game, 'laptop charger')
+                item_involved = game.get_item("laptop charger")
 
-                if is_won:
-                    for i in range(len(curr_location.items)):
-                        if curr_location.items[i] == "laptop charger":
-                            curr_location.items.pop(i)
+                for i in range(len(curr_location.items)):
+                    if curr_location.items[i] == "laptop charger":
+                        curr_location.items.pop(i)
+
+                game.remove_location_command(loc_id=30, command="get laptop charger")
+
+            elif choice == "ford, ford, teleport":
+                target = ford_ford_teleport(game)
+                item_involved = None
+                game.current_location_id = target
 
             elif choice == "put down items to submit work":
 
