@@ -91,7 +91,7 @@ class AdventureGame:
         items = []
         # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above
         for item_data in data['items']:  # Go through each element associated with the 'locations' key in the file
-            my_item = Item(item_data['name'], item_data['start_position'], item_data['target_position'],
+            my_item = Item(item_data['name'], item_data['description'], item_data['start_position'], item_data['target_position'],
                         item_data['target_points'])
             items.append(my_item)
         item_name_lst = [itm.name for itm in items] #in convenience for initializing items in each location
@@ -196,6 +196,7 @@ if __name__ == "__main__":
         # TODO: Add completing picking up / depositing an item as an event
 
         curr_location = game.get_location()
+        item_involved = None
 
         # Display possible actions at this location
         print("\nWhat to do? Choose from: look, inventory, score, undo, log, quit")
@@ -224,9 +225,6 @@ if __name__ == "__main__":
         while choice not in curr_location.available_commands and choice not in menu and choice not in pick_drop_hold:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
-
-        print("You decided to:", choice)
-        print("========")
 
         if choice in menu:
             # TODO: Handle each menu command as appropriate
@@ -259,12 +257,13 @@ if __name__ == "__main__":
                 item_name = choice[choice.find(": ") + 2:]
                 for i in range(len(curr_location.items)):
                     if curr_location.items[i].name == item_name:
+                        item_involved = curr_location.items[i]
                         player.inventory.append(curr_location.items.pop(i))
-                        break
             elif "drop" in choice:
                 item_name = choice[choice.find(": ") + 2:]
                 for i in range(len(player.inventory)):
                     if player.inventory[i].name == item_name:
+                        item_involved = player.inventory[i]
                         curr_location.items.append(player.inventory.pop(i))
                         if player.item_on_hand.name == item_name:
                             player.item_on_hand = None
@@ -273,6 +272,7 @@ if __name__ == "__main__":
                 for i in range(len(player.inventory)):
                     if player.inventory[i].name == item_name:
                         player.item_on_hand = player.inventory[i]
+                        item_involved = player.inventory[i]
             else:
                 result = curr_location.available_commands[choice]
                 game.current_location_id = result
@@ -282,6 +282,11 @@ if __name__ == "__main__":
             # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
 
         #TODO: implement pick up and drop item
+
+        print("----------")
+        print(f"You decided to: {choice}.")
+        if item_involved:
+            print(f"Item description: {item_involved.description}")
 
         # minus the player's moves left by 1
         player.moves_left -= 1
@@ -298,12 +303,17 @@ if __name__ == "__main__":
                 next_location.visited = True
                 player.score += game.unlock_location_points
         else:
-            event_description = "picked up item or solved puzzle"  #TODO add description for puzzles and items
+            if choice in pick_drop_hold:
+                event_description = choice
+
+             # TODO add description for puzzles
 
         new_event = Event(id_num=next_location.id_num, description=event_description)
         game_log.add_event(new_event, choice)
 
         # TODO: Depending on whether or not it's been visited before,
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
+        print("==========")
         print(f"Location {next_location.id_num}: {next_location.name}")
         print(game_log.last.description)
+
