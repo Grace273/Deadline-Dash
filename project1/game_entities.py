@@ -121,6 +121,17 @@ class Location:
 
         self.items.append(item)
 
+    def remove_item(self, item: Item) -> None:
+        """Remove given item from self's items attributes.
+
+        Preconditions:
+        - item in self.items
+        """
+
+        for i in range(len(self.items)):
+            if self.items[i].name == item.name:
+                self.items.pop(i)
+
 # Note: Other entities you may want to add, depending on your game plan:
 # - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)
 # - Player class
@@ -179,4 +190,3 @@ if __name__ == "__main__":
         'max-line-length': 120,
         'disable': ['R1705', 'E9998', 'E9999']
     })
-

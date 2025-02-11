@@ -30,8 +30,7 @@
       "brief_description": "You are in a classroom on the second floor of Sidney Smith Hall. There are stairs to go down to the ground floor.",
       "long_description": "You are in your friend's classroom on the second floor of Sidney Smith Hall who is taking a quiz. Your friend notices you and realizes what you already suspect: he accidentally took something of yours from the table when we were working in the library! He motions for you to come in and take his Trinity room key, but you need to be careful to not let the TA notice!",
       "available_commands": {
-        "go downstairs": 2,
-        "sneak in and out" : 20
+        "go downstairs": 2
       },
       "items": ["key"]
     },

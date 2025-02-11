@@ -172,6 +172,26 @@ class AdventureGame:
             print("You Win!")
 
 
+def submit_work(player: Player, items_to_win: list[str]) -> bool:
+
+    for item in items_to_win:
+        if item not in player.inventory_to_string():
+            print("You don't have everything you need to submit!")
+
+            return False
+
+    print("You open your laptop, plug the charger in as well as the USB drive and begin uploading your files."
+          "After a while, your project is only 30% uploaded. You glance at the clock: 3:50 PM! In the remaining 10 "
+          "minutes, you frantically use Reparo! on to fix your mug, wishing for luck. And it works! Your project is "
+          "ready! You promptly hit 'submit' at exactly 3:59 PM and let out a long sigh of relief. Your grade is saved"
+          "and your friendship is preserved. Great Work!")
+
+    player.score += len(items_to_win) * 20
+
+    print("YOU SUCCESSFULLY COMPLETED THE GAME. Final score: " + str(player.score))
+
+    return True
+
 def first_event_initializer() -> Event:
     """Initialize the first event."""
     intro = "put introduction here"  #TODO: put game background intro and command intro
@@ -266,6 +286,7 @@ if __name__ == "__main__":
 
     player = Player()
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
+    necessary_items = ["laptop charger", "mug", "USB drive", "potion"]
     game = AdventureGame('game_data.json', 1, 10)  # load data, setting
     # initial location ID to 1 and unlock_location_points to 10.
     menu = ["look", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
@@ -345,11 +366,14 @@ if __name__ == "__main__":
             # Handle non-menu actions
             if "pick up" in choice:
                 item_name = choice[choice.find(": ") + 2:]
-                for i in range(len(curr_location.items)):
-                    if curr_location.items[i].name == item_name:
-                        item_involved = curr_location.items[i]
-                        player.inventory.append(curr_location.items.pop(i))
-                        break
+                item = game.get_item(item_name)
+
+                # add item to inventory
+                player.inventory.append(item)
+
+                # remove item from current location's items
+                curr_location.remove_item(item)
+
             elif "drop" in choice:
                 item_name = choice[choice.find(": ") + 2:]
                 for i in range(len(player.inventory)):
@@ -377,6 +401,12 @@ if __name__ == "__main__":
                     for i in range(len(curr_location.items)):
                         if curr_location.items[i] == "laptop charger":
                             curr_location.items.pop(i)
+
+            elif choice == "put down items to submit work":
+
+                if submit_work(player, necessary_items):
+                    ongoing = False
+
             else:
                 item_involved = None
                 result = curr_location.available_commands[choice]
