@@ -130,6 +130,7 @@ class AdventureGame:
         del self._locations[loc_id].available_commands[command]
 
     def all_location_ids(self) -> list:
+        """Return all available location ids in a list."""
         return list(self._locations.keys())
 
     def print_basic_locations(self) -> None:
@@ -149,6 +150,7 @@ class AdventureGame:
             if self._items[_].name == item_name:
                 return self._items[_]
 
+    # puzzles and games
     def play_word_scramble(self) -> None:
         """A word scramble puzzle."""
 
@@ -177,6 +179,57 @@ class AdventureGame:
         else:
             print("You Win!")
 
+    def shuffling_drawers_game(self, player: Player, item_name: str) -> None:
+        """A shuffling drawers puzzle for retrieving an item"""
+        max_guesses = 3
+
+        print(f"The {item_name} is in one of the three drawers. You must guess which drawer. Reshuffling occurs after each "
+              "incorrect guess.")
+
+        while max_guesses > 0:
+            correct_guess = random.randint(1, 3)
+            guess = int(input(f"Enter guess (1, 2 or 3). You have {max_guesses} chance(s): "))
+
+            if guess == correct_guess:
+                print(f"You Win! The {item_name} has been added to your inventory. +20 points")
+                player.score += 20
+                player.inventory.append(game.get_item(item_name))
+                return
+            else:
+                print("Wrong! Reshuffled.")
+                max_guesses -= 1
+
+        player.inventory.append(self.get_item(item_name))
+        print(f"The drawers feel bad for you... the {item_name} reveal itself and is added to you inventory. +0 points")
+
+    def lying_backpacks_game(self, player: Player, item_name: str) -> None:
+        """A lying backpacks game for retrieving items"""
+
+        print(f"You entered the messy room and found three backpacks on the floor. The {item_name} is in one of the backpacks.")
+        print(f"Backpack 1 was labelled with 'The {item_name} is in me!'")
+        print(f"Backpack 2 was labelled with 'The {item_name} is in not in me!'")
+        print(f"Backpack 3 was labelled with 'The {item_name} is not in Backpack 1!'")
+        print("Only one of the backpacks is telling the truth. Where is the key?")
+
+        guess = input("Enter guess (1, 2 or 3), you have only one chance")
+
+        if guess == 2:
+            print(f"You are so smart! The {item_name} has been added to your inventory. +20 points")
+            player.score += 20
+        else:
+            print(
+                f"Haha, you're deceived by the backpacks! the {item_name} reveals itself and is added to you inventory. +0 points")
+
+        player.inventory.append(self.get_item(item_name))
+
+#==================================================================
+#=================special event functions==========================
+
+def first_event_initializer() -> Event:
+    """Initialize the first event."""
+    intro = "put introduction here"  #TODO: put game background intro and command intro
+    first_event = Event(id_num=1, description=intro)
+    return first_event
 
 def submit_work(player: Player, items_to_win: list[str]) -> bool:
 
@@ -198,12 +251,25 @@ def submit_work(player: Player, items_to_win: list[str]) -> bool:
 
     return True
 
-def first_event_initializer() -> Event:
-    """Initialize the first event."""
-    intro = "put introduction here"  #TODO: put game background intro and command intro
-    first_event = Event(id_num=1, description=intro)
-    return first_event
+def ford_ford_teleport(game: AdventureGame) -> int:
+    """Special function for Location 10: Queen's Park. Teleport the player to any location they asked for."""
 
+    game.print_basic_locations()
+    answer = int(input("Hey Premier Ford! Teleport me to location... (Enter desired location id)"))
+    while answer not in game.all_location_ids():
+        answer = int(input("Invalid Location id. Try again:"))
+
+    return answer
+
+def talk_with_sadia(game: AdventureGame, loc_id: int, command: str, command_id: int) -> None:
+    """Print message from Sadia."""
+    print("Sadia tells you that she had found a left-behind charger after the morning lecture and that she brought it"
+          "to her office! She tells you go to second floor Bahen to retrieve it.")
+
+    game.add_location_command(loc_id, command, command_id)
+
+#==================================================================
+#=================function for command============================
 
 def undo() -> None:
     """Remove the last command. If hold command is removed, player.item_on_hand will be None. """
@@ -230,70 +296,13 @@ def undo() -> None:
             print(f"Removed {my_item_name} from hand.")
     else:
         game_log.remove_last_event()
-        print(f"You are at Location {last_loc.id_num}: {last_loc.name}")
+        game.current_location_id = game_log.last.id_num
+        print(f"You are at Location {game.current_location_id}: {game.get_location(game.current_location_id).name}")
 
     print(player.inventory_to_string())
 
-def ford_ford_teleport(game: AdventureGame) -> int:
-    """Special function for Location 10: Queen's Park. Teleport the player to any location they asked for."""
-
-    game.print_basic_locations()
-    answer = int(input("Hey Premier Ford! Teleport me to location... (Enter desired location id)"))
-    while answer not in game.all_location_ids():
-        answer = int(input("Invalid Location id. Try again:"))
-
-    return answer
-
-def talk_with_sadia(game: AdventureGame, loc_id: int, command: str, command_id: int) -> None:
-    """Print message from Sadia."""
-    print("Sadia tells you that she had found a left-behind charger after the morning lecture and that she brought it"
-          "to her office! She tells you go to second floor Bahen to retrieve it.")
-
-    game.add_location_command(loc_id, command, command_id)
-
-
-def shuffling_drawers_game(player: Player, game: AdventureGame, item_name: str) -> None:
-    """A shuffling drawers puzzle for retrieving an item"""
-    max_guesses = 3
-
-    print(f"The {item_name} is in one of two drawers. You must guess which drawer. Reshuffling occurs after each "
-          "incorrect guess.")
-
-    while max_guesses > 0:
-        correct_guess = random.randint(1, 2)
-        guess = int(input("Enter guess (1 or 2). You have three chances: "))
-
-        if guess == correct_guess:
-            print(f"You Win! The {item_name} has been added to your inventory. +20 points")
-            player.score += 20
-            player.inventory.append(game.get_item(item_name))
-            return
-        else:
-            print("Reshuffled")
-            max_guesses -= 1
-
-    player.inventory.append(game.get_item(item_name))
-    print(f"The drawers feel bad for you... the {item_name} reveal itself and is added to you inventory. +0 points")
-
-
-def lying_backpacks_game(player: Player, game: AdventureGame, item_name: str) -> None:
-    """A lying backpacks game for retrieving items"""
-
-    print(f"You entered the messy room and found three backpacks on the floor. The {item_name} is in one of the backpacks.")
-    print(f"Backpack 1 was labelled with 'The {item_name} is in me!'")
-    print(f"Backpack 2 was labelled with 'The {item_name} is in not in me!'")
-    print(f"Backpack 3 was labelled with 'The {item_name} is not in Backpack 1!'")
-    print("Only one of the backpacks is telling the truth. Where is the key?")
-
-    guess = input("Enter guess (1 or 2 or 3), you have only one chance")
-
-    if guess == 2:
-        print(f"You are so smart! The {item_name} has been added to your inventory. +20 points")
-        player.score += 20
-    else:
-        print(f"Haha, you're deceived by the backpacks! the {item_name} reveals itself and is added to you inventory. +0 points")
-
-    player.inventory.append(game.get_item(item_name))
+#==================================================================
+#=========================main function============================
 
 if __name__ == "__main__":
 
@@ -379,7 +388,6 @@ if __name__ == "__main__":
                 print(player.score)
             elif choice == "undo":
                 undo()
-                game.current_location_id = game_log.last.id_num
             else:  # player choice is "quit"
                 # TODO: ask if want to save game, if so, call helper function, else:
                 print("Thanks for playing!")
@@ -416,10 +424,10 @@ if __name__ == "__main__":
             elif choice == "talk to sadia":
                 talk_with_sadia(game=game, loc_id=3, command="go upstairs", command_id=30)
                 item_involved = None
-                game.remove_location_command(loc_id=8, command="talk to saida")
+                game.remove_location_command(loc_id=8, command="talk to sadia")
 
-            elif choice == "get laptop charger" and "get laptop charger" in game.get_location(30).available_commands:
-                shuffling_drawers_game(player, game, 'laptop charger')
+            elif choice == "get laptop charger":
+                game.shuffling_drawers_game(player, 'laptop charger')
                 item_involved = game.get_item("laptop charger")
 
                 for i in range(len(curr_location.items)):
@@ -442,6 +450,7 @@ if __name__ == "__main__":
                 item_involved = None
                 result = curr_location.available_commands[choice]
                 game.current_location_id = result
+                print(f"You decided to: {choice}.")
 
             # TODO: add target points if item is used at target position
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
@@ -449,7 +458,6 @@ if __name__ == "__main__":
 
         #TODO: implement pick up and drop item
 
-        print(f"You decided to: {choice}.")
         if item_involved:
             print(f"Item description: {item_involved.description}")
 
@@ -470,6 +478,8 @@ if __name__ == "__main__":
         else:
             if choice in pick_drop_hold:
                 event_description = choice
+            else:
+                event_description = f"Completed special event '{choice}'"
 
              # TODO add description for puzzles
 
