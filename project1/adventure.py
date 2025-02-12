@@ -121,9 +121,10 @@ class AdventureGame:
         self._locations[location_id].available_commands[command] = command_id
 
     def remove_location_command(self, location_id: int, command: str) -> None:
-        """Remove a command from a desired location"""
+        """Remove a command from a desired location.
 
-        # TODO: Add representation invariants
+        Representation Invariants:
+        - command in self._locations[location_id].available_commands"""
 
         del self._locations[location_id].available_commands[command]
 
@@ -178,9 +179,11 @@ class AdventureGame:
         else:
             print("You Win!")
 
-    def shuffling_drawers_game(self, game_player: Player, target_item_name: str) -> None:
+    def shuffling_drawers_game(self, current_location: Location, game_player: Player, target_item_name: str,
+                               win_points: int) -> None:
         """A shuffling drawers puzzle for retrieving an item"""
         max_guesses = 3
+        prize = current_location.get_item(target_item_name)
 
         print(f"The {target_item_name} is in one of the three drawers. You must guess which drawer. Reshuffling occurs "
               f"after each incorrect guess.")
@@ -190,9 +193,15 @@ class AdventureGame:
             guess = int(input(f"Enter guess (1, 2 or 3). You have {max_guesses} chance(s): "))
 
             if guess == correct_guess:
-                print(f"You Win! The {target_item_name} shows up. +20 points")
-                game_player.score += 20
-                return
+                print(f"You Win! The {target_item_name} shows up and is added to your inventory. +" + str(win_points)
+                      + "points!")
+
+                pick_up(prize, current_location, game_player.inventory)
+
+                game_player.score += win_points
+
+                max_guesses = 0
+
             else:
                 print("Wrong! Reshuffled.")
                 max_guesses -= 1
@@ -200,8 +209,13 @@ class AdventureGame:
         print(f"The drawers feel bad for you... the {target_item_name} reveals itself in disappointment. "
               f"+0 points")
 
-    def lying_backpacks_game(self, game_player: Player, target_item_name: str) -> None:
+        pick_up(prize, current_location, game_player.inventory)
+
+    def lying_backpacks_game(self, current_location: Location, game_player: Player, target_item_name: str,
+                             win_points: int) -> None:
         """A lying backpacks game for retrieving items"""
+
+        prize = current_location.get_item(target_item_name)
 
         print(f"You entered the messy room and found three backpacks on the floor. The {target_item_name} is in one of "
               f"the backpacks.")
@@ -213,11 +227,17 @@ class AdventureGame:
         guess = int(input("Enter guess (1, 2 or 3), you have only one chance: "))
 
         if guess == 2:
-            print(f"You are so smart! The {target_item_name} shows up. +20 points")
-            game_player.score += 20
+            print(f"You are so smart! The {target_item_name} shows up. +" + str(win_points) + "points!")
+
+            pick_up(prize, current_location, game_player.inventory)
+
+            game_player.score += win_points
+
         else:
             print(f"Haha, you're deceived by the backpacks! The {target_item_name} reveals itself in disappointment. "
                   f"+0 points")
+
+            pick_up(prize, current_location, game_player.inventory)
 
 # ==================================================================
 # =================special event functions==========================
@@ -290,24 +310,28 @@ def buy_potion(current_game: AdventureGame, game_player: Player) -> None:
     game_player.inventory.append(current_game.get_item("potion"))
 
 
-def get_usb_drive(current_game: AdventureGame, game_player: Player, location_id: int) -> None:
+def get_usb_drive(current_location: Location, current_game: AdventureGame, game_player: Player, location_id: int,
+                  win_points: int) -> None:
     """Add USB to player's inventory if they have the key in their inventory."""
 
     key = current_game.get_item("key")
     if key in game_player.inventory:
         print("You unlock your friend's door and step inside.")
-        current_game.lying_backpacks_game(player, "usb drive")
+        current_game.lying_backpacks_game(current_location, game_player, "usb drive", win_points)
         current_game.get_location(location_id).add_item(current_game.get_item("usb drive"))
         current_game.remove_location_command(location_id, "get usb drive")
     else:
         print("You can't enter your friend's dorm without his key!")
 
 
-def get_laptop_charger(current_game: AdventureGame, game_player: Player, location_id: int) -> None:
+def get_laptop_charger(current_location: Location, current_game: AdventureGame, game_player: Player, location_id: int,
+                       win_points: int) -> None:
     """Get laptop charger by solving a puzzle"""
 
     print("You pushed the door and go inside the office. There are three magic drawers.")
-    current_game.shuffling_drawers_game(game_player, "laptop charger")
+
+    current_game.shuffling_drawers_game(current_location, game_player,
+                                        "laptop charger", win_points)
     current_game.get_location(location_id).add_item(current_game.get_item("laptop charger"))
     current_game.remove_location_command(location_id, "get laptop charger")
 
@@ -327,16 +351,14 @@ def undo(current_game: AdventureGame, itm_involved: Optional[None], game_player:
         if "pick up" in my_choice:
             prev_item = game_player.get_inventory_item(my_item_name)
 
-            last_loc.items.append(prev_item)
-            game_player.remove_inventory_item(prev_item)
+            drop(prev_item, last_loc, game_player)
 
             print(f"{my_item_name} is back at Location {last_loc.id_num}: {last_loc.name}")
 
         elif "drop" in my_choice:
             prev_item = last_loc.get_item(my_item_name)
 
-            last_loc.remove_item(prev_item)
-            game_player.inventory.append(prev_item)
+            pick_up(prev_item, last_loc, game_player.inventory)
 
             print(f"{my_item_name} from Location {last_loc.id_num}: {last_loc.name} is back in your inventory.")
     else:
@@ -347,6 +369,20 @@ def undo(current_game: AdventureGame, itm_involved: Optional[None], game_player:
               )
 
     print(game_player.inventory_to_string())
+
+
+def pick_up(new_item: Item, current_location: Location, p_inventory: list[item]) -> None:
+    """Add new_item to p_inventory and remove it from current_location"""
+
+    p_inventory.append(new_item)
+    current_location.remove_item(new_item)
+
+
+def drop(drop_item: Item, current_location: Location, p: Player) -> None:
+    """Remove new_item from p_inventory and add it from current_location"""
+
+    p.remove_inventory_item(drop_item)
+    current_location.add_item(drop_item)
 
 # ==================================================================
 # =========================main function============================
@@ -377,6 +413,7 @@ if __name__ == "__main__":
     usb_drive_name = "usb drive"
     trinity_key_name = "key"
     SS_id = 2
+    puzzle_points = 20
 
     # beginning of the game
     game_log.add_event(first_event_initializer(necessary_items))
@@ -426,7 +463,6 @@ if __name__ == "__main__":
                     print(f"Location: {game.get_location(loc_id).name} (id: {loc_id}), you chose to {event_lst[i][1]}")
                 print(f"You are currently at Location {event_lst[-1][0]}: {game.get_location(event_lst[-1][0]).name}")
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
-
             elif choice == "look":
                 print(curr_location.descriptions[1])
 
@@ -441,7 +477,7 @@ if __name__ == "__main__":
 
             else:  # player choice is "quit"
                 print("Thanks for playing!")
-            continue
+                game.ongoing = False
         else:
             # Handle non-menu actions
             if "pick up" in choice:
@@ -449,19 +485,15 @@ if __name__ == "__main__":
                 item_name = choice[choice.find(": ") + 2:]
                 item = game.get_item(item_name)
 
-                # add item to inventory
-                player.inventory.append(item)
-
-                # remove item from current location's items
-                curr_location.remove_item(item)
+                pick_up(item, curr_location, player.inventory)
 
             elif "drop" in choice:
                 item_name = choice[choice.find(": ") + 2:]
-                for i in range(len(player.inventory)):
-                    if player.inventory[i].name == item_name:
-                        item_involved = player.inventory[i]
-                        curr_location.items.append(player.inventory.pop(i))
-                        break
+                item = game.get_item(item_name)
+
+                drop(item, curr_location, player)
+
+                item_involved = item
 
             elif choice == "talk to sadia":
                 talk_with_sadia(current_game=game, location_id=3, command="go upstairs", command_id=30)
@@ -469,10 +501,10 @@ if __name__ == "__main__":
                 game.remove_location_command(location_id=8, command="talk to sadia")
 
             elif choice == "get usb drive":
-                get_usb_drive(game, player, 70)
+                get_usb_drive(curr_location, game, player, 70, puzzle_points)
 
             elif choice == "get laptop charger":
-                get_laptop_charger(game, player, 30)
+                get_laptop_charger(curr_location, game, player, 30, puzzle_points)
 
             elif choice == "buy hotdog":
                 buy_hotdog(game, player, 4)
