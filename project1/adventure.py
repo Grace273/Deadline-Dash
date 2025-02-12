@@ -414,6 +414,7 @@ if __name__ == "__main__":
     trinity_key_name = "key"
     SS_id = 2
     puzzle_points = 20
+    necessary_items_points = 20
 
     # beginning of the game
     game_log.add_event(first_event_initializer(necessary_items))
@@ -574,6 +575,6 @@ if __name__ == "__main__":
               "is ready! You promptly hit 'submit' at exactly 3:59 PM and let out a long sigh of relief. Your grade is "
               "saved and your friendship is preserved. Great Work!")
 
-        player.score += len(necessary_items) * 20
+        player.score += len(necessary_items) * necessary_items_points
 
         print("YOU SUCCESSFULLY COMPLETED THE GAME. Final score: " + str(player.score))

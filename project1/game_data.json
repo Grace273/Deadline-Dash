@@ -168,49 +168,42 @@
       "description": "Your UofT lucky mug that has been with you through every late-night study session, every major deadline, and every all-nighter.",
       "start_position": 9,
       "target_position": 1,
-      "target_points": 20
     },
     {
       "name": "usb drive",
       "description": "The only copy of your game is stored in this USB.",
       "start_position": 70,
       "target_position": 1,
-      "target_points": 20
     },
     {
       "name": "laptop charger",
       "description": "You need this to charge your laptop.",
       "start_position": 30,
       "target_position": 1,
-      "target_points": 20
     },
     {
       "name": "potion",
       "description": "You can use this to fix broken objects (with 'Reparo!')",
       "start_position": 11,
       "target_position": 1,
-      "target_points": 20
     },
     {
       "name": "hotdog",
       "description": "A food with delicious taste that makes you feel refresher than ever. Your moves left in the game will increase.",
       "start_position": 4,
       "target_position": 0,
-      "target_points": 10
     },
     {
       "name": "key",
       "description": "The key to open your friend's dorm at Trinity College.",
       "start_position": 2,
       "target_position": 70,
-      "target_points": 10
     },
     {
       "name": "presto card",
       "description": "You can board streetcars with this card.",
       "start_position": 6,
       "target_position": 11,
-      "target_points": 10
     }
   ]
 }
