@@ -192,16 +192,14 @@ class AdventureGame:
             guess = int(input(f"Enter guess (1, 2 or 3). You have {max_guesses} chance(s): "))
 
             if guess == correct_guess:
-                print(f"You Win! The {target_item_name} has been added to your inventory. +20 points")
+                print(f"You Win! The {target_item_name} shows up. +20 points")
                 game_player.score += 20
-                game_player.inventory.append(game.get_item(target_item_name))
                 return
             else:
                 print("Wrong! Reshuffled.")
                 max_guesses -= 1
 
-        game_player.inventory.append(self.get_item(target_item_name))
-        print(f"The drawers feel bad for you... the {target_item_name} reveal itself and is added to you inventory. "
+        print(f"The drawers feel bad for you... the {target_item_name} reveals itself in disappointment. "
               f"+0 points")
 
     def lying_backpacks_game(self, game_player: Player, target_item_name: str) -> None:
@@ -214,17 +212,14 @@ class AdventureGame:
         print(f"Backpack 3 was labelled with 'The {target_item_name} is not in Backpack 1!'")
         print("Only one of the backpacks is telling the truth. Where is the key?")
 
-        guess = input("Enter guess (1, 2 or 3), you have only one chance")
+        guess = int(input("Enter guess (1, 2 or 3), you have only one chance: "))
 
         if guess == 2:
-            print(f"You are so smart! The {target_item_name} has been added to your inventory. +20 points")
+            print(f"You are so smart! The {target_item_name} shows up. +20 points")
             game_player.score += 20
         else:
-            print(
-                f"Haha, you're deceived by the backpacks! the {target_item_name} reveals itself and is added to you "
-                f"inventory. +0 points")
-
-        game_player.inventory.append(self.get_item(target_item_name))
+            print(f"Haha, you're deceived by the backpacks! The {target_item_name} reveals itself in disappointment. "
+                  f"+0 points")
 
 # ==================================================================
 # =================special event functions==========================
@@ -287,15 +282,25 @@ def buy_potion(current_game: AdventureGame, game_player: Player) -> None:
     game_player.inventory.append(current_game.get_item("potion"))
 
 
-def get_usb(game_player: Player, key: Item, usb: Item) -> None:
+def get_usb_drive(current_game: AdventureGame, game_player: Player, loc_id: int) -> None:
     """Add USB to player's inventory if they have the key in their inventory."""
 
+    key = current_game.get_item("key")
     if key in game_player.inventory:
-        print("You unlock your friend's door and step inside. The USB is sitting on his desk. You grab it and go.")
-        game_player.inventory.append(usb)
-
+        print("You unlock your friend's door and step inside.")
+        current_game.lying_backpacks_game(player, "usb drive")
+        current_game.get_location(loc_id).add_item(current_game.get_item("usb drive"))
+        current_game.remove_location_command(loc_id, "get usb drive")
     else:
-        print("You do can't enter your friend's dorm without his key!")
+        print("You can't enter your friend's dorm without his key!")
+
+def get_laptop_charger(current_game: AdventureGame, game_player: Player, loc_id: int) -> None:
+    """Get laptop charger by solving a puzzle"""
+
+    print("You pushed the door and go inside the office. There are three magic drawers.")
+    current_game.shuffling_drawers_game(game_player, "laptop charger")
+    current_game.get_location(loc_id).add_item(current_game.get_item("laptop charger"))
+    current_game.remove_location_command(loc_id, "get laptop charger")
 
 # ==================================================================
 # =================function for commands============================
@@ -387,6 +392,7 @@ if __name__ == "__main__":
             for item in player.inventory:
                 choice_name1 = f"drop: {item.name}"
                 pick_drop.append(choice_name1)
+                print("-", choice_name1)
         else:
             print("No drop options available.")
 
@@ -429,12 +435,7 @@ if __name__ == "__main__":
             continue
         else:
             # Handle non-menu actions
-            if choice == "pick up: usb" and curr_location.name == trinity2f_name:
-
-                get_usb(player, game.get_location(SS_id).get_item(trinity_key_name),
-                        curr_location.get_item(usb_drive_name))
-
-            elif "pick up" in choice:
+            if "pick up" in choice:
 
                 item_name = choice[choice.find(": ") + 2:]
                 item = game.get_item(item_name)
@@ -460,15 +461,11 @@ if __name__ == "__main__":
                 item_involved = None
                 game.remove_location_command(location_id=8, command="talk to sadia")
 
+            elif choice == "get usb drive":
+                get_usb_drive(game, player, 70)
+
             elif choice == "get laptop charger":
-                game.shuffling_drawers_game(player, 'laptop charger')
-                item_involved = game.get_item("laptop charger")
-
-                for i in range(len(curr_location.items)):
-                    if curr_location.items[i] == "laptop charger":
-                        curr_location.items.pop(i)
-
-                game.remove_location_command(30, command="get laptop charger")
+                get_laptop_charger(game, player, 30)
 
             elif choice == "buy hotdog":
                 buy_hotdog(game, player, 4)
@@ -480,7 +477,6 @@ if __name__ == "__main__":
                 game.current_location_id = target
 
             elif choice == "put down items to submit work":
-
                 if submit_work(player, necessary_items):
                     game.ongoing = False
 
