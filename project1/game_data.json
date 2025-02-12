@@ -110,9 +110,10 @@
       "brief_description": "You are on the second floor of Trinity College, right outside your friend's dorm. You may go downstairs to the ground floor.",
       "long_description": "You are standing by the door of your friend's dorm. You'll need the key to get in. Let's hope there is something useful inside...",
       "available_commands": {
-        "go downstairs": 7
+        "go downstairs": 7,
+        "get usb drive": 70
       },
-      "items": ["usb drive"]
+      "items": []
     },
     {
       "id": 8,
