@@ -84,7 +84,7 @@ class AdventureGameSimulation:
 
     def run(self) -> None:
         """Run the game simulation and log location descriptions."""
-
+        print("==========BEGIN SIMULATION==========")
         current_event = self._events.first  # Start from the first event in the list
 
         while current_event:
@@ -94,6 +94,7 @@ class AdventureGameSimulation:
 
             # Move to the next event in the linked list
             current_event = current_event.next
+        print("==========END OF SIMULATION==========")
 
 
 if __name__ == "__main__":
