@@ -86,8 +86,7 @@ class AdventureGame:
         # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above
         for item_data in data['items']:  # Go through each element associated with the 'locations' key in the file
             my_item = Item(item_data['name'], item_data['description'],
-                           item_data['start_position'],
-                           item_data['target_position'],
+                           (item_data['start_position'], item_data['target_position']),
                            item_data['target_points'])
             items.append(my_item)
         item_name_lst = [itm.name for itm in items]  # in convenience for initializing items in each location
@@ -308,6 +307,7 @@ def undo() -> None:
     # TODO: handle undo for special event
 
     last_loc = game.get_location(game_log.last.id_num)
+
     if item_involved:
         my_choice = game_log.last.description
         my_item_name = my_choice[my_choice.find(": ") + 2:]
@@ -415,16 +415,21 @@ if __name__ == "__main__":
                     print(f"Location: {game.get_location(loc_id).name} (id: {loc_id}), you chose to {event_lst[i][1]}")
                 print(f"You are currently at Location {event_lst[-1][0]}: {game.get_location(event_lst[-1][0]).name}")
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
+
             elif choice == "look":
                 print(curr_location.descriptions[1])
+
             elif choice == "inventory":
                 print(player.inventory_to_string())
                 if player.item_on_hand:
                     print(f"Item on hand: {player.item_on_hand.name}")
+
             elif choice == "score":
                 print(player.score)
+
             elif choice == "undo":
                 undo()
+
             else:  # player choice is "quit"
                 # TODO: ask if want to save game, if so, call helper function, else:
                 print("Thanks for playing!")

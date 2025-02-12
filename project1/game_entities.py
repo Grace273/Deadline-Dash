@@ -19,7 +19,7 @@ please consult our Course Syllabus.
 This file is Copyright (c) 2025 CSC111 Teaching Team
 """
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Any
 
 
 @dataclass
@@ -55,17 +55,15 @@ class Item:
     target_position: Optional[int]
     target_points: int
 
-    def __init__(self, name: str, description: str, start_position: int, target_position: Optional[int], target_points: int) -> None:
-        """Initialize a new item.
-
-        # TODO Add more details here about the initialization if needed
-        """
+    def __init__(self, name: str, description: str, positions: tuple[int, int], target_points: int) -> None:
+        """Initialize a new item. The first item in positions is the initial position, the second is the target
+        position."""
 
         self.name = name
-        self.position = start_position
+        self.position = positions[0]
         self.description = description
-        self.start_position = start_position
-        self.target_position = target_position
+        self.start_position = positions[0]
+        self.target_position = positions[1]
         self.target_points = target_points
         self.enabled = True
 
@@ -102,15 +100,12 @@ class Location:
     # The only thing you must NOT change is the name of this class: Location.
     # All locations in your game MUST be represented as an instance of this class.
 
-    def __init__(self, location_id: int, name: str, descriptions: tuple[str, str],
+    def __init__(self, id_and_name: tuple[int, str], descriptions: tuple[str, str],
                  available_commands: dict[str, int], items: list[Item]) -> None:
-        """Initialize a new location.
+        """Initialize a new location. The first item in id_and_name is the id, the second is the name."""
 
-        # TODO Add more details here about the initialization if needed
-        """
-
-        self.id_num = location_id
-        self.name = name
+        self.id_num = id_and_name[0]
+        self.name = id_and_name[1]
         self.descriptions = descriptions
         self.available_commands = available_commands
         self.items = items
@@ -132,17 +127,15 @@ class Location:
             if self.items[i].name == item.name:
                 self.items.pop(i)
 
-    def get_item(self, name: str) -> Item:
-        """Return the Item with name as its name."""
+    def get_item(self, name: str) -> Any:
+        """Return the Item with name as its name. If none, return None."""
 
         for i in range(len(self.items)):
             if self.items[i].name == name:
                 return self.items[i]
 
-# Note: Other entities you may want to add, depending on your game plan:
-# - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)
-# - Player class
-# etc.
+        return None
+
 
 @dataclass
 class Player:
@@ -163,20 +156,36 @@ class Player:
     inventory: list[Item]
     score: int
     moves_left: int
-    item_on_hand: Optional[Item] = None
 
     def __init__(self) -> None:
-        """Initialize a new player. The player starts with an empty inventory, score and 50 moves. """
+        """Initialize a new player. The player starts with an empty inventory, score and 50 moves.
+
+        >>> p = Player()
+        >>> p.inventory
+        []
+        >>> p.score
+        0
+        >>> p.moves_left
+        50
+        >>> p.item_on_hand is None
+        True
+        """
 
         self.inventory = []
         self.score = 0
+        self.moves_left = 50
         self.item_on_hand = None
 
-        # TODO: decide the number of moves
-        self.moves_left = 50
-
     def inventory_to_string(self) -> str:
-        """List all items in inventory in a readable format"""
+        """List all items in inventory in a readable format
+
+        >>> item1 = Item("key", "The key to open door.", (0,19), 10)
+        >>> item2 = Item("usb drive", "The only copy of your game", (0,19), 10)
+        >>> p = Player()
+        >>> p.inventory = [item1, item2]
+        >>> p.inventory_to_string()
+        'Your inventory: key, usb drive'
+        """
 
         str_inventory = "Your inventory: "
         if not self.inventory:
