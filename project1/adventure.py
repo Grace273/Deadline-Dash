@@ -261,7 +261,6 @@ def ford_ford_teleport(game: AdventureGame) -> int:
 
     return answer
 
-
 def talk_with_sadia(game: AdventureGame, loc_id: int, command: str, command_id: int) -> None:
     """Print message from Sadia."""
     print("Sadia tells you that she had found a left-behind charger after the morning lecture and that she brought it"
