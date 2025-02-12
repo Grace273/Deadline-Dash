@@ -269,6 +269,23 @@ def talk_with_sadia(game: AdventureGame, loc_id: int, command: str, command_id: 
     game.add_location_command(loc_id, command, command_id)
 
 
+def buy_hotdog(game: AdventureGame, player: Player, loc_id: int) -> None:
+    """Special event for buying hotdog"""
+
+    print("You rushed to the hotdog station and took a free hotdog!")
+    game.remove_location_command(loc_id, "buy hotdog")
+    player.moves_left += 5
+
+def buy_potion(game: AdventureGame, player: Player, loc_id: int) -> None:
+    """Special event for buying potion"""
+
+    print("You are desperately looking for something useful at T&T, and suddenly you came across a special desk selling"
+          "repairing potion - that might be helpful! There's a line up in front of the desk and there is only a few left."
+          "'Please be quick....' you thought. Finally it's your turn and you managed to take the last bottle of potion!")
+
+    game.remove_location_command(11, "buy potion")
+    player.inventory.append(game.get_item("potion"))
+
 def get_usb(player: Player, key: Item, usb: Item) -> None:
     """Add USB to player's inventory if they have the key in their inventory."""
 
@@ -279,7 +296,7 @@ def get_usb(player: Player, key: Item, usb: Item) -> None:
     else:
         print("You do can't enter your friend's dorm without his key!")
 
-#==================================================================
+#=================================================================
 #=================function for command============================
 
 def undo() -> None:
@@ -459,6 +476,10 @@ if __name__ == "__main__":
 
                 game.remove_location_command(loc_id=30, command="get laptop charger")
 
+            elif choice == "buy hotdog":
+                buy_hotdog(game, player, loc_id=4)
+                item_involved = game.get_item("hotdog")
+
             elif choice == "ford, ford, teleport":
                 target = ford_ford_teleport(game)
                 item_involved = None
@@ -470,10 +491,13 @@ if __name__ == "__main__":
                     ongoing = False
 
             else:
-                item_involved = None
-                result = curr_location.available_commands[choice]
-                game.current_location_id = result
-                print(f"You decided to: {choice}.")
+                if choice == "get on the streetcar" and game.get_item("presto card") not in player.inventory:
+                    print("You are not allowed to board a streetcar without a PRESTO card!")
+                else:
+                    item_involved = None
+                    result = curr_location.available_commands[choice]
+                    game.current_location_id = result
+                    print(f"You decided to: {choice}.")
 
             # TODO: add target points if item is used at target position
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)

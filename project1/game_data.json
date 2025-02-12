@@ -89,9 +89,9 @@
       "long_description": "You are on College Street. You never like this street much. It's too busy and reminds you of your semesterly treks to the EX, which your friends like to refer to as the Execution Centre. You can go back north to the Main Gate. But wait, there's a stray PRESTO card lying on the ground. Everyone around you is so caught up in their day-to-day routine that no one would notice if you take the card... Quick! The bus that could take you to T&T is coming!",
       "available_commands": {
         "go north": 5,
-        "get on the bus": 11
+        "get on the streetcar": 11
       },
-      "items": ["PRESTO card"]
+      "items": ["presto card"]
     },
     {
       "id": 7,
@@ -158,7 +158,7 @@
         "buy potion": 11,
         "go back to campus": 6
       },
-      "items": ["potion"]
+      "items": []
     }
   ],
   "items": [
@@ -205,7 +205,7 @@
       "target_points": 0
     },
     {
-      "name": "PRESTO card",
+      "name": "presto card",
       "description": "You can board streetcars with this card.",
       "start_position": 6,
       "target_position": 11,
