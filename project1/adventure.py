@@ -304,7 +304,6 @@ def get_usb(game_player: Player, key: Item, usb: Item) -> None:
 
 def undo() -> None:
     """Remove the last command. If hold command is removed, player.item_on_hand will be None. """
-    # TODO: explain the hold command undo rule in intro
     # TODO: handle undo for special event
 
     last_loc = game.get_location(game_log.last.id_num)
@@ -322,9 +321,6 @@ def undo() -> None:
                 if last_loc.items[j].name == item_name:
                     player.inventory.append(last_loc.items.pop(i))
                     print(f"Picked up {my_item_name} at Location {last_loc.id_num}: {last_loc.name}")
-        elif "hold" in my_choice:
-            player.item_on_hand = None
-            print(f"Removed {my_item_name} from hand.")
     else:
         game_log.remove_last_event()
         game.current_location_id = game_log.last.id_num
@@ -387,11 +383,12 @@ if __name__ == "__main__":
             choice_name = f"pick up: {item.name}"
             pick_drop.append(choice_name)
             print("-", choice_name)
-        for item in player.inventory:
-            choice_name1 = f"drop: {item.name}"
-            pick_drop.append(choice_name1)
+        if player.inventory:
+            for item in player.inventory:
+                choice_name1 = f"drop: {item.name}"
+                pick_drop.append(choice_name1)
         else:
-            print("No drop or hold options available.")
+            print("No drop options available.")
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
