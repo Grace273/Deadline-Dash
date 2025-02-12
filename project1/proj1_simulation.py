@@ -139,28 +139,20 @@ if __name__ == "__main__":
                  "go east", "go east"]
 
     # Log list of IDs of all locations that would be visited
-    expected_log = [2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4]
+    expected_log = [1, 2, 4, 8, 7, 8, 4, 2,
+                    1, 2, 4, 8, 7, 8, 4, 2,
+                    1, 2, 4, 8, 7, 8, 4, 2,
+                    1, 2, 4, 8, 7, 8, 4, 2,
+                    1, 2, 4, 8, 7, 8, 4, 2,
+                    1, 2, 4, 8, 7, 8, 4, 2,
+                    1, 2, 4]
 
     assert expected_log == AdventureGameSimulation('game_data.json', 1, lose_demo, 10)
 
-    inventory_demo = ["go east", "go upstairs", "sneak in and out", "go downstairs", "go east", "go east",
-                      "talk with Sadia", "go north", "go to your friend's dorm", "go downstairs", "go south",
-                      "go south", "pick up broken mug pieces (Ouch!)", "go west", "go west", "go to Sadia's office",
-                      "take charger", "go downstairs", "go north", "go west", "inventory", "quit"]
+    # inventory demo, including pick up and drop
+    inventory_demo = ["go east", "go upstairs", "pick up: key", "drop: key"]
 
-    expected_log = [2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2]
+    expected_log = [1, 2, 20, 20, 20]
 
     assert expected_log == AdventureGameSimulation('game_data.json', 1, inventory_demo, 10)
 
@@ -179,12 +171,10 @@ if __name__ == "__main__":
 
     assert expected_log == AdventureGameSimulation('game_data.json', 1, scores_demo, 10)
 
-    teleportation_demo = ["go east", "go east", "go east", "go under the bridge", "Ford, Ford, Teleport", "Quit"]
+    #demo of special event - teleport
+    teleportation_demo = ["go east", "go east", "go east", "go under the bridge", "ford, ford, teleport", "1", "Quit"]
 
-    # TODO: Make it so the demo teleports to NC
-
-    expected_log = [2, 4, 8, 10, 1]
+    expected_log = [1, 2, 4, 8, 10, 1, 1]
 
     assert expected_log == AdventureGameSimulation('game_data.json', 1, teleportation_demo, 10)
 
-    # Note: You can add more code below for your own testing purposes

@@ -329,16 +329,17 @@ def get_laptop_charger(current_location: Location, current_game: AdventureGame, 
 # =================function for menu commands============================
 
 
-def undo(current_game: AdventureGame, itm_involved: Optional[None], game_player: Player) -> None:
-    """Remove the last command. If hold command is removed. """
+def undo(current_game: AdventureGame, current_log: EventList, game_player: Player) -> None:
+    """Remove the last command."""
 
-    last_loc = current_game.get_location(game_log.last.id_num)
+    last_event = current_log.last
+    last_loc = current_game.get_location(last_event.id_num)
 
-    if itm_involved:
+    if last_event.item_involved:
         my_choice = game_log.last.description
-        my_item_name = my_choice[my_choice.find(": ") + 2:]
 
         if "pick up" in my_choice:
+            my_item_name = my_choice[my_choice.find(": ") + 2:]
             prev_item = game_player.get_inventory_item(my_item_name)
 
             drop(prev_item, last_loc, game_player)
@@ -346,17 +347,25 @@ def undo(current_game: AdventureGame, itm_involved: Optional[None], game_player:
             print(f"{my_item_name} is back at Location {last_loc.id_num}: {last_loc.name}")
 
         elif "drop" in my_choice:
+            my_item_name = my_choice[my_choice.find(": ") + 2:]
             prev_item = last_loc.get_item(my_item_name)
 
             pick_up(prev_item, last_loc, game_player.inventory)
 
             print(f"{my_item_name} from Location {last_loc.id_num}: {last_loc.name} is back in your inventory.")
-    else:
-        game_log.remove_last_event()
-        game.current_location_id = game_log.last.id_num
 
-        print(f"You are back at Location {game.current_location_id}: {game.get_location(game.current_location_id).name}"
-              )
+        else:
+            # for special events that involve getting an item, delete the event and stay at the same location
+            print(f"You are back at Location {last_event.id_num}: {last_loc.name}")
+
+        current_log.remove_last_event()
+
+    else:
+        current_log.remove_last_event()
+        current_game.current_location_id = current_log.last.id_num
+
+        print(f"You are back at Location {game.current_location_id}: "
+              f"{game.get_location(game.current_location_id).name}")
 
     print(game_player.inventory_to_string())
 
@@ -397,8 +406,6 @@ if __name__ == "__main__":
     menu = ["look", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
     is_quit = False
     choice = None
-    item_involved = None
-    trinity2f_name = "Trinity College 2F"
     usb_drive_name = "usb drive"
     trinity_key_name = "key"
     SS_id = 2
@@ -413,6 +420,7 @@ if __name__ == "__main__":
 
     while game.ongoing:
         curr_location = game.get_location()
+        item_involved = None
 
         # Display possible actions at this location
         print("\nWhat to do? Choose from: look, inventory, score, undo, log, quit")
@@ -449,6 +457,7 @@ if __name__ == "__main__":
                     loc_id = event_lst[i][0]
                     print(f"Location: {game.get_location(loc_id).name} (id: {loc_id}), you chose to {event_lst[i][1]}")
                 print(f"You are currently at Location {event_lst[-1][0]}: {game.get_location(event_lst[-1][0]).name}")
+
             elif choice == "look":
                 print(curr_location.descriptions[1])
 
@@ -459,7 +468,7 @@ if __name__ == "__main__":
                 print(player.score)
 
             elif choice == "undo":
-                undo(game, item_involved, player)
+                undo(game, game_log, player)
 
             else:  # player choice is "quit"
                 game.ongoing = False
