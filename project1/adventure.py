@@ -395,6 +395,7 @@ if __name__ == "__main__":
     game = AdventureGame('game_data.json', 1, 10)  # load data, setting
     # initial location ID to 1 and unlock_location_points to 10.
     menu = ["look", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
+    is_quit = False
     choice = None
     item_involved = None
     trinity2f_name = "Trinity College 2F"
@@ -461,8 +462,8 @@ if __name__ == "__main__":
                 undo(game, item_involved, player)
 
             else:  # player choice is "quit"
-                print("Thanks for playing!")
                 game.ongoing = False
+                is_quit = True
         else:
             # Handle non-menu actions
             if "pick up" in choice:
@@ -542,13 +543,15 @@ if __name__ == "__main__":
         # minus the player's moves left by 1
         player.moves_left -= 1
 
-    if player.moves_left == 0:
+    if is_quit:
+        print("Thanks for playing!")
+
+    elif player.moves_left == 0:
         print("\nYou ran out of moves. It's 4 PM and you missed the deadline. What will you tell your friend...")
         print("GAME OVER.")
         game.ongoing = False
 
     else:
-
         print("You open your laptop, plug the charger in as well as the USB drive and begin uploading your files."
               "After a while, your project is only 30% uploaded. You glance at the clock: 3:50 PM! In the remaining 10 "
               "minutes, you frantically use Reparo! on to fix your mug, wishing for luck. And it works! Your project "
