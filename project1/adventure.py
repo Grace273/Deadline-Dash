@@ -502,6 +502,9 @@ if __name__ == "__main__":
                 if submit_work(player, necessary_items):
                     game.ongoing = False
 
+            elif choice == "buy potion":
+                buy_potion(game, player)
+
             else:
                 if choice == "get on the streetcar" and game.get_item("presto card") not in player.inventory:
                     print("You are not allowed to board a streetcar without a PRESTO card!")
