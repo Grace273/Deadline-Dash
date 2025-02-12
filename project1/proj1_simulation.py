@@ -78,14 +78,6 @@ class AdventureGameSimulation:
         """
         Get back a list of all location IDs in the order that they are visited within a game simulation
         that follows the given commands.
-
-        >>> sim = AdventureGameSimulation('sample_locations.json', 1, ["go east"])
-        >>> sim.get_id_log()
-        [1, 2]
-
-        >>> sim = AdventureGameSimulation('sample_locations.json', 1, ["go east", "go east", "buy coffee"])
-        >>> sim.get_id_log()
-        [1, 2, 3, 3]
         """
 
         return self._events.get_id_log()
@@ -114,7 +106,7 @@ if __name__ == "__main__":
         'disable': ['R1705', 'E9998', 'E9999']
     })
 
-    # # A list of all the commands needed to walk through our game to win it
+    # # A list of all user inputs needed to walk through our game to win it
     # win_demo = ["go east", "go upstairs", "pick up: key", "go downstairs", "go east", "go east",
     #                    "talk to sadia", "go north", "go to dorm", "get usb drive", "2", "pick up: usb drive",
     #                    "go downstairs", "go south", "go south", "pick up: mug", "go west", "go west",
@@ -169,12 +161,24 @@ if __name__ == "__main__":
     #
     # assert expected_log == AdventureGameSimulation('game_data.json', 1, inventory_demo, 10)
 
-    # #demo of special event - teleport
+    # demo of special event - teleport
     teleportation_demo = ["go east", "go east", "go east", "go under the bridge", "ford, ford, teleport"]
 
     expected_log = [1, 2, 4, 8, 10, 10]  # next user input determines which place to teleport
 
-    teleportation_sim = AdventureGameSimulation('game_data.json', 1, teleportation_demo, 10)
+    teleportation_sim = AdventureGameSimulation('game_data.json',
+                                                1, teleportation_demo, 10)
     teleportation_sim.run()
 
     assert expected_log == teleportation_sim.get_id_log()
+
+    # demo for score
+    score_demo = ["go east", "go east", "go east", "go south", "go north", "go under the bridge",
+                  "ford, ford, teleport"]
+
+    expected_log_score = [1, 2, 4, 8, 9, 8, 10, 10]  # expected score: 80
+
+    score_sim = AdventureGameSimulation('game_data.json', 1, score_demo, 10)
+    score_sim.run()
+
+    assert expected_log_score == score_sim.get_id_log()
