@@ -230,7 +230,7 @@ class AdventureGame:
 # =================special event functions==========================
 
 
-def first_event_initializer(key_items: list[str]) -> Event:
+def first_event_initializer(key_items: list[str], game_player: Player) -> Event:
     """Initialize the first event."""
 
     intro = ("The submission deadline is at 4PM. You promised your friend you would get it done, but you are missing "
@@ -241,7 +241,8 @@ def first_event_initializer(key_items: list[str]) -> Event:
                      "inventory\nscore: to check you game score\nundo: to go back to the last event (location change or"
                      " item pick up/drop\nlog: to get game log\nquit: quit the game\n\nAt certain locations, you can "
                      "pick up items. You will also be able to drop items.\n\nCertain locations will have special "
-                     "command options.")
+                     "command options.\nMaximum number of moves (each command takes 1 move): "
+                     + str(game_player.moves_left))
 
     first_event = Event(id_num=1, description=intro + command_intro)
     return first_event
@@ -283,7 +284,7 @@ def talk_with_sadia(current_game: AdventureGame, location_id: int, command: str,
 def buy_hotdog(current_game: AdventureGame, game_player: Player, game_loc_id: int) -> None:
     """Special event for buying hotdog"""
 
-    print("You rushed to the hotdog station and took a free hotdog!")
+    print("You rushed to the hotdog station and took a free hotdog! It gives you 5 extra moves!")
     current_game.remove_location_command(game_loc_id, "buy hotdog")
     game_player.moves_left += 5
 
@@ -414,7 +415,7 @@ if __name__ == "__main__":
     special_points = 30
 
     # beginning of the game
-    game_log.add_event(first_event_initializer(necessary_items))
+    game_log.add_event(first_event_initializer(necessary_items, player))
     print("Game Start! \nLocation 1: New College")
     print(game_log.last.description)
 
