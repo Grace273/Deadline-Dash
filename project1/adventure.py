@@ -474,6 +474,9 @@ if __name__ == "__main__":
             else:  # player choice is "quit"
                 game.ongoing = False
                 is_quit = True
+
+            continue
+
         else:
             # Handle non-menu actions
             if "pick up" in choice:
@@ -482,6 +485,8 @@ if __name__ == "__main__":
                 item = game.get_item(item_name)
 
                 pick_up(item, curr_location, player.inventory)
+
+                item_involved = item
 
             elif "drop" in choice:
                 item_name = choice[choice.find(": ") + 2:]
@@ -498,13 +503,19 @@ if __name__ == "__main__":
 
             elif choice == "get usb drive":
                 get_usb_drive(curr_location, game, player, 70, puzzle_points)
+                item_involved = game.get_item("usb drive")
 
             elif choice == "get laptop charger":
                 get_laptop_charger(curr_location, game, player, 30, puzzle_points)
+                item_involved = game.get_item("laptop charger")
 
             elif choice == "buy hotdog":
                 buy_hotdog(game, player, 4)
                 item_involved = game.get_item("hotdog")
+
+            elif choice == "buy potion":
+                buy_potion(game, player)
+                item_involved = game.get_item("potion")
 
             elif choice == "ford, ford, teleport":
                 target = ford_ford_teleport(game, player, special_points)
@@ -543,7 +554,7 @@ if __name__ == "__main__":
             else:
                 event_description = f"Completed special event '{choice}'"
 
-        new_event = Event(id_num=next_location.id_num, description=event_description)
+        new_event = Event(id_num=next_location.id_num, description=event_description, item_involved=item_involved)
         game_log.add_event(new_event, choice)
 
         print("==========")
