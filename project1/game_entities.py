@@ -117,7 +117,7 @@ class Location:
         self.items.append(item)
 
     def remove_item(self, item: Item) -> None:
-        """Remove given item from self's items attributes.
+        """Remove given item of value item from self's items attributes.
 
         Preconditions:
         - item in self.items
@@ -127,7 +127,7 @@ class Location:
             if self.items[i].name == item.name:
                 self.items.pop(i)
 
-    def get_item(self, name: str) -> Any:
+    def get_item(self, name: str) -> Optional[Item]:
         """Return the Item with name as its name. If none, return None."""
 
         for i in range(len(self.items)):
@@ -190,6 +190,26 @@ class Player:
             str_inventory += ", ".join(item.name for item in self.inventory)
 
         return str_inventory
+
+    def get_inventory_item(self, item_name) -> Optional[Item]:
+        """Return Item in self.inventory associated with item_name. Return None if none."""
+
+        for i in range(len(self.inventory)):
+            if self.inventory[i].name == item_name:
+
+                return self.inventory[i]
+        return None
+
+    def remove_inventory_item(self, item: Item) -> None:
+        """Remove given item of value item from self's items attributes.
+
+        Preconditions:
+        - item in self.inventory
+        """
+
+        for i in range(len(self.inventory)):
+            if self.inventory[i].name == item.name:
+                self.inventory.pop(i)
 
 
 if __name__ == "__main__":
