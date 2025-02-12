@@ -474,6 +474,9 @@ if __name__ == "__main__":
             else:  # player choice is "quit"
                 game.ongoing = False
                 is_quit = True
+
+            continue
+
         else:
             # Handle non-menu actions
             if "pick up" in choice:
@@ -482,6 +485,8 @@ if __name__ == "__main__":
                 item = game.get_item(item_name)
 
                 pick_up(item, curr_location, player.inventory)
+
+                item_involved = item
 
             elif "drop" in choice:
                 item_name = choice[choice.find(": ") + 2:]
