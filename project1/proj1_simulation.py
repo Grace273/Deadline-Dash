@@ -107,7 +107,7 @@ if __name__ == "__main__":
         'disable': ['R1705', 'E9998', 'E9999']
     })
 
-    # # A list of all user inputs needed to walk through our game to win it
+    # # A list of all user inputs needed to walk through our game to win it. Follow the input in adventure.py to test.
     win_full_demo = ["go east", "go upstairs", "pick up: key", "go downstairs", "go east", "go east",
                        "talk to sadia", "go north", "go to dorm", "get usb drive", "2", "pick up: usb drive",
                        "go downstairs", "go south", "go south", "pick up: mug", "go west", "go west",
@@ -116,10 +116,10 @@ if __name__ == "__main__":
                        "buy potion", "go back to campus", "go north", "go west", "go north", "go west",
                        "put down items to submit work"]
 
-    expected_log_win_full = [1, 2, 20, 20, 2, 4, 8, 8, 7, 70, 70, 70, 7, 8, 9, 9, 5, 3, 30, 30, 30, 3, 5, 6, 6, 11, 11, 6, 5,
-                    3, 2, 1]
+    expected_log_win_full = [1, 2, 20, 20, 2, 4, 8, 8, 7, 70, 70, 70, 7, 8, 9, 9, 5, 3, 30, 30, 30, 3, 5, 6, 6, 11,
+                             11, 6, 5, 3, 2, 1]
 
-    # A simplified walkthrough of a winning routine
+    # A simplified walkthrough between locations of a winning routine
     win_demo = ["go east", "go upstairs", "go downstairs", "go east", "go east", "talk to sadia", "go north",
                 "go to dorm", "go downstairs", "go south", "go south", "go west", "go west", "go east", "go south",
                 "go north", "go west", "go north", "go west", "put down items to submit work"]
@@ -194,3 +194,6 @@ if __name__ == "__main__":
 
     #demo of undoing pick/drop. Input the following commands in order in adventure.py to test out.
     undo_demo = ["go east", "go upstairs", "pick up: key", "undo", "pick up: key", "drop: key", "undo", "inventory"]
+
+    #demo of hotdog item. Input the following commands in order in adventure.py to test out.
+    hotdog_demo = ["go east", "go east", "buy hotdog"]
