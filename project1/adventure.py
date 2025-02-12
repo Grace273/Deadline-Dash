@@ -17,19 +17,13 @@ please consult our Course Syllabus.
 
 This file is Copyright (c) 2025 CSC111 Teaching Team
 """
+
 from __future__ import annotations
+import random
 import json
-from typing import Optional
-
-from urllib3.util.proxy import connection_requires_http_tunnel
-
+from typing import Optional, Any
 from game_entities import Location, Item, Player
 from proj1_event_logger import Event, EventList
-
-
-# Note: You may add in other import statements here as needed
-
-import random
 
 # Note: You may add helper functions, classes, etc. below as needed
 
@@ -91,43 +85,51 @@ class AdventureGame:
         items = []
         # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above
         for item_data in data['items']:  # Go through each element associated with the 'locations' key in the file
-            my_item = Item(item_data['name'], item_data['description'], item_data['start_position'], item_data['target_position'],
-                        item_data['target_points'])
+            my_item = Item(item_data['name'], item_data['description'],
+                           item_data['start_position'],
+                           item_data['target_position'],
+                           item_data['target_points'])
             items.append(my_item)
-        item_name_lst = [itm.name for itm in items] #in convenience for initializing items in each location
+        item_name_lst = [itm.name for itm in items]  # in convenience for initializing items in each location
 
         locations = {}
         for loc_data in data['locations']:  # Go through each element associated with the 'locations' key in the file
-            location_obj = Location(loc_data['id'], loc_data['name'], (loc_data['brief_description'], loc_data['long_description']),
-                                    loc_data['available_commands'], [])
-            for item_str in loc_data["items"]: # convert strings of item name into the actual item
+            location_obj = Location(loc_data['id'],
+                                    loc_data['name'],
+                                    (loc_data['brief_description'],
+                                     loc_data['long_description']),
+                                    loc_data['available_commands'],
+                                    [])
+
+            for item_str in loc_data["items"]:  # convert strings of item name into the actual item
                 item_index = item_name_lst.index(item_str)
                 location_obj.add_item(items[item_index])
             locations[loc_data['id']] = location_obj
 
         return locations, items
 
-    def get_location(self, loc_id: Optional[int] = None) -> Location:
+    def get_location(self, location_id: Optional[int] = None) -> Location:
         """Return Location object associated with the provided location ID.
         If no ID is provided, return the Location object associated with the current location.
         """
 
         # TODO: Complete this method as specified
-        if loc_id is not None:
-            return self._locations[loc_id]
+        if location_id is not None:
+            return self._locations[location_id]
         else:
             return self._locations[self.current_location_id]
 
-    def add_location_command(self, loc_id: int, command: str, command_id: int) -> None:
+    def add_location_command(self, location_id: int, command: str, command_id: int) -> None:
         """Add an available command to the Location associated with loc_id of self's _locations attribute."""
 
-        self._locations[loc_id].available_commands[command] = command_id
+        self._locations[location_id].available_commands[command] = command_id
 
-    def remove_location_command(self, loc_id: int, command: str) -> None:
+    def remove_location_command(self, location_id: int, command: str) -> None:
         """Remove a command from a desired location"""
-        #TODO: Add representation invariants
 
-        del self._locations[loc_id].available_commands[command]
+        # TODO: Add representation invariants
+
+        del self._locations[location_id].available_commands[command]
 
     def all_location_ids(self) -> list:
         """Return all available location ids in a list."""
@@ -140,15 +142,16 @@ class AdventureGame:
         for tup in location_tuples[:9]:
             print(f"Location {tup[0]}: {tup[1].name}")
 
-    def get_item(self, item_name: str) -> Item:
-        """Return Item object associated with the provided location ID.
+    def get_item(self, target_item_name: str) -> Any:
+        """Return Item object associated with the target item name, if none, return None.
 
         Preconditions:
         - item_name in [self._items[i].name for i in range(len(self._items))]"""
 
         for _ in range(len(self._items)):
-            if self._items[_].name == item_name:
+            if self._items[_].name == target_item_name:
                 return self._items[_]
+        return None
 
     # puzzles and games
     def play_word_scramble(self) -> None:
@@ -158,7 +161,6 @@ class AdventureGame:
         words = f.read().splitlines()
         word = random.choice(words)
         word_scrambled = "".join(random.sample(word, len(word)))
-        player_guess = ""
         hint = 0
 
         print("Unscramble the word: " + word_scrambled)
@@ -179,118 +181,126 @@ class AdventureGame:
         else:
             print("You Win!")
 
-    def shuffling_drawers_game(self, player: Player, item_name: str) -> None:
+    def shuffling_drawers_game(self, game_player: Player, target_item_name: str) -> None:
         """A shuffling drawers puzzle for retrieving an item"""
         max_guesses = 3
 
-        print(f"The {item_name} is in one of the three drawers. You must guess which drawer. Reshuffling occurs after each "
-              "incorrect guess.")
+        print(f"The {target_item_name} is in one of the three drawers. You must guess which drawer. Reshuffling occurs "
+              f"after each incorrect guess.")
 
         while max_guesses > 0:
             correct_guess = random.randint(1, 3)
             guess = int(input(f"Enter guess (1, 2 or 3). You have {max_guesses} chance(s): "))
 
             if guess == correct_guess:
-                print(f"You Win! The {item_name} has been added to your inventory. +20 points")
-                player.score += 20
-                player.inventory.append(game.get_item(item_name))
+                print(f"You Win! The {target_item_name} has been added to your inventory. +20 points")
+                game_player.score += 20
+                game_player.inventory.append(game.get_item(target_item_name))
                 return
             else:
                 print("Wrong! Reshuffled.")
                 max_guesses -= 1
 
-        player.inventory.append(self.get_item(item_name))
-        print(f"The drawers feel bad for you... the {item_name} reveal itself and is added to you inventory. +0 points")
+        game_player.inventory.append(self.get_item(target_item_name))
+        print(f"The drawers feel bad for you... the {target_item_name} reveal itself and is added to you inventory. "
+              f"+0 points")
 
-    def lying_backpacks_game(self, player: Player, item_name: str) -> None:
+    def lying_backpacks_game(self, game_player: Player, target_item_name: str) -> None:
         """A lying backpacks game for retrieving items"""
 
-        print(f"You entered the messy room and found three backpacks on the floor. The {item_name} is in one of the backpacks.")
-        print(f"Backpack 1 was labelled with 'The {item_name} is in me!'")
-        print(f"Backpack 2 was labelled with 'The {item_name} is in not in me!'")
-        print(f"Backpack 3 was labelled with 'The {item_name} is not in Backpack 1!'")
+        print(f"You entered the messy room and found three backpacks on the floor. The {target_item_name} is in one of "
+              f"the backpacks.")
+        print(f"Backpack 1 was labelled with 'The {target_item_name} is in me!'")
+        print(f"Backpack 2 was labelled with 'The {target_item_name} is in not in me!'")
+        print(f"Backpack 3 was labelled with 'The {target_item_name} is not in Backpack 1!'")
         print("Only one of the backpacks is telling the truth. Where is the key?")
 
         guess = input("Enter guess (1, 2 or 3), you have only one chance")
 
         if guess == 2:
-            print(f"You are so smart! The {item_name} has been added to your inventory. +20 points")
-            player.score += 20
+            print(f"You are so smart! The {target_item_name} has been added to your inventory. +20 points")
+            game_player.score += 20
         else:
             print(
-                f"Haha, you're deceived by the backpacks! the {item_name} reveals itself and is added to you inventory. +0 points")
+                f"Haha, you're deceived by the backpacks! the {target_item_name} reveals itself and is added to you "
+                f"inventory. +0 points")
 
-        player.inventory.append(self.get_item(item_name))
+        game_player.inventory.append(self.get_item(target_item_name))
 
-#==================================================================
-#=================special event functions==========================
+# ==================================================================
+# =================special event functions==========================
+
 
 def first_event_initializer() -> Event:
     """Initialize the first event."""
-    intro = "put introduction here"  #TODO: put game background intro and command intro
+    intro = "put introduction here"  # TODO: put game background intro and command intro
     first_event = Event(id_num=1, description=intro)
     return first_event
 
 
-def submit_work(player: Player, items_to_win: list[str]) -> bool:
+def submit_work(game_player: Player, items_to_win: list[str]) -> bool:
+    """Return whether the player has all the items in items_to_win in their inventory."""
 
-    for item in items_to_win:
-        if item not in player.inventory_to_string():
+    for x in items_to_win:
+        if x not in game_player.inventory_to_string():
             print("You don't have everything you need to submit!")
 
             return False
     return True
 
 
-def ford_ford_teleport(game: AdventureGame) -> int:
+def ford_ford_teleport(current_game: AdventureGame) -> int:
     """Special function for Location 10: Queen's Park. Teleport the player to any location they asked for."""
 
-    game.print_basic_locations()
+    current_game.print_basic_locations()
     answer = int(input("Hey Premier Ford! Teleport me to location... (Enter desired location id)"))
     while answer not in game.all_location_ids():
         answer = int(input("Invalid Location id. Try again:"))
 
     return answer
 
-def talk_with_sadia(game: AdventureGame, loc_id: int, command: str, command_id: int) -> None:
+
+def talk_with_sadia(current_game: AdventureGame, location_id: int, command: str, command_id: int) -> None:
     """Print message from Sadia."""
     print("Sadia tells you that she had found a left-behind charger after the morning lecture and that she brought it"
           "to her office! She tells you go to second floor Bahen to retrieve it.")
 
-    game.add_location_command(loc_id, command, command_id)
+    current_game.add_location_command(location_id, command, command_id)
 
 
-def buy_hotdog(game: AdventureGame, player: Player, loc_id: int) -> None:
+def buy_hotdog(current_game: AdventureGame, game_player: Player, game_loc_id: int) -> None:
     """Special event for buying hotdog"""
 
     print("You rushed to the hotdog station and took a free hotdog!")
-    game.remove_location_command(loc_id, "buy hotdog")
-    player.moves_left += 5
+    current_game.remove_location_command(game_loc_id, "buy hotdog")
+    game_player.moves_left += 5
 
 
-def buy_potion(game: AdventureGame, player: Player, loc_id: int) -> None:
+def buy_potion(current_game: AdventureGame, game_player: Player) -> None:
     """Special event for buying potion"""
 
     print("You are desperately looking for something useful at T&T, and suddenly you came across a special desk selling"
-          "repairing potion - that might be helpful! There's a line up in front of the desk and there is only a few left."
-          "'Please be quick....' you thought. Finally it's your turn and you managed to take the last bottle of potion!")
+          "repairing potion - that might be helpful! There's a line up in front of the desk and there is only a few "
+          "left. 'Please be quick....' you thought. Finally it's your turn and you managed to take the last bottle of "
+          "potion!")
 
-    game.remove_location_command(11, "buy potion")
-    player.inventory.append(game.get_item("potion"))
+    current_game.remove_location_command(11, "buy potion")
+    game_player.inventory.append(current_game.get_item("potion"))
 
 
-def get_usb(player: Player, key: Item, usb: Item) -> None:
+def get_usb(game_player: Player, key: Item, usb: Item) -> None:
     """Add USB to player's inventory if they have the key in their inventory."""
 
-    if key in player.inventory:
+    if key in game_player.inventory:
         print("You unlock your friend's door and step inside. The USB is sitting on his desk. You grab it and go.")
-        player.inventory.append(usb)
+        game_player.inventory.append(usb)
 
     else:
         print("You do can't enter your friend's dorm without his key!")
 
-#=================================================================
-#=================function for command============================
+# ==================================================================
+# =================function for commands============================
+
 
 def undo() -> None:
     """Remove the last command. If hold command is removed, player.item_on_hand will be None. """
@@ -303,13 +313,13 @@ def undo() -> None:
         my_item_name = my_choice[my_choice.find(": ") + 2:]
         if "pick up" in my_choice:
             for j in range(len(player.inventory)):
-                if player.inventory[i].name == my_item_name:
-                    last_loc.items.append(player.inventory.pop(i))
+                if player.inventory[j].name == my_item_name:
+                    last_loc.items.append(player.inventory.pop(j))
                     print(f"Dropped {my_item_name} at Location {last_loc.id_num}: {last_loc.name}")
                     break
         elif "drop" in my_choice:
             for j in range(len(last_loc.items)):
-                if last_loc.items[i].name == item_name:
+                if last_loc.items[j].name == item_name:
                     player.inventory.append(last_loc.items.pop(i))
                     print(f"Picked up {my_item_name} at Location {last_loc.id_num}: {last_loc.name}")
         elif "hold" in my_choice:
@@ -322,19 +332,20 @@ def undo() -> None:
 
     print(player.inventory_to_string())
 
-#==================================================================
-#=========================main function============================
+# ==================================================================
+# =========================main function============================
+
 
 if __name__ == "__main__":
 
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'max-line-length': 120,
-    #     'disable': ['R1705', 'E9998', 'E9999']
-    # })
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'disable': ['R1705', 'E9998', 'E9999']
+    })
 
     player = Player()
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
@@ -353,7 +364,7 @@ if __name__ == "__main__":
 
     # beginning of the game
     game_log.add_event(first_event_initializer())
-    print(f"Game Start! \nLocation 1: New College")
+    print("Game Start! \nLocation 1: New College")
     print(game_log.last.description)
 
     # Note: You may modify the code below as needed; the following starter code is just a suggestion
@@ -384,8 +395,7 @@ if __name__ == "__main__":
                 pick_drop_hold.append(choice_name1)
                 pick_drop_hold.append(choice_name2)
         else:
-            print(f"No drop or hold options available.")
-
+            print("No drop or hold options available.")
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
@@ -446,6 +456,7 @@ if __name__ == "__main__":
                         if player.item_on_hand and player.item_on_hand.name == item_name:
                             player.item_on_hand = None
                         break
+
             elif "hold" in choice:
                 item_name = choice[choice.find(": ") + 2:]
                 for i in range(len(player.inventory)):
@@ -453,11 +464,11 @@ if __name__ == "__main__":
                         player.item_on_hand = player.inventory[i]
                         item_involved = player.inventory[i]
                         break
-            #TODO: fix hardcoding
+
             elif choice == "talk to sadia":
-                talk_with_sadia(game=game, loc_id=3, command="go upstairs", command_id=30)
+                talk_with_sadia(current_game=game, location_id=3, command="go upstairs", command_id=30)
                 item_involved = None
-                game.remove_location_command(loc_id=8, command="talk to sadia")
+                game.remove_location_command(location_id=8, command="talk to sadia")
 
             elif choice == "get laptop charger":
                 game.shuffling_drawers_game(player, 'laptop charger')
@@ -467,10 +478,10 @@ if __name__ == "__main__":
                     if curr_location.items[i] == "laptop charger":
                         curr_location.items.pop(i)
 
-                game.remove_location_command(loc_id=30, command="get laptop charger")
+                game.remove_location_command(30, command="get laptop charger")
 
             elif choice == "buy hotdog":
-                buy_hotdog(game, player, loc_id=4)
+                buy_hotdog(game, player, 4)
                 item_involved = game.get_item("hotdog")
 
             elif choice == "ford, ford, teleport":
@@ -496,17 +507,15 @@ if __name__ == "__main__":
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
             # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
 
-        #TODO: implement pick up and drop item
+        # TODO: implement pick up and drop item
 
         if item_involved:
             print(f"Item description: {item_involved.description}")
 
-
         # create the next event
         next_location = game.get_location()
-        event_description = ''
 
-        if not item_involved: # if location changed
+        if not item_involved:  # if location changed
             if next_location.visited:
                 event_description = next_location.descriptions[0]
             else:
@@ -518,8 +527,6 @@ if __name__ == "__main__":
                 event_description = choice
             else:
                 event_description = f"Completed special event '{choice}'"
-
-             # TODO add description for puzzles
 
         new_event = Event(id_num=next_location.id_num, description=event_description)
         game_log.add_event(new_event, choice)
