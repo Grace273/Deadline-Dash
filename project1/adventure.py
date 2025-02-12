@@ -480,15 +480,17 @@ if __name__ == "__main__":
                 buy_hotdog(game, player, loc_id=4)
                 item_involved = game.get_item("hotdog")
 
+            elif choice == "buy potion":
+                buy_potion(game, player, loc_id=11)
+
             elif choice == "ford, ford, teleport":
                 target = ford_ford_teleport(game)
                 item_involved = None
                 game.current_location_id = target
 
             elif choice == "put down items to submit work":
-
                 if submit_work(player, necessary_items):
-                    ongoing = False
+                    game.ongoing = False
 
             else:
                 if choice == "get on the streetcar" and game.get_item("presto card") not in player.inventory:
