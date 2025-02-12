@@ -19,7 +19,7 @@ please consult our Course Syllabus.
 This file is Copyright (c) 2025 CSC111 Teaching Team
 """
 from dataclasses import dataclass
-from typing import Optional, Any
+from typing import Optional
 
 
 @dataclass
@@ -167,8 +167,8 @@ class Player:
     def inventory_to_string(self) -> str:
         """List all items in inventory in a readable format
 
-        >>> item1 = Item("key", "The key to open door.", (0,19), 10)
-        >>> item2 = Item("usb drive", "The only copy of your game", (0,19), 10)
+        >>> item1 = Item("key", "The key to open door", (0,19))
+        >>> item2 = Item("usb drive", "The only copy of your game", (0,19))
         >>> p = Player()
         >>> p.inventory = [item1, item2]
         >>> p.inventory_to_string()
@@ -183,7 +183,7 @@ class Player:
 
         return str_inventory
 
-    def get_inventory_item(self, item_name) -> Optional[Item]:
+    def get_inventory_item(self, item_name: str) -> Optional[Item]:
         """Return Item in self.inventory associated with item_name. Return None if none."""
 
         for i in range(len(self.inventory)):
