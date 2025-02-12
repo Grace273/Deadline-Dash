@@ -560,12 +560,10 @@ if __name__ == "__main__":
         # minus the player's moves left by 1
         player.moves_left -= 1
 
-        if player.moves_left == 0:
-            game.ongoing = False
-
     if player.moves_left == 0:
         print("\nYou ran out of moves. It's 4 PM and you missed the deadline. What will you tell your friend...")
         print("GAME OVER.")
+        game.ongoing = False
 
     else:
 
