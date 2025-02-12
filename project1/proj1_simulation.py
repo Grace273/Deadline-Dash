@@ -118,7 +118,6 @@ if __name__ == "__main__":
     # # Log list of IDs of all locations that would be visited
     # expected_log = [1, 2, 20, 20, 2, 4, 8, 8, 7, 70, 70, 70, 7, 8, 9, 9, 5, 3, 30, 30, 30, 3, 5, 6, 6, 11, 11, 6, 5,
     #                 3, 2, 1]
-    #
 
     # A simplified walkthrough of a winning routine
     win_demo = ["go east", "go upstairs", "go downstairs", "go east", "go east", "talk to sadia", "go north",
@@ -154,12 +153,10 @@ if __name__ == "__main__":
 
     assert expected_log_lose == lose_sim.get_id_log()
 
-    # inventory demo, including pick up and drop
+    # inventory demo, including pick up and drop. Follow to input to test out inventory function
     # inventory_demo = ["go east", "go upstairs", "pick up: key", "drop: key"]
     #
     # expected_log = [1, 2, 20, 20, 20]
-    #
-    # assert expected_log == AdventureGameSimulation('game_data.json', 1, inventory_demo, 10)
 
     # demo of special event - teleport
     teleportation_demo = ["go east", "go east", "go east", "go under the bridge", "ford, ford, teleport"]
