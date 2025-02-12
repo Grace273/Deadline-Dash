@@ -110,7 +110,6 @@ class AdventureGame:
         If no ID is provided, return the Location object associated with the current location.
         """
 
-        # TODO: Complete this method as specified
         if location_id is not None:
             return self._locations[location_id]
         else:
@@ -154,8 +153,9 @@ class AdventureGame:
     def play_word_scramble(self) -> None:
         """A word scramble puzzle."""
 
-        f = open("../ex1/common-7-letter-words.txt", "r")
-        words = f.read().splitlines()
+        with open("../ex1/common-7-letter-words.txt", "r") as f:
+            words = f.read().splitlines()
+
         word = random.choice(words)
         word_scrambled = "".join(random.sample(word, len(word)))
         hint = 0
@@ -223,10 +223,20 @@ class AdventureGame:
 # =================special event functions==========================
 
 
-def first_event_initializer() -> Event:
+def first_event_initializer(key_items: list[str]) -> Event:
     """Initialize the first event."""
-    intro = "put introduction here"  # TODO: put game background intro and command intro
-    first_event = Event(id_num=1, description=intro)
+
+    intro = ("The submission deadline is at 4PM. You promised your friend you would get it done, but you are missing "
+             "key, items: " + ', '.join(key_items) + "\nFind them before the deadline to save you grade and the project"
+                                                     "!\n")
+
+    command_intro = ("\nCOMMANDS:\nlook: to get a long description of your location\ninventory: to check items in your "
+                     "inventory\nscore: to check you game score\nundo: to go back to the last event (location change or"
+                     " item pick up/drop\nlog: to get game log\nquit: quit the game\n\nAt certain locations, you can "
+                     "pick up items. You will also be able to drop items.\n\nCertain locations will have special "
+                     "command options.")
+
+    first_event = Event(id_num=1, description=intro + command_intro)
     return first_event
 
 
@@ -280,25 +290,26 @@ def buy_potion(current_game: AdventureGame, game_player: Player) -> None:
     game_player.inventory.append(current_game.get_item("potion"))
 
 
-def get_usb_drive(current_game: AdventureGame, game_player: Player, loc_id: int) -> None:
+def get_usb_drive(current_game: AdventureGame, game_player: Player, location_id: int) -> None:
     """Add USB to player's inventory if they have the key in their inventory."""
 
     key = current_game.get_item("key")
     if key in game_player.inventory:
         print("You unlock your friend's door and step inside.")
         current_game.lying_backpacks_game(player, "usb drive")
-        current_game.get_location(loc_id).add_item(current_game.get_item("usb drive"))
-        current_game.remove_location_command(loc_id, "get usb drive")
+        current_game.get_location(location_id).add_item(current_game.get_item("usb drive"))
+        current_game.remove_location_command(location_id, "get usb drive")
     else:
         print("You can't enter your friend's dorm without his key!")
 
-def get_laptop_charger(current_game: AdventureGame, game_player: Player, loc_id: int) -> None:
+
+def get_laptop_charger(current_game: AdventureGame, game_player: Player, location_id: int) -> None:
     """Get laptop charger by solving a puzzle"""
 
     print("You pushed the door and go inside the office. There are three magic drawers.")
     current_game.shuffling_drawers_game(game_player, "laptop charger")
-    current_game.get_location(loc_id).add_item(current_game.get_item("laptop charger"))
-    current_game.remove_location_command(loc_id, "get laptop charger")
+    current_game.get_location(location_id).add_item(current_game.get_item("laptop charger"))
+    current_game.remove_location_command(location_id, "get laptop charger")
 
 # ==================================================================
 # =================function for menu commands============================
@@ -368,7 +379,7 @@ if __name__ == "__main__":
     SS_id = 2
 
     # beginning of the game
-    game_log.add_event(first_event_initializer())
+    game_log.add_event(first_event_initializer(necessary_items))
     print("Game Start! \nLocation 1: New College")
     print(game_log.last.description)
 
@@ -376,8 +387,6 @@ if __name__ == "__main__":
     while game.ongoing:
         # Note: If the loop body is getting too long, you should split the body up into helper functions
         # for better organization. Part of your marks will be based on how well-organized your code is.
-
-        # TODO: Add completing picking up / depositing an item as an event
 
         curr_location = game.get_location()
 
@@ -409,7 +418,6 @@ if __name__ == "__main__":
         print("----------")
 
         if choice in menu:
-            # TODO: Handle each menu command as appropriate
             # Note: For the "undo" command, remember to manipulate the game_log event list to keep it up-to-date
             if choice == "log":
                 event_lst = game_log.display_events()
@@ -432,7 +440,6 @@ if __name__ == "__main__":
                 undo(game, item_involved, player)
 
             else:  # player choice is "quit"
-                # TODO: ask if want to save game, if so, call helper function, else:
                 print("Thanks for playing!")
             continue
         else:
@@ -490,10 +497,6 @@ if __name__ == "__main__":
                     print(f"You decided to: {choice}.")
 
             # TODO: add target points if item is used at target position
-            # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
-            # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
-
-        # TODO: implement pick up and drop item
 
         if item_involved:
             print(f"Item description: {item_involved.description}")
@@ -517,8 +520,6 @@ if __name__ == "__main__":
         new_event = Event(id_num=next_location.id_num, description=event_description)
         game_log.add_event(new_event, choice)
 
-        # TODO: Depending on whether or not it's been visited before,
-        #  print either full description (first time visit) or brief description (every subsequent visit) of location
         print("==========")
         print(f"Location {next_location.id_num}: {next_location.name}")
         print(game_log.last.description)
