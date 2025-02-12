@@ -108,17 +108,16 @@ if __name__ == "__main__":
     })
 
     # # A list of all user inputs needed to walk through our game to win it
-    # win_demo = ["go east", "go upstairs", "pick up: key", "go downstairs", "go east", "go east",
-    #                    "talk to sadia", "go north", "go to dorm", "get usb drive", "2", "pick up: usb drive",
-    #                    "go downstairs", "go south", "go south", "pick up: mug", "go west", "go west",
-    #                    "go upstairs", "get laptop charger", "1", "1", "1", "pick up: laptop charger",
-    #                    "go downstairs", "go east", "go south", "pick up: presto card", "get on the streetcar",
-    #                    "buy potion", "go back to campus", "go north", "go west", "go north", "go west",
-    #                    "put down items to submit work"]
-    #
-    # # Log list of IDs of all locations that would be visited
-    # expected_log = [1, 2, 20, 20, 2, 4, 8, 8, 7, 70, 70, 70, 7, 8, 9, 9, 5, 3, 30, 30, 30, 3, 5, 6, 6, 11, 11, 6, 5,
-    #                 3, 2, 1]
+    win_full_demo = ["go east", "go upstairs", "pick up: key", "go downstairs", "go east", "go east",
+                       "talk to sadia", "go north", "go to dorm", "get usb drive", "2", "pick up: usb drive",
+                       "go downstairs", "go south", "go south", "pick up: mug", "go west", "go west",
+                       "go upstairs", "get laptop charger", "1", "1", "1", "pick up: laptop charger",
+                       "go downstairs", "go east", "go south", "pick up: presto card", "get on the streetcar",
+                       "buy potion", "go back to campus", "go north", "go west", "go north", "go west",
+                       "put down items to submit work"]
+
+    expected_log_win_full = [1, 2, 20, 20, 2, 4, 8, 8, 7, 70, 70, 70, 7, 8, 9, 9, 5, 3, 30, 30, 30, 3, 5, 6, 6, 11, 11, 6, 5,
+                    3, 2, 1]
 
     # A simplified walkthrough of a winning routine
     win_demo = ["go east", "go upstairs", "go downstairs", "go east", "go east", "talk to sadia", "go north",
@@ -155,20 +154,9 @@ if __name__ == "__main__":
     assert expected_log_lose == lose_sim.get_id_log()
 
     # inventory demo, including pick up and drop. Follow to input to test out inventory function
-    # inventory_demo = ["go east", "go upstairs", "pick up: key", "drop: key"]
-    #
-    # expected_log = [1, 2, 20, 20, 20]
+    inventory_demo = ["go east", "go upstairs", "pick up: key", "drop: key"]
 
-    # demo of special event - teleport
-    teleportation_demo = ["go east", "go east", "go east", "go under the bridge", "ford, ford, teleport"]
-
-    expected_log = [1, 2, 4, 8, 10, 10]  # next user input determines which place to teleport
-
-    teleportation_sim = AdventureGameSimulation('game_data.json',
-                                                1, teleportation_demo, 10)
-    teleportation_sim.run()
-
-    assert expected_log == teleportation_sim.get_id_log()
+    expected_log_inventory = [1, 2, 20, 20, 20]
 
     # demo for score
     score_demo = ["go east", "go east", "go east", "go south", "go north", "go under the bridge",
@@ -180,3 +168,29 @@ if __name__ == "__main__":
     score_sim.run()
 
     assert expected_log_score == score_sim.get_id_log()
+
+    # demo of special event - teleport
+    teleportation_demo = ["go east", "go east", "go east", "go under the bridge", "ford, ford, teleport"]
+
+    expected_log_teleportation = [1, 2, 4, 8, 10, 10]  # next user input determines which place to teleport
+
+    teleportation_sim = AdventureGameSimulation('game_data.json',
+                                                1, teleportation_demo, 10)
+    teleportation_sim.run()
+
+    assert expected_log_teleportation == teleportation_sim.get_id_log()
+
+    # demo of minigame puzzle. Input the following commands in order in adventure.py to test out minigame
+    minigame_demo = ["go east", "go upstairs", "go upstairs", "pick up: key", "go downstairs", "go east", "go east",
+                     "go north", "go to dorm", "get usb drive", "2", "pick up: usb drive"]
+
+    # demo of mug puzzle. Input the following commands in order in adventure.py to test out.
+    mug_puzzle_demo = ["go east", "go east", "go east", "go south", "pick up: mug", "go west", "go south",
+                        "pick up presto card", "get on street car", "pick up: potion"]
+
+    # demo of laptop charger puzzle. Input the following commands in order in adventure.py to test out.
+    lc_puzzle_demo = ["go east", "go east", "go east", "talk to sadia", "go under the bridge", "ford, ford, teleport",
+                      "3", "go upstairs", "get laptop charger", "1", "1", "1", "pick up: laptop charger"]
+
+    #demo of undoing pick/drop. Input the following commands in order in adventure.py to test out.
+    undo_demo = ["go east", "go upstairs", "pick up: key", "undo", "pick up: key", "drop: key", "undo", "inventory"]
