@@ -132,6 +132,13 @@ class Location:
             if self.items[i].name == item.name:
                 self.items.pop(i)
 
+    def get_item(self, name: str) -> Item:
+        """Return the Item with name as its name."""
+
+        for i in range(len(self.items)):
+            if self.items[i].name == name:
+                return self.items[i]
+
 # Note: Other entities you may want to add, depending on your game plan:
 # - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)
 # - Player class

@@ -112,7 +112,7 @@
       "available_commands": {
         "go downstairs": 7
       },
-      "items": ["USB drive"]
+      "items": ["usb drive"]
     },
     {
       "id": 8,
@@ -135,8 +135,7 @@
       "long_description": "You are on the first floor of the Myhal Center. Hundreds of students are rushing out from a engineering class in MY150. You see something familiar - your lucky UofT mug is on a table! But just as you hurried there, an engineering student ran by. You heard a loud sound and your mug got smashed to the floor by his backpack! What the hell! Now you need to fix it somewhere - maybe outside the campus?",
       "available_commands": {
         "go north": 8,
-        "go west": 5,
-        "pick up broken mug pieces (Ouch!)": 9
+        "go west": 5
       },
       "items": ["mug"]
     },
@@ -171,7 +170,7 @@
       "target_points": 0
     },
     {
-      "name": "USB drive",
+      "name": "usb drive",
       "description": "The only copy of your game is stored in this USB.",
       "start_position": 70,
       "target_position": 1,

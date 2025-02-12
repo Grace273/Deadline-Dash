@@ -261,12 +261,24 @@ def ford_ford_teleport(game: AdventureGame) -> int:
 
     return answer
 
+
 def talk_with_sadia(game: AdventureGame, loc_id: int, command: str, command_id: int) -> None:
     """Print message from Sadia."""
     print("Sadia tells you that she had found a left-behind charger after the morning lecture and that she brought it"
           "to her office! She tells you go to second floor Bahen to retrieve it.")
 
     game.add_location_command(loc_id, command, command_id)
+
+
+def get_usb(player: Player, key: Item, usb: Item) -> None:
+    """Add USB to player's inventory if they have the key in their inventory."""
+
+    if key in player.inventory:
+        print("You unlock your friend's door and step inside. The USB is sitting on his desk. You grab it and go.")
+        player.inventory.append(usb)
+
+    else:
+        print("You do can't enter your friend's dorm without his key!")
 
 #==================================================================
 #=================function for command============================
@@ -317,14 +329,20 @@ if __name__ == "__main__":
 
     player = Player()
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
-    necessary_items = ["laptop charger", "mug", "USB drive", "potion"]
+    necessary_items = ["laptop charger", "mug", "usb drive", "potion"]
     game = AdventureGame('game_data.json', 1, 10)  # load data, setting
     # initial location ID to 1 and unlock_location_points to 10.
     menu = ["look", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
     choice = None
     item_involved = None
 
-    #beginning of the game
+    # for cleaner code
+    trinity2f_name = "Trinity College 2F"
+    usb_drive_name = "usb drive"
+    trinity_key_name = "key"
+    SS_id = 2
+
+    # beginning of the game
     game_log.add_event(first_event_initializer())
     print(f"Game Start! \nLocation 1: New College")
     print(game_log.last.description)
@@ -394,7 +412,13 @@ if __name__ == "__main__":
             continue
         else:
             # Handle non-menu actions
-            if "pick up" in choice:
+            if choice == "pick up: usb" and curr_location.name == trinity2f_name:
+
+                get_usb(player, game.get_location(SS_id).get_item(trinity_key_name),
+                        curr_location.get_item(usb_drive_name))
+
+            elif "pick up" in choice:
+
                 item_name = choice[choice.find(": ") + 2:]
                 item = game.get_item(item_name)
 
