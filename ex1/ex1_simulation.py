@@ -96,7 +96,6 @@ class SimpleAdventureGame:
         If no ID is provided, return the Location object associated with the current location.
         """
 
-        # TODO: Complete this method as specified. Do not modify any of this function's specifications.
         if loc_id is not None:
             return self._locations[loc_id]
         else:
@@ -122,7 +121,6 @@ class AdventureGameSimulation:
         self._events = EventList()
         self._game = SimpleAdventureGame(game_data_file, initial_location_id)
 
-        # TODO: Add first event (initial location, no previous command)
         # Hint: self._game.get_location() gives you back the current location
         initial_location = self._game.get_location()
         initial_location_id_desc = initial_location.description
@@ -133,7 +131,6 @@ class AdventureGameSimulation:
         # Pass command=None since this is the first event, i.e, no command was used to reach this event.
         self._events.add_event(event=first_event, command=None)
 
-        # TODO: Generate the remaining events based on the commands and initial location
         # Hint: Call self.generate_events with the appropriate arguments
 
         self.generate_events(commands=commands, current_location=initial_location)
@@ -146,8 +143,6 @@ class AdventureGameSimulation:
         - all commands in the given list are valid commands at each associated location in the game
         """
 
-        # TODO: Complete this method as specified. For each command, generate the event and add
-        #  it to self._events.
         # Hint: current_location.available_commands[command] will return the next location ID
         # which executing <command> while in <current_location_id> leads to
 
