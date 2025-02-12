@@ -469,11 +469,6 @@ if __name__ == "__main__":
             elif choice == "get laptop charger":
                 game.shuffling_drawers_game(player, 'laptop charger')
                 item_involved = game.get_item("laptop charger")
-
-                for i in range(len(curr_location.items)):
-                    if curr_location.items[i] == "laptop charger":
-                        curr_location.items.pop(i)
-
                 game.remove_location_command(loc_id=30, command="get laptop charger")
 
             elif choice == "buy hotdog":
