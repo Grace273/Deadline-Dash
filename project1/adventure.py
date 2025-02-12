@@ -138,39 +138,10 @@ class AdventureGame:
         return None
 
     # puzzles and games
-    def play_word_scramble(self) -> None:
-        """A word scramble puzzle."""
-
-        with open("../ex1/common-7-letter-words.txt", "r") as f:
-            words = f.read().splitlines()
-
-        word = random.choice(words)
-        word_scrambled = "".join(random.sample(word, len(word)))
-        hint = 0
-
-        print("Unscramble the word: " + word_scrambled)
-        player_guess = input("Enter guess (enter 1 for hint, 0 to give up): ")
-
-        while player_guess != word and player_guess != "0" and hint != len(word):
-
-            if player_guess == "1":
-                print("The next letter is: " + word[hint])
-                hint += 1
-            else:
-                print("Try again.")
-
-            player_guess = input("Enter guess (enter 1 for hint, 0 to give up): ")
-
-        if player_guess == "0" or hint == len(word):
-            print("Challenge failed... The word was: " + word)
-        else:
-            print("You Win!")
-
-    def shuffling_drawers_game(self, current_location: Location, game_player: Player, target_item_name: str,
+    def shuffling_drawers_game(self, game_player: Player, target_item_name: str,
                                win_points: int) -> None:
         """A shuffling drawers puzzle for retrieving an item"""
         max_guesses = 3
-        prize = current_location.get_item(target_item_name)
 
         print(f"The {target_item_name} is in one of the three drawers. You must guess which drawer. Reshuffling occurs "
               f"after each incorrect guess.")
@@ -180,14 +151,10 @@ class AdventureGame:
             guess = int(input(f"Enter guess (1, 2 or 3). You have {max_guesses} chance(s): "))
 
             if guess == correct_guess:
-                print(f"You Win! The {target_item_name} shows up and is added to your inventory. +" + str(win_points)
+                print(f"You Win! The {target_item_name} shows up. +" + str(win_points)
                       + "points!")
-
-                pick_up(prize, current_location, game_player.inventory)
-
                 game_player.score += win_points
-
-                max_guesses = 0
+                return
 
             else:
                 print("Wrong! Reshuffled.")
@@ -196,13 +163,9 @@ class AdventureGame:
         print(f"The drawers feel bad for you... the {target_item_name} reveals itself in disappointment. "
               f"+0 points")
 
-        pick_up(prize, current_location, game_player.inventory)
-
-    def lying_backpacks_game(self, current_location: Location, game_player: Player, target_item_name: str,
+    def lying_backpacks_game(self, game_player: Player, target_item_name: str,
                              win_points: int) -> None:
         """A lying backpacks game for retrieving items"""
-
-        prize = current_location.get_item(target_item_name)
 
         print(f"You entered the messy room and found three backpacks on the floor. The {target_item_name} is in one of "
               f"the backpacks.")
@@ -216,15 +179,11 @@ class AdventureGame:
         if guess == 2:
             print(f"You are so smart! The {target_item_name} shows up. +" + str(win_points) + "points!")
 
-            pick_up(prize, current_location, game_player.inventory)
-
             game_player.score += win_points
 
         else:
             print(f"Haha, you're deceived by the backpacks! The {target_item_name} reveals itself in disappointment. "
                   f"+0 points")
-
-            pick_up(prize, current_location, game_player.inventory)
 
 # ==================================================================
 # =================special event functions==========================
@@ -301,28 +260,27 @@ def buy_potion(current_game: AdventureGame, game_player: Player) -> None:
     game_player.inventory.append(current_game.get_item("potion"))
 
 
-def get_usb_drive(current_location: Location, current_game: AdventureGame, game_player: Player, location_id: int,
+def get_usb_drive(current_game: AdventureGame, game_player: Player, location_id: int,
                   win_points: int) -> None:
     """Add USB to player's inventory if they have the key in their inventory."""
 
     key = current_game.get_item("key")
     if key in game_player.inventory:
         print("You unlock your friend's door and step inside.")
-        current_game.lying_backpacks_game(current_location, game_player, "usb drive", win_points)
+        current_game.lying_backpacks_game(game_player, "usb drive", win_points)
         current_game.get_location(location_id).add_item(current_game.get_item("usb drive"))
         current_game.remove_location_command(location_id, "get usb drive")
     else:
         print("You can't enter your friend's dorm without his key!")
 
 
-def get_laptop_charger(current_location: Location, current_game: AdventureGame, game_player: Player, location_id: int,
+def get_laptop_charger(current_game: AdventureGame, game_player: Player, location_id: int,
                        win_points: int) -> None:
     """Get laptop charger by solving a puzzle"""
 
     print("You pushed the door and go inside the office. There are three magic drawers.")
 
-    current_game.shuffling_drawers_game(current_location, game_player,
-                                        "laptop charger", win_points)
+    current_game.shuffling_drawers_game(game_player, "laptop charger", win_points)
     current_game.get_location(location_id).add_item(current_game.get_item("laptop charger"))
     current_game.remove_location_command(location_id, "get laptop charger")
 
@@ -502,10 +460,10 @@ if __name__ == "__main__":
                 game.remove_location_command(location_id=8, command="talk to sadia")
 
             elif choice == "get usb drive":
-                get_usb_drive(curr_location, game, player, 70, puzzle_points)
+                get_usb_drive(game, player, 70, puzzle_points)
 
             elif choice == "get laptop charger":
-                get_laptop_charger(curr_location, game, player, 30, puzzle_points)
+                get_laptop_charger(game, player, 30, puzzle_points)
 
             elif choice == "buy hotdog":
                 buy_hotdog(game, player, 4)
