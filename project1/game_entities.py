@@ -53,9 +53,8 @@ class Item:
     enabled: bool
     start_position: int
     target_position: Optional[int]
-    target_points: int
 
-    def __init__(self, name: str, description: str, positions: tuple[int, int], target_points: int) -> None:
+    def __init__(self, name: str, description: str, positions: tuple[int, int]) -> None:
         """Initialize a new item. The first item in positions is the initial position, the second is the target
         position."""
 
@@ -64,7 +63,6 @@ class Item:
         self.description = description
         self.start_position = positions[0]
         self.target_position = positions[1]
-        self.target_points = target_points
         self.enabled = True
 
 
@@ -93,12 +91,6 @@ class Location:
     available_commands: dict[str, int]
     items: list[Item]
     visited: bool
-
-    # This is just a suggested starter class for Location.
-    # You may change/add parameters and the data available for each Location object as you see fit.
-    #
-    # The only thing you must NOT change is the name of this class: Location.
-    # All locations in your game MUST be represented as an instance of this class.
 
     def __init__(self, id_and_name: tuple[int, str], descriptions: tuple[str, str],
                  available_commands: dict[str, int], items: list[Item]) -> None:

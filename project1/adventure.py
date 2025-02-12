@@ -74,8 +74,7 @@ class AdventureGame:
 
         for item_data in data['items']:  # Go through each element associated with the 'locations' key in the file
             my_item = Item(item_data['name'], item_data['description'],
-                           (item_data['start_position'], item_data['target_position']),
-                           item_data['target_points'])
+                           (item_data['start_position'], item_data['target_position']))
             items.append(my_item)
         item_name_lst = [itm.name for itm in items]  # in convenience for initializing items in each location
 
@@ -259,8 +258,11 @@ def submit_work(game_player: Player, items_to_win: list[str]) -> bool:
     return True
 
 
-def ford_ford_teleport(current_game: AdventureGame) -> int:
+def ford_ford_teleport(current_game: AdventureGame, game_player: Player, points: int) -> int:
     """Special function for Location 10: Queen's Park. Teleport the player to any location they asked for."""
+
+    print("You unlocked the secret location! +" + str(special_points) + "points.")
+    game_player.score += points
 
     current_game.print_basic_locations()
     answer = int(input("Hey Premier Ford! Teleport me to location... (Enter desired location id)"))
@@ -395,14 +397,13 @@ if __name__ == "__main__":
     menu = ["look", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
     choice = None
     item_involved = None
-
-    # for cleaner code
     trinity2f_name = "Trinity College 2F"
     usb_drive_name = "usb drive"
     trinity_key_name = "key"
     SS_id = 2
     puzzle_points = 20
     necessary_items_points = 20
+    special_points = 30
 
     # beginning of the game
     game_log.add_event(first_event_initializer(necessary_items))
@@ -495,7 +496,7 @@ if __name__ == "__main__":
                 item_involved = game.get_item("hotdog")
 
             elif choice == "ford, ford, teleport":
-                target = ford_ford_teleport(game)
+                target = ford_ford_teleport(game, player, special_points)
                 item_involved = None
                 game.current_location_id = target
 
