@@ -27,9 +27,6 @@ from typing import Optional
 from game_entities import Item
 
 
-# TODO: Copy/paste your ex1_event_logger code below, and modify it if needed to fit your game
-
-
 @dataclass
 class Event:
     """
@@ -43,12 +40,6 @@ class Event:
     - prev: Event object representing the previous event in the game, None if this is the first game event
     - item_involved: Item involved in this event, None if no item is changed.
     """
-
-    # NOTES:
-    # This is proj1_event_logger (separate from the ex1 file). In this file, you may add new attributes/methods,
-    # or modify the names or types of provided attributes/methods, as needed for your game.
-    # If you want to create a special type of Event for your game that requires a different
-    # set of attributes, you can create new classes using inheritance, as well.
 
     id_num: int
     description: str
@@ -89,7 +80,6 @@ class EventList:
 
         return event_lst
 
-    # TODO: Complete the methods below, based on the given descriptions.
     def is_empty(self) -> bool:
         """Return whether this event list is empty."""
 
@@ -100,7 +90,6 @@ class EventList:
         The given command is the command which was used to reach this new event, or None if this is the first
         event in the game.
         """
-        # Hint: You should update the previous node's <next_command> as needed
 
         if self.first is None:
             self.first = event
@@ -114,8 +103,6 @@ class EventList:
     def remove_last_event(self) -> None:
         """Remove the last event from this event list.
         If the list is empty, do nothing."""
-
-        # Hint: The <next_command> and <next> attributes for the new last event should be updated as needed
 
         if self.first is None:
             return
@@ -137,7 +124,6 @@ class EventList:
             curr = curr.next
 
         return ids_so_far
-    # Note: You may add other methods to this class as needed
 
 
 if __name__ == "__main__":

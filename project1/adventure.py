@@ -25,8 +25,6 @@ from typing import Optional, Any
 from game_entities import Location, Item, Player
 from proj1_event_logger import Event, EventList
 
-# Note: You may add helper functions, classes, etc. below as needed
-
 
 class AdventureGame:
     """A text adventure game class storing all location, item and map data.
@@ -35,9 +33,6 @@ class AdventureGame:
         - current_location_id: the ID of the location the game is currently in
         - ongoing: whether the game is still ongoing
         - unlock_location_points: number of points added to player's score when they go to a new location
-
-    Representation Invariants:
-        - # TODO add any appropriate representation invariants as needed
     """
 
     # Private Instance Attributes (do NOT remove these two attributes):
@@ -47,8 +42,8 @@ class AdventureGame:
 
     _locations: dict[int, Location]
     _items: list[Item]
-    current_location_id: int  # Suggested attribute, can be removed
-    ongoing: bool  # Suggested attribute, can be removed
+    current_location_id: int
+    ongoing: bool
     unlock_location_points: int
 
     def __init__(self, game_data_file: str, initial_location_id: int, unlock_location_points: int) -> None:
@@ -60,13 +55,6 @@ class AdventureGame:
         Preconditions:
         - game_data_file is the filename of a valid game data JSON file
         """
-
-        # NOTES:
-        # You may add parameters/attributes/methods to this class as you see fit.
-
-        # Requirements:
-        # 1. Make sure the Location class is used to represent each location.
-        # 2. Make sure the Item class is used to represent each item.
 
         self._locations, self._items = self._load_game_data(game_data_file)
         self.current_location_id = initial_location_id
@@ -400,7 +388,7 @@ if __name__ == "__main__":
     })
 
     player = Player()
-    game_log = EventList()  # This is REQUIRED as one of the baseline requirements
+    game_log = EventList()
     necessary_items = ["laptop charger", "mug", "usb drive", "potion"]
     game = AdventureGame('game_data.json', 1, 10)  # load data, setting
     # initial location ID to 1 and unlock_location_points to 10.
@@ -421,11 +409,7 @@ if __name__ == "__main__":
     print("Game Start! \nLocation 1: New College")
     print(game_log.last.description)
 
-    # Note: You may modify the code below as needed; the following starter code is just a suggestion
     while game.ongoing:
-        # Note: If the loop body is getting too long, you should split the body up into helper functions
-        # for better organization. Part of your marks will be based on how well-organized your code is.
-
         curr_location = game.get_location()
 
         # Display possible actions at this location
@@ -433,6 +417,7 @@ if __name__ == "__main__":
         print("At this location, you can also:")
         for action in curr_location.available_commands:
             print("-", action)
+
         # Display items available for picking up and dropping
         pick_drop = []
         for item in curr_location.items:
@@ -456,14 +441,12 @@ if __name__ == "__main__":
         print("----------")
 
         if choice in menu:
-            # Note: For the "undo" command, remember to manipulate the game_log event list to keep it up-to-date
             if choice == "log":
                 event_lst = game_log.display_events()
                 for i in range(len(event_lst) - 1):
                     loc_id = event_lst[i][0]
                     print(f"Location: {game.get_location(loc_id).name} (id: {loc_id}), you chose to {event_lst[i][1]}")
                 print(f"You are currently at Location {event_lst[-1][0]}: {game.get_location(event_lst[-1][0]).name}")
-            # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
             elif choice == "look":
                 print(curr_location.descriptions[1])
 
@@ -528,8 +511,6 @@ if __name__ == "__main__":
                     result = curr_location.available_commands[choice]
                     game.current_location_id = result
                     print(f"You decided to: {choice}.")
-
-            # TODO: add target points if item is used at target position
 
         if item_involved:
             print(f"Item description: {item_involved.description}")
