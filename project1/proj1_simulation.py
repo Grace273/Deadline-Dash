@@ -128,10 +128,13 @@ if __name__ == "__main__":
     # })
 
     # A list of all the commands needed to walk through our game to win it
-    win_walkthrough = ["go east", "go upstairs", "sneak in and out", "go downstairs", "go east", "go east",
-                       "talk with Sadia", "go north", "go to your friend's dorm", "go downstairs", "go south",
-                       "go south", "pick up broken mug pieces (Ouch!)", "go west", "go west", "go to Sadia's office",
-                       "take charger", "go downstairs", "go north", "go west", "put down items to submit work"]
+    win_walkthrough = ["go east", "go upstairs", "pick up: key", "go downstairs", "go east", "go east",
+                       "talk to sadia", "go north", "go to dorm", "get usb drive", "2", "pick up: usb drive",
+                       "go downstairs", "go south", "go south", "pick up: mug", "go west", "go west",
+                       "go upstairs", "get laptop charger", "1", "1", "1", "pick up: laptop charger",
+                       "go downstairs", "go east", "go south", "pick up: presto card", "get on the streetcar",
+                       "buy potion", "go back to campus", "go north", "go west", "go north", "go west",
+                       "put down items to submit work"]
 
     # Log list of IDs of all locations that would be visited
     expected_log = [1, 2, 20, 20, 2, 4, 8, 8, 7, 70, 7, 8, 9, 9, 5, 6, 11, 6, 5, 3, 30, 30, 3, 2, 1]
