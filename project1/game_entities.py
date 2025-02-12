@@ -167,14 +167,11 @@ class Player:
         0
         >>> p.moves_left
         50
-        >>> p.item_on_hand is None
-        True
         """
 
         self.inventory = []
         self.score = 0
         self.moves_left = 50
-        self.item_on_hand = None
 
     def inventory_to_string(self) -> str:
         """List all items in inventory in a readable format
