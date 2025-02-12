@@ -127,9 +127,8 @@ if __name__ == "__main__":
     # expected_log = [1, 2, 20, 20, 2, 4, 8, 8, 7, 70, 70, 70, 7, 8, 9, 9, 5, 3, 30, 30, 30, 3, 5, 6, 6, 11, 11, 6, 5,
     #                 3, 2, 1]
     #
-    # assert expected_log == AdventureGameSimulation('game_data.json', 1, win_walkthrough, 10)
 
-    # A simpled walkthrough of a winning routine
+    # A simplified walkthrough of a winning routine
     win_demo = ["go east", "go upstairs", "go downstairs", "go east", "go east", "talk to sadia", "go north",
                 "go to dorm", "go downstairs", "go south", "go south", "go west", "go west", "go east", "go south",
                 "go north", "go west", "go north", "go west", "put down items to submit work"]

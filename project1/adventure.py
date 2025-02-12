@@ -293,7 +293,6 @@ def undo(current_game: AdventureGame, current_log: EventList, game_player: Playe
 
     last_event = current_log.last
     last_loc = current_game.get_location(last_event.id_num)
-
     if last_event.item_involved:
         my_choice = game_log.last.description
 
