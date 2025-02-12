@@ -231,6 +231,7 @@ def first_event_initializer() -> Event:
     first_event = Event(id_num=1, description=intro)
     return first_event
 
+
 def submit_work(player: Player, items_to_win: list[str]) -> bool:
 
     for item in items_to_win:
@@ -238,18 +239,8 @@ def submit_work(player: Player, items_to_win: list[str]) -> bool:
             print("You don't have everything you need to submit!")
 
             return False
-
-    print("You open your laptop, plug the charger in as well as the USB drive and begin uploading your files."
-          "After a while, your project is only 30% uploaded. You glance at the clock: 3:50 PM! In the remaining 10 "
-          "minutes, you frantically use Reparo! on to fix your mug, wishing for luck. And it works! Your project is "
-          "ready! You promptly hit 'submit' at exactly 3:59 PM and let out a long sigh of relief. Your grade is saved"
-          "and your friendship is preserved. Great Work!")
-
-    player.score += len(items_to_win) * 20
-
-    print("YOU SUCCESSFULLY COMPLETED THE GAME. Final score: " + str(player.score))
-
     return True
+
 
 def ford_ford_teleport(game: AdventureGame) -> int:
     """Special function for Location 10: Queen's Park. Teleport the player to any location they asked for."""
@@ -276,6 +267,7 @@ def buy_hotdog(game: AdventureGame, player: Player, loc_id: int) -> None:
     game.remove_location_command(loc_id, "buy hotdog")
     player.moves_left += 5
 
+
 def buy_potion(game: AdventureGame, player: Player, loc_id: int) -> None:
     """Special event for buying potion"""
 
@@ -285,6 +277,7 @@ def buy_potion(game: AdventureGame, player: Player, loc_id: int) -> None:
 
     game.remove_location_command(11, "buy potion")
     player.inventory.append(game.get_item("potion"))
+
 
 def get_usb(player: Player, key: Item, usb: Item) -> None:
     """Add USB to player's inventory if they have the key in their inventory."""
@@ -469,14 +462,16 @@ if __name__ == "__main__":
             elif choice == "get laptop charger":
                 game.shuffling_drawers_game(player, 'laptop charger')
                 item_involved = game.get_item("laptop charger")
+
+                for i in range(len(curr_location.items)):
+                    if curr_location.items[i] == "laptop charger":
+                        curr_location.items.pop(i)
+
                 game.remove_location_command(loc_id=30, command="get laptop charger")
 
             elif choice == "buy hotdog":
                 buy_hotdog(game, player, loc_id=4)
                 item_involved = game.get_item("hotdog")
-
-            elif choice == "buy potion":
-                buy_potion(game, player, loc_id=11)
 
             elif choice == "ford, ford, teleport":
                 target = ford_ford_teleport(game)
@@ -484,6 +479,7 @@ if __name__ == "__main__":
                 game.current_location_id = target
 
             elif choice == "put down items to submit work":
+
                 if submit_work(player, necessary_items):
                     game.ongoing = False
 
@@ -505,8 +501,6 @@ if __name__ == "__main__":
         if item_involved:
             print(f"Item description: {item_involved.description}")
 
-        # minus the player's moves left by 1
-        player.moves_left -= 1
 
         # create the next event
         next_location = game.get_location()
@@ -535,3 +529,25 @@ if __name__ == "__main__":
         print("==========")
         print(f"Location {next_location.id_num}: {next_location.name}")
         print(game_log.last.description)
+
+        # minus the player's moves left by 1
+        player.moves_left -= 1
+
+        if player.moves_left == 0:
+            game.ongoing = False
+
+    if player.moves_left == 0:
+        print("\nYou ran out of moves. It's 4 PM and you missed the deadline. What will you tell your friend...")
+        print("GAME OVER.")
+
+    else:
+
+        print("You open your laptop, plug the charger in as well as the USB drive and begin uploading your files."
+              "After a while, your project is only 30% uploaded. You glance at the clock: 3:50 PM! In the remaining 10 "
+              "minutes, you frantically use Reparo! on to fix your mug, wishing for luck. And it works! Your project "
+              "is ready! You promptly hit 'submit' at exactly 3:59 PM and let out a long sigh of relief. Your grade is "
+              "saved and your friendship is preserved. Great Work!")
+
+        player.score += len(necessary_items) * 20
+
+        print("YOU SUCCESSFULLY COMPLETED THE GAME. Final score: " + str(player.score))
