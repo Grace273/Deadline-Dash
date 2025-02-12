@@ -163,7 +163,6 @@ class Player:
     inventory: list[Item]
     score: int
     moves_left: int
-    item_on_hand: Optional[Item] = None
 
     def __init__(self) -> None:
         """Initialize a new player. The player starts with an empty inventory, score and 50 moves. """

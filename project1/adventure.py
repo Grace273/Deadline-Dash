@@ -382,24 +382,20 @@ if __name__ == "__main__":
         for action in curr_location.available_commands:
             print("-", action)
         # Display items available for picking up and dropping
-        pick_drop_hold = []
+        pick_drop = []
         for item in curr_location.items:
             choice_name = f"pick up: {item.name}"
-            pick_drop_hold.append(choice_name)
+            pick_drop.append(choice_name)
             print("-", choice_name)
-        if player.inventory:
-            print(f"{player.inventory_to_string()}. You can drop or hold items in your inventory.")
-            for item in player.inventory:
-                choice_name1 = f"drop: {item.name}"
-                choice_name2 = f"hold: {item.name}"
-                pick_drop_hold.append(choice_name1)
-                pick_drop_hold.append(choice_name2)
+        for item in player.inventory:
+            choice_name1 = f"drop: {item.name}"
+            pick_drop.append(choice_name1)
         else:
             print("No drop or hold options available.")
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        while choice not in curr_location.available_commands and choice not in menu and choice not in pick_drop_hold:
+        while choice not in curr_location.available_commands and choice not in menu and choice not in pick_drop:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
 
@@ -455,14 +451,6 @@ if __name__ == "__main__":
                         curr_location.items.append(player.inventory.pop(i))
                         if player.item_on_hand and player.item_on_hand.name == item_name:
                             player.item_on_hand = None
-                        break
-
-            elif "hold" in choice:
-                item_name = choice[choice.find(": ") + 2:]
-                for i in range(len(player.inventory)):
-                    if player.inventory[i].name == item_name:
-                        player.item_on_hand = player.inventory[i]
-                        item_involved = player.inventory[i]
                         break
 
             elif choice == "talk to sadia":
@@ -523,7 +511,7 @@ if __name__ == "__main__":
                 next_location.visited = True
                 player.score += game.unlock_location_points
         else:
-            if choice in pick_drop_hold:
+            if choice in pick_drop:
                 event_description = choice
             else:
                 event_description = f"Completed special event '{choice}'"
