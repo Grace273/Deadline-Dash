@@ -506,6 +506,10 @@ if __name__ == "__main__":
                 buy_hotdog(game, player, 4)
                 item_involved = game.get_item("hotdog")
 
+            elif choice == "buy potion":
+                buy_potion(game, player)
+                item_involved = game.get_item("potion")
+
             elif choice == "ford, ford, teleport":
                 target = ford_ford_teleport(game, player, special_points)
                 item_involved = None
@@ -543,7 +547,7 @@ if __name__ == "__main__":
             else:
                 event_description = f"Completed special event '{choice}'"
 
-        new_event = Event(id_num=next_location.id_num, description=event_description)
+        new_event = Event(id_num=next_location.id_num, description=event_description, item_involved=item_involved)
         game_log.add_event(new_event, choice)
 
         print("==========")
