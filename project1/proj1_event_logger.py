@@ -24,6 +24,7 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
+from game_entities import Item
 
 
 # TODO: Copy/paste your ex1_event_logger code below, and modify it if needed to fit your game
@@ -40,6 +41,7 @@ class Event:
     - next_command: String command which leads this event to the next event, None if this is the last game event
     - next: Event object representing the next event in the game, or None if this is the last game event
     - prev: Event object representing the previous event in the game, None if this is the first game event
+    - item_involved: Item involved in this event, None if no item is changed.
     """
 
     # NOTES:
@@ -53,6 +55,7 @@ class Event:
     next_command: Optional[str] = None
     next: Optional[Event] = None
     prev: Optional[Event] = None
+    item_involved: Optional[Item] = None
 
 
 class EventList:

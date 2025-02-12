@@ -315,16 +315,17 @@ def get_laptop_charger(current_game: AdventureGame, game_player: Player, locatio
 # =================function for menu commands============================
 
 
-def undo(current_game: AdventureGame, itm_involved: Optional[None], game_player: Player) -> None:
-    """Remove the last command. If hold command is removed. """
+def undo(current_game: AdventureGame, current_log: EventList, game_player: Player) -> None:
+    """Remove the last command."""
 
-    last_loc = current_game.get_location(game_log.last.id_num)
+    last_loc = current_game.get_location(current_log.last.id_num)
+    last_event = current_log.last
 
-    if itm_involved:
-        my_choice = game_log.last.description
-        my_item_name = my_choice[my_choice.find(": ") + 2:]
+    if last_event.item_involved:
+        my_choice = last_event.description
 
         if "pick up" in my_choice:
+            my_item_name = my_choice[my_choice.find(": ") + 2:]
             prev_item = game_player.get_inventory_item(my_item_name)
 
             last_loc.items.append(prev_item)
@@ -333,18 +334,21 @@ def undo(current_game: AdventureGame, itm_involved: Optional[None], game_player:
             print(f"{my_item_name} is back at Location {last_loc.id_num}: {last_loc.name}")
 
         elif "drop" in my_choice:
+            my_item_name = my_choice[my_choice.find(": ") + 2:]
             prev_item = last_loc.get_item(my_item_name)
 
             last_loc.remove_item(prev_item)
             game_player.inventory.append(prev_item)
 
             print(f"{my_item_name} from Location {last_loc.id_num}: {last_loc.name} is back in your inventory.")
-    else:
-        game_log.remove_last_event()
-        game.current_location_id = game_log.last.id_num
 
-        print(f"You are back at Location {game.current_location_id}: {game.get_location(game.current_location_id).name}"
-              )
+        current_log.remove_last_event()
+
+    else:
+        current_log.remove_last_event()
+        current_game.current_location_id = current_log.last.id_num
+
+        print(f"You are back at Location {game.current_location_id}: {game.get_location(game.current_location_id).name}")
 
     print(game_player.inventory_to_string())
 
@@ -370,7 +374,6 @@ if __name__ == "__main__":
     # initial location ID to 1 and unlock_location_points to 10.
     menu = ["look", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
     choice = None
-    item_involved = None
 
     # for cleaner code
     trinity2f_name = "Trinity College 2F"
@@ -389,6 +392,7 @@ if __name__ == "__main__":
         # for better organization. Part of your marks will be based on how well-organized your code is.
 
         curr_location = game.get_location()
+        item_involved = None
 
         # Display possible actions at this location
         print("\nWhat to do? Choose from: look, inventory, score, undo, log, quit")
@@ -437,7 +441,7 @@ if __name__ == "__main__":
                 print(player.score)
 
             elif choice == "undo":
-                undo(game, item_involved, player)
+                undo(game, game_log, player)
 
             else:  # player choice is "quit"
                 print("Thanks for playing!")
@@ -448,6 +452,7 @@ if __name__ == "__main__":
 
                 item_name = choice[choice.find(": ") + 2:]
                 item = game.get_item(item_name)
+                item_involved = item
 
                 # add item to inventory
                 player.inventory.append(item)
@@ -456,11 +461,14 @@ if __name__ == "__main__":
                 curr_location.remove_item(item)
 
             elif "drop" in choice:
+
                 item_name = choice[choice.find(": ") + 2:]
                 for i in range(len(player.inventory)):
                     if player.inventory[i].name == item_name:
                         item_involved = player.inventory[i]
-                        curr_location.items.append(player.inventory.pop(i))
+
+                        # remove item from inventory and add to current location
+                        curr_location.items.append(player.inventory.pop(i))  #
                         break
 
             elif choice == "talk to sadia":
@@ -470,9 +478,11 @@ if __name__ == "__main__":
 
             elif choice == "get usb drive":
                 get_usb_drive(game, player, 70)
+                item_involved = game.get_item("usb drive")
 
             elif choice == "get laptop charger":
                 get_laptop_charger(game, player, 30)
+                item_involved = game.get_item("laptop charger")
 
             elif choice == "buy hotdog":
                 buy_hotdog(game, player, 4)
@@ -490,6 +500,8 @@ if __name__ == "__main__":
             else:
                 if choice == "get on the streetcar" and game.get_item("presto card") not in player.inventory:
                     print("You are not allowed to board a streetcar without a PRESTO card!")
+
+                # for all other commands that moves player's location
                 else:
                     item_involved = None
                     result = curr_location.available_commands[choice]
@@ -517,7 +529,7 @@ if __name__ == "__main__":
             else:
                 event_description = f"Completed special event '{choice}'"
 
-        new_event = Event(id_num=next_location.id_num, description=event_description)
+        new_event = Event(id_num=next_location.id_num, description=event_description, item_involved=item_involved)
         game_log.add_event(new_event, choice)
 
         print("==========")
