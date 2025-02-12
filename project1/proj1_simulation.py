@@ -109,12 +109,12 @@ if __name__ == "__main__":
 
     # # A list of all user inputs needed to walk through our game to win it. Follow the input in adventure.py to test.
     win_full_demo = ["go east", "go upstairs", "pick up: key", "go downstairs", "go east", "go east",
-                       "talk to sadia", "go north", "go to dorm", "get usb drive", "2", "pick up: usb drive",
-                       "go downstairs", "go south", "go south", "pick up: mug", "go west", "go west",
-                       "go upstairs", "get laptop charger", "1", "1", "1", "pick up: laptop charger",
-                       "go downstairs", "go east", "go south", "pick up: presto card", "get on the streetcar",
-                       "buy potion", "go back to campus", "go north", "go west", "go north", "go west",
-                       "put down items to submit work"]
+                     "talk to sadia", "go north", "go to dorm", "get usb drive", "2", "pick up: usb drive",
+                     "go downstairs", "go south", "go south", "pick up: mug", "go west", "go west",
+                     "go upstairs", "get laptop charger", "1", "1", "1", "pick up: laptop charger",
+                     "go downstairs", "go east", "go south", "pick up: presto card", "get on the streetcar",
+                     "buy potion", "go back to campus", "go north", "go west", "go north", "go west",
+                     "put down items to submit work"]
 
     expected_log_win_full = [1, 2, 20, 20, 2, 4, 8, 8, 7, 70, 70, 70, 7, 8, 9, 9, 5, 3, 30, 30, 30, 3, 5, 6, 6, 11,
                              11, 6, 5, 3, 2, 1]
@@ -186,14 +186,14 @@ if __name__ == "__main__":
 
     # demo of mug puzzle. Input the following commands in order in adventure.py to test out.
     mug_puzzle_demo = ["go east", "go east", "go east", "go south", "pick up: mug", "go west", "go south",
-                        "pick up presto card", "get on street car", "pick up: potion"]
+                       "pick up: presto card", "get on the streetcar", "buy: potion"]
 
     # demo of laptop charger puzzle. Input the following commands in order in adventure.py to test out.
     lc_puzzle_demo = ["go east", "go east", "go east", "talk to sadia", "go under the bridge", "ford, ford, teleport",
                       "3", "go upstairs", "get laptop charger", "1", "1", "1", "pick up: laptop charger"]
 
-    #demo of undoing pick/drop. Input the following commands in order in adventure.py to test out.
+    # demo of undoing pick/drop. Input the following commands in order in adventure.py to test out.
     undo_demo = ["go east", "go upstairs", "pick up: key", "undo", "pick up: key", "drop: key", "undo", "inventory"]
 
-    #demo of hotdog item. Input the following commands in order in adventure.py to test out.
+    # demo of hotdog item. Input the following commands in order in adventure.py to test out.
     hotdog_demo = ["go east", "go east", "buy hotdog"]
