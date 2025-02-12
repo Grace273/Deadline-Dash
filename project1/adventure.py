@@ -318,8 +318,8 @@ def get_laptop_charger(current_game: AdventureGame, game_player: Player, locatio
 def undo(current_game: AdventureGame, current_log: EventList, game_player: Player) -> None:
     """Remove the last command."""
 
-    last_loc = current_game.get_location(current_log.last.id_num)
     last_event = current_log.last
+    last_loc = current_game.get_location(last_event.id_num)
 
     if last_event.item_involved:
         my_choice = last_event.description
@@ -342,13 +342,18 @@ def undo(current_game: AdventureGame, current_log: EventList, game_player: Playe
 
             print(f"{my_item_name} from Location {last_loc.id_num}: {last_loc.name} is back in your inventory.")
 
+        else:
+            # for special events that involve getting an item, delete the event and stay at the same location
+            print(f"You are back at Location {last_loc.id_num}: {last_loc.name}")
+
         current_log.remove_last_event()
 
     else:
         current_log.remove_last_event()
         current_game.current_location_id = current_log.last.id_num
 
-        print(f"You are back at Location {game.current_location_id}: {game.get_location(game.current_location_id).name}")
+        print(f"You are back at Location {current_game.current_location_id}: "
+              f"{current_game.get_location(current_game.current_location_id).name}")
 
     print(game_player.inventory_to_string())
 
