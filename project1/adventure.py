@@ -534,15 +534,16 @@ if __name__ == "__main__":
             else:
                 event_description = f"Completed special event '{choice}'"
 
-        new_event = Event(id_num=next_location.id_num, description=event_description)
-        game_log.add_event(new_event, choice)
+        if not is_quit:
+            new_event = Event(id_num=next_location.id_num, description=event_description)
+            game_log.add_event(new_event, choice)
 
-        print("==========")
-        print(f"Location {next_location.id_num}: {next_location.name}")
-        print(game_log.last.description)
+            print("==========")
+            print(f"Location {next_location.id_num}: {next_location.name}")
+            print(game_log.last.description)
 
-        # minus the player's moves left by 1
-        player.moves_left -= 1
+            # minus the player's moves left by 1
+            player.moves_left -= 1
 
     if is_quit:
         print("Thanks for playing!")
