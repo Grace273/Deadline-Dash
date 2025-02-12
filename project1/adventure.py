@@ -268,6 +268,13 @@ def talk_with_sadia(game: AdventureGame, loc_id: int, command: str, command_id: 
 
     game.add_location_command(loc_id, command, command_id)
 
+def buy_hotdog(game: AdventureGame, player: Player, loc_id: int) -> None:
+    """Special event for buying hotdog"""
+
+    print("You rushed to the hotdog station and took a free hotdog!")
+    game.remove_location_command(loc_id, "buy hotdog")
+    player.moves_left -= 5
+
 #==================================================================
 #=================function for command============================
 
@@ -436,6 +443,10 @@ if __name__ == "__main__":
 
                 game.remove_location_command(loc_id=30, command="get laptop charger")
 
+            elif choice == "buy hotdog":
+                buy_hotdog(game, player, loc_id=4)
+                item_involved = game.get_item("hotdog")
+
             elif choice == "ford, ford, teleport":
                 target = ford_ford_teleport(game)
                 item_involved = None
@@ -488,6 +499,6 @@ if __name__ == "__main__":
 
         # TODO: Depending on whether or not it's been visited before,
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
-        print("==========")
+        print("\n\n==========")
         print(f"Location {next_location.id_num}: {next_location.name}")
         print(game_log.last.description)

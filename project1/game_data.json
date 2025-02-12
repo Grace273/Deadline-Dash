@@ -67,7 +67,7 @@
         "go east": 8,
         "buy hotdog": 4
       },
-      "items": ["hotdog"]
+      "items": []
     },
     {
       "id": 5,
