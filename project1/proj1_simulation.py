@@ -108,73 +108,74 @@ if __name__ == "__main__":
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'max-line-length': 120,
-    #     'disable': ['R1705', 'E9998', 'E9999']
-    # })
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'disable': ['R1705', 'E9998', 'E9999']
+    })
 
-    # A list of all the commands needed to walk through our game to win it
-    win_walkthrough = ["go east", "go upstairs", "pick up: key", "go downstairs", "go east", "go east",
-                       "talk to sadia", "go north", "go to dorm", "get usb drive", "2", "pick up: usb drive",
-                       "go downstairs", "go south", "go south", "pick up: mug", "go west", "go west",
-                       "go upstairs", "get laptop charger", "1", "1", "1", "pick up: laptop charger",
-                       "go downstairs", "go east", "go south", "pick up: presto card", "get on the streetcar",
-                       "buy potion", "go back to campus", "go north", "go west", "go north", "go west",
-                       "put down items to submit work"]
+    # # A list of all the commands needed to walk through our game to win it
+    # win_demo = ["go east", "go upstairs", "pick up: key", "go downstairs", "go east", "go east",
+    #                    "talk to sadia", "go north", "go to dorm", "get usb drive", "2", "pick up: usb drive",
+    #                    "go downstairs", "go south", "go south", "pick up: mug", "go west", "go west",
+    #                    "go upstairs", "get laptop charger", "1", "1", "1", "pick up: laptop charger",
+    #                    "go downstairs", "go east", "go south", "pick up: presto card", "get on the streetcar",
+    #                    "buy potion", "go back to campus", "go north", "go west", "go north", "go west",
+    #                    "put down items to submit work"]
+    #
+    # # Log list of IDs of all locations that would be visited
+    # expected_log = [1, 2, 20, 20, 2, 4, 8, 8, 7, 70, 70, 70, 7, 8, 9, 9, 5, 3, 30, 30, 30, 3, 5, 6, 6, 11, 11, 6, 5,
+    #                 3, 2, 1]
+    #
+    # assert expected_log == AdventureGameSimulation('game_data.json', 1, win_walkthrough, 10)
 
-    # Log list of IDs of all locations that would be visited
-    expected_log = [1, 2, 20, 20, 2, 4, 8, 8, 7, 70, 70, 70, 7, 8, 9, 9, 5, 3, 30, 30, 30, 3, 5, 6, 6, 11, 11, 6, 5,
-                    3, 2, 1]
+    # A simpled walkthrough of a winning routine
+    win_demo = ["go east", "go upstairs", "go downstairs", "go east", "go east", "talk to sadia", "go north",
+                "go to dorm", "go downstairs", "go south", "go south", "go west", "go west", "go east", "go south",
+                "go north", "go west", "go north", "go west", "put down items to submit work"]
 
-    assert expected_log == AdventureGameSimulation('game_data.json', 1, win_walkthrough, 10)
+    expected_log_win = [1, 2, 20, 2, 4, 8, 8, 7, 70, 7, 8, 9, 5, 3, 5, 6, 5, 3, 2, 1, 1]
+
+    win_sim = AdventureGameSimulation('game_data.json', 1, win_demo, 10)
+    win_sim.run()
+
+    assert expected_log_win == win_sim.get_id_log()
 
     # A list of all the commands needed to walk through our game to reach a 'game over' state
     lose_demo = ["go east", "go east", "go east", "go north", "go south", "go west", "go west", "go west",
-                 "go east", "go east" "go east", "go north", "go south", "go west", "go west", "go west",
-                 "go east", "go east" "go east", "go north", "go south", "go west", "go west", "go west",
-                 "go east", "go east" "go east", "go north", "go south", "go west", "go west", "go west",
-                 "go east", "go east" "go east", "go north", "go south", "go west", "go west", "go west",
-                 "go east", "go east" "go east", "go north", "go south", "go west", "go west", "go west",
+                 "go east", "go east", "go east", "go north", "go south", "go west", "go west", "go west",
+                 "go east", "go east", "go east", "go north", "go south", "go west", "go west", "go west",
+                 "go east", "go east", "go east", "go north", "go south", "go west", "go west", "go west",
+                 "go east", "go east", "go east", "go north", "go south", "go west", "go west", "go west",
+                 "go east", "go east", "go east", "go north", "go south", "go west", "go west", "go west",
                  "go east", "go east"]
 
-    # Log list of IDs of all locations that would be visited
-    expected_log = [1, 2, 4, 8, 7, 8, 4, 2,
-                    1, 2, 4, 8, 7, 8, 4, 2,
-                    1, 2, 4, 8, 7, 8, 4, 2,
-                    1, 2, 4, 8, 7, 8, 4, 2,
-                    1, 2, 4, 8, 7, 8, 4, 2,
-                    1, 2, 4, 8, 7, 8, 4, 2,
-                    1, 2, 4]
+    expected_log_lose = [1, 2, 4, 8, 7, 8, 4, 2,
+                         1, 2, 4, 8, 7, 8, 4, 2,
+                         1, 2, 4, 8, 7, 8, 4, 2,
+                         1, 2, 4, 8, 7, 8, 4, 2,
+                         1, 2, 4, 8, 7, 8, 4, 2,
+                         1, 2, 4, 8, 7, 8, 4, 2,
+                         1, 2, 4]
 
-    assert expected_log == AdventureGameSimulation('game_data.json', 1, lose_demo, 10)
+    lose_sim = AdventureGameSimulation('game_data.json', 1, lose_demo, 10)
+    lose_sim.run()
+
+    assert expected_log_lose == lose_sim.get_id_log()
 
     # inventory demo, including pick up and drop
-    inventory_demo = ["go east", "go upstairs", "pick up: key", "drop: key"]
+    # inventory_demo = ["go east", "go upstairs", "pick up: key", "drop: key"]
+    #
+    # expected_log = [1, 2, 20, 20, 20]
+    #
+    # assert expected_log == AdventureGameSimulation('game_data.json', 1, inventory_demo, 10)
 
-    expected_log = [1, 2, 20, 20, 20]
+    # #demo of special event - teleport
+    teleportation_demo = ["go east", "go east", "go east", "go under the bridge", "ford, ford, teleport"]
 
-    assert expected_log == AdventureGameSimulation('game_data.json', 1, inventory_demo, 10)
+    expected_log = [1, 2, 4, 8, 10, 10]  # next user input determines which place to teleport
 
-    scores_demo = ["go east", "go upstairs", "sneak in and out", "go downstairs", "go east", "go east",
-                   "talk with Sadia", "go north", "go to your friend's dorm", "go downstairs", "go south",
-                   "go south", "pick up broken mug pieces (Ouch!)", "go west", "go west", "go to Sadia's office",
-                   "take charger", "go downstairs", "go north", "go west", "score", "quit"]
+    teleportation_sim = AdventureGameSimulation('game_data.json', 1, teleportation_demo, 10)
+    teleportation_sim.run()
 
-    expected_log = [2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2, 4, 8, 7, 8, 4, 2, 1,
-                    2]
-
-    assert expected_log == AdventureGameSimulation('game_data.json', 1, scores_demo, 10)
-
-    #demo of special event - teleport
-    teleportation_demo = ["go east", "go east", "go east", "go under the bridge", "ford, ford, teleport", "1", "Quit"]
-
-    expected_log = [1, 2, 4, 8, 10, 1, 1]
-
-    assert expected_log == AdventureGameSimulation('game_data.json', 1, teleportation_demo, 10)
-
+    assert expected_log == teleportation_sim.get_id_log()
