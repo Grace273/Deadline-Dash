@@ -150,7 +150,6 @@ class Player:
     Representation Invariants:
         - self.score >= 0
         - self.moves_left >= 0
-        - self.item_on_hand in self.inventory
     """
 
     inventory: list[Item]
