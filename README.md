@@ -1,4 +1,5 @@
-Players must retrieve all lost items in game map needed for their project submission using a limited number of moves while maximizing their score.
+Players must retrieve all lost items in game map needed for their project submission using a limited number of moves while maximizing their score. Play minigames to collect items, bring items to their correct location, talk to special characters!
+
 Run the game by running adventure.py.
 
 Preview:
