@@ -2,4 +2,5 @@ Players must retrieve all lost items in game map needed for their project submis
 Run the game by running adventure.py.
 
 Preview:
-<img width="883" alt="Screenshot 2025-02-28 at 10 38 21 PM" src="https://github.com/user-attachments/assets/cfd62221-650c-4643-a5d6-231c94e9bca2" />
+![image](https://github.com/user-attachments/assets/1a5e17e2-ddd8-47f1-ade1-763eea9a8734)
+
